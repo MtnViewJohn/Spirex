@@ -34,7 +34,6 @@
 #include "SpirexGL.h"
 #include "SaverSettingsWin32.h"
 #include <Mmsystem.h>
-#include <Pbt.h>
 #include "VersionInfo.h"
 #include "FileCheck.h"
 #include <shellapi.h>
@@ -62,29 +61,7 @@ static bool VerifyPassword(HWND hwnd)
 // checks the appropriate registry key and, if necessary, pops up a verify
 // dialog.
 {
-	OSVERSIONINFO osv;
-	osv.dwOSVersionInfoSize = sizeof(osv);
-	GetVersionEx(&osv);
-	if (osv.dwPlatformId == VER_PLATFORM_WIN32_NT) return true;
-
-	HINSTANCE hpwdcpl = ::LoadLibrary("PASSWORD.CPL");
-	if (hpwdcpl == NULL) {
-		Debug("Unable to load PASSWORD.CPL. Aborting");
-		return true;
-	}
-	typedef BOOL (WINAPI *VERIFYSCREENSAVEPWD)(HWND hwnd);
-	VERIFYSCREENSAVEPWD VerifyScreenSavePwd;
-	VerifyScreenSavePwd = (VERIFYSCREENSAVEPWD)GetProcAddress(hpwdcpl,
-			"VerifyScreenSavePwd");
-	if (VerifyScreenSavePwd == NULL) {
-		Debug("Unable to get VerifyPwProc address. Aborting");
-		FreeLibrary(hpwdcpl);
-		return true;
-	}
-	Debug("About to call VerifyPwProc");
-	bool bres = (bool)VerifyScreenSavePwd(hwnd);
-	FreeLibrary(hpwdcpl);
-	return bres;
+    return true;
 }
 
 
