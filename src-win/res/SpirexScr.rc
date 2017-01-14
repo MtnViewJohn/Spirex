@@ -1,0 +1,282 @@
+// Spirex Screensaver
+// ---------------------
+// Copyright (C) 2001, 2002, 2003 John Horigan
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+// John Horigan can be contacted at john@glyphic.com or at
+// John Horigan, 1209 Villa St., Mountain View, CA 94041-1123, USA
+//
+//
+// portion of this file are
+// Copyright (c) 1998 Lucian Wischik. You may do whatever you want with this code, without restriction.
+
+#include <windows.h>
+#include <prsht.h>
+#include <commctrl.h>
+#include "../resource.h"
+#include "../VersionInfo.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+
+1 VERSIONINFO
+  FILEVERSION   VersionNum1, VersionNum2, VersionNum3, VersionNum4
+  PRODUCTVERSION  VersionNum1, VersionNum2, VersionNum3, VersionNum4
+  FILEFLAGSMASK   VS_FF_DEBUG | VS_FF_PRERELEASE | VS_FFI_FILEFLAGSMASK
+#if DEBUG
+  FILEFLAGS   VS_FF_DEBUG
+#else
+#endif
+  FILEOS      VOS__WINDOWS32
+  FILETYPE    VFT_APP
+  FILESUBTYPE   VFT2_UNKNOWN
+  BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+      // US English 0x0409 + Unicode 0x04B0
+      BLOCK "040904B0"
+      BEGIN
+        VALUE "Comments", "Do not be hypnotized\0"
+        VALUE "CompanyName", "OzoneSoft\0"
+#if DEBUG
+        VALUE "FileDescription", "Spirex screen saver (debug)\0"
+#else
+        VALUE "FileDescription", "Spirex screen saver\0"
+#endif
+        VALUE "FileVersion", VersionString
+        VALUE "InternalName", "Spirex\0"
+        VALUE "LegalCopyright", CopyrightString
+        VALUE "ProductName", "Spirex\0"
+        VALUE "ProductVersion", VersionString
+      END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+      VALUE "Translation", 0x0409, 0x04B0
+    END
+  END
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+ID_SPIREX_ICON      ICON    DISCARDABLE     "Spirex.ico"
+ID_UNINSTALL_ICON   ICON    DISCARDABLE     "Spirex.ico"
+ID_TL_YES           ICON    DISCARDABLE     "TL_yes.ico"
+ID_TR_YES           ICON    DISCARDABLE     "TR_yes.ico"
+ID_BL_YES           ICON    DISCARDABLE     "BL_yes.ico"
+ID_BR_YES           ICON    DISCARDABLE     "BR_yes.ico"
+ID_TL_NO            ICON    DISCARDABLE     "TL_no.ico"
+ID_TR_NO            ICON    DISCARDABLE     "TR_no.ico"
+ID_BL_NO            ICON    DISCARDABLE     "BL_no.ico"
+ID_BR_NO            ICON    DISCARDABLE     "BR_no.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DATA (textures)
+//
+ID_BORG     RCDATA DISCARDABLE "..\\..\\src-common\\res\\borg.jpg"
+ID_EARTH    RCDATA DISCARDABLE "..\\..\\src-common\\res\\earth.jpg"
+ID_EUROPA   RCDATA DISCARDABLE "..\\..\\src-common\\res\\europa.jpg"
+ID_FLOWER   RCDATA DISCARDABLE "..\\..\\src-common\\res\\flower.jpg"
+ID_MARS     RCDATA DISCARDABLE "..\\..\\src-common\\res\\mars.jpg"
+ID_MOON     RCDATA DISCARDABLE "..\\..\\src-common\\res\\moon.jpg"
+ID_ORIGAMI  RCDATA DISCARDABLE "..\\..\\src-common\\res\\origami.jpg"
+ID_SPIREX   RCDATA DISCARDABLE "..\\..\\src-common\\res\\spirex.jpg"
+
+#ifdef VC6
+IDR_MANIFEST RT_MANIFEST MOVEABLE PURE
+             "manifest.xml"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+ID_BLANK_CURSOR     CURSOR          "blank.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialogs
+//
+
+
+
+DLG_CONFIG DIALOG 10, 13, 319, 203
+STYLE WS_CHILD
+FONT 8, "MS Shell Dlg"
+BEGIN
+
+  CONTROL         "", IDC_PREVIEW, "Static", SS_OWNERDRAW, 7, 7, 165, 154
+
+#define Presets_X 179
+#define Presets_Y 4
+  GROUPBOX    "Saved Settings", ID_BOX2, Presets_X, Presets_Y, 133, 40
+  COMBOBOX        IDC_PRESETS, Presets_X + 6, Presets_Y + 11, 78, 90, CBS_DROPDOWN | CBS_SORT |
+          CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+
+  AUTOCHECKBOX    "Choose Random Preset", IDC_RANDOM, Presets_X + 6, Presets_Y + 27, 90, 10
+  PUSHBUTTON    "Save", IDC_SAVE, Presets_X + 98, Presets_Y + 10, 30, 12
+  PUSHBUTTON    "Delete", IDC_DELETE, Presets_X + 98, Presets_Y + 24, 30, 12
+
+#define Settings_X  179
+#define Settings_Y  Presets_Y + 44
+  GROUPBOX    "Current Settings", ID_SETTINGSBOX, Settings_X, Settings_Y, 133, 148
+  COMBOBOX      IDC_MODE, Settings_X + 6, Settings_Y + 11, 121, 110, CBS_DROPDOWNLIST | WS_TABSTOP
+
+
+#define Sliders_X Settings_X + 6
+#define Sliders_Y Settings_Y + 30
+  LTEXT           "Count:", IDT_COUNT, Sliders_X, Sliders_Y, 30, 10
+  LTEXT           "Length:", IDT_LENGTH, Sliders_X, Sliders_Y + 15, 25, 10
+  LTEXT           "Speed:", IDT_RATE, Sliders_X, Sliders_Y + 30, 25, 10
+  LTEXT           "\xb1Rate:", IDT_EVOLUTION, Sliders_X, Sliders_Y + 45, 25, 10
+  CONTROL         "", IDC_COUNT, TRACKBAR_CLASS, TBS_NOTICKS | TBS_TOOLTIPS |
+          WS_TABSTOP, Sliders_X + 25, Sliders_Y, 62, 12
+  CONTROL         "", IDC_LENGTH, TRACKBAR_CLASS, TBS_NOTICKS |
+          WS_TABSTOP, Sliders_X + 25, Sliders_Y + 15, 62, 12
+
+  CONTROL         "", IDC_RATE, TRACKBAR_CLASS, TBS_NOTICKS |
+          WS_TABSTOP, Sliders_X + 25, Sliders_Y + 30, 62, 12
+  CONTROL         "", IDC_EVOLUTION, TRACKBAR_CLASS, TBS_NOTICKS |
+          WS_TABSTOP, Sliders_X + 25, Sliders_Y + 45, 62, 12
+
+#define Checks_X  Settings_X + 94
+#define Checks_Y  Sliders_Y
+  AUTOCHECKBOX    "Thick", IDC_THICK, Checks_X, Checks_Y, 36, 10
+  AUTOCHECKBOX    "Color", IDC_COLOR, Checks_X, Checks_Y + 11, 36, 10
+  AUTOCHECKBOX    "Fixed", IDC_FIXED, Checks_X, Checks_Y + 22, 36, 10
+  AUTOCHECKBOX    "Points", IDC_POINTS, Checks_X, Checks_Y + 33, 36, 10
+  AUTOCHECKBOX    "3-Axial", IDC_TRIAXIAL, Checks_X, Checks_Y + 44, 36, 10
+
+#define Texture_X Settings_X + 6
+#define Texture_Y Sliders_Y + 62
+  LTEXT           "Texture:", IDT_TEXTURE, Texture_X, Texture_Y, 25, 10
+  CONTROL         "", IDC_TEXTURE, "Static", SS_OWNERDRAW | WS_BORDER, Texture_X + 29, Texture_Y, 54, 50
+  CONTROL     "", IDC_TEXTURE_UD, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_HORZ,
+    Texture_X + 88, Texture_Y, 32, 15
+  PUSHBUTTON    "Browse", IDC_TEXTURE_BROWSE, Texture_X + 88, Texture_Y + 20, 32, 13
+  PUSHBUTTON      "Clear", IDC_TEXTURE_CLEAR, Texture_X + 88, Texture_Y + 37, 32, 13
+
+#define Text_X  7
+#define Text_Y  172
+  LTEXT     "Spirex", IDT_VERSION, Text_X, Text_Y, 125, 10
+  LTEXT     CopyrightString, IDT_COPYRIGHT, Text_X, Text_Y + 9, 125, 10
+
+
+END
+
+
+DLG_ADVCONFIG DIALOG 20, 23, 319, 203
+STYLE WS_CHILD
+FONT 8, "MS Shell Dlg"
+BEGIN
+
+  CONTROL         "", IDC_PREVIEW, "Static", SS_OWNERDRAW, 7, 7, 165, 154
+
+#define Update_X  179
+#define Update_Y  4
+  GROUPBOX      "Getting Updates", 0, Update_X, Update_Y, 71, 45
+  AUTOCHECKBOX  "Check Weekly", IDC_CHECK_UPDATES, Update_X + 6, Update_Y + 11, 64, 10
+  PUSHBUTTON    "Spirex Home", IDC_GOHOME, Update_X + 6, Update_Y + 25, 58, 14
+
+#define HotCorner_X Update_X + 78
+#define HotCorner_Y Update_Y
+  GROUPBOX    "", ID_HOTCORNER_BOX, HotCorner_X, HotCorner_Y, 55, 45
+  PUSHBUTTON  "", IDC_TL_CORNER, HotCorner_X + 2, HotCorner_Y + 5, 11, 11, BS_ICON
+  PUSHBUTTON  "", IDC_TR_CORNER, HotCorner_X + 43, HotCorner_Y + 5, 11, 11, BS_ICON
+  PUSHBUTTON  "", IDC_BL_CORNER, HotCorner_X + 2, HotCorner_Y + 33, 11, 11, BS_ICON
+  PUSHBUTTON  "", IDC_BR_CORNER, HotCorner_X + 43, HotCorner_Y + 33, 11, 11, BS_ICON
+  LTEXT       "Select Disable Hot Corner", IDT_HOT_CORNER, HotCorner_X + 16, HotCorner_Y + 8, 27, 35
+
+#define Battery_X 179
+#define Battery_Y Update_Y + 49
+  GROUPBOX    "Battery Saver", ID_BATTERY_BOX, Battery_X, Battery_Y, 133, 28
+  LTEXT         "On Battery", IDT_RES_BATTERY, Battery_X + 6, Battery_Y + 12, 39, 10
+  COMBOBOX      IDC_RES_BATTERY, Battery_X + 46, Battery_Y + 11, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
+
+#define Perf_X  179
+#define Perf_Y  Battery_Y + 32
+  GROUPBOX      "Performance Settings", ID_PERF_BOX, Perf_X, Perf_Y, 133, 67
+  LTEXT         "One Display", IDT_RES_ALWAYS,Perf_X + 6, Perf_Y + 12, 39, 10
+  COMBOBOX      IDC_RES_ALWAYS, Perf_X + 46, Perf_Y + 11, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
+  LTEXT         ">1 Displays", IDT_RES_MULTI,Perf_X + 6, Perf_Y + 27, 39, 10
+  COMBOBOX      IDC_RES_MULTI, Perf_X + 46, Perf_Y + 26, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
+  LTEXT           "Detail:", IDT_DETAIL, Perf_X + 6, Perf_Y + 41, 20, 10
+  CONTROL       "", IDC_DETAIL, TRACKBAR_CLASS, TBS_NOTICKS | WS_TABSTOP,
+                  Perf_X + 26, Perf_Y + 41, 103, 12
+  LTEXT         "Coarse", IDT_COARSE, Perf_X + 30, Perf_Y + 53, 25, 10
+  RTEXT         "Fine", IDT_FINE, Perf_X + 100, Perf_Y + 53, 25, 10
+
+  LTEXT     "Spirex", IDT_VERSION, Text_X, Text_Y, 125, 10
+  LTEXT     CopyrightString, IDT_COPYRIGHT, Text_X, Text_Y + 9, 125, 10
+
+END
+
+DLG_2D_CONFIG DIALOG 10, 13, 319, 203
+STYLE WS_CHILD
+FONT 8, "MS Shell Dlg"
+BEGIN
+
+  CONTROL         "", IDC_PREVIEW, "Static", SS_OWNERDRAW, 7, 7, 165, 154
+
+  GROUPBOX    "Random Presets - 2D Subset", ID_BOX2, Presets_X, Presets_Y, 133, 112
+  CONTROL       "", IDC_PRESETS, WC_LISTVIEW, LVS_LIST | LVS_SORTASCENDING | LVS_SINGLESEL | WS_BORDER,
+                  Presets_X + 6, Presets_Y + 12, 121, 95, LVS_EX_CHECKBOXES
+
+  LTEXT     "Spirex", IDT_VERSION, Text_X, Text_Y, 125, 10
+  LTEXT     CopyrightString, IDT_COPYRIGHT, Text_X, Text_Y + 9, 125, 10
+
+END
+
+
+DLG_UPDATE DIALOG 10, 13, 187, 60
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Spirex Update"
+FONT 8, "MS Shell Dlg"
+BEGIN
+  DEFPUSHBUTTON "Get Update", IDC_GET_IT, 126, 40, 55, 14
+  CONTROL     ID_SPIREX_ICON, IDC_SPIREX_ICON, "Static", SS_ICON, 6, 6, 30, 30
+  LTEXT     "A newer version of Spirex is available.", IDT_UPDATE, 40, 6, 120, 16
+  PUSHBUTTON    "Not Now", IDC_NOT_NOW, 6, 40, 55, 14
+  PUSHBUTTON    "Stop Checking", IDC_STOP, 66, 40, 55, 14
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_DESCRIPTION                       "Spirex"
+END
+
+

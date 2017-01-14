@@ -1,0 +1,686 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5207D4F409B11F6000E7C8BD /* myGlut_shapes.c in Sources */ = {isa = PBXBuildFile; fileRef = 5207D4F309B11F6000E7C8BD /* myGlut_shapes.c */; };
+		5207D4F809B1207200E7C8BD /* myGlut_teapot.c in Sources */ = {isa = PBXBuildFile; fileRef = 5207D4F709B1207200E7C8BD /* myGlut_teapot.c */; };
+		524460221A031B2100D715BD /* Spirex Dev.saver in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD74A04105E11E1D00081D23 /* Spirex Dev.saver */; };
+		52A05E6209B1335A00329C24 /* myGl.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A05E6109B1335A00329C24 /* myGl.h */; };
+		52F0069609B1172F00BBFE08 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0069509B1172F00BBFE08 /* Cocoa.framework */; };
+		52F0069709B1172F00BBFE08 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0069509B1172F00BBFE08 /* Cocoa.framework */; };
+		52F0069E09B117A700BBFE08 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0069D09B117A700BBFE08 /* AppKit.framework */; };
+		52F0069F09B117A700BBFE08 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0069D09B117A700BBFE08 /* AppKit.framework */; };
+		52F006A409B1182900BBFE08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F006A309B1182900BBFE08 /* Foundation.framework */; };
+		52F006A509B1182900BBFE08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F006A309B1182900BBFE08 /* Foundation.framework */; };
+		52F006D809B11BB000BBFE08 /* myGlut.h in Headers */ = {isa = PBXBuildFile; fileRef = 52F006D509B11BB000BBFE08 /* myGlut.h */; };
+		52F9FF320F4BD017006681A4 /* myGlut_cylinder.c in Sources */ = {isa = PBXBuildFile; fileRef = 52F9FF310F4BD017006681A4 /* myGlut_cylinder.c */; };
+		FD74A02E05E11C4700081D23 /* Info.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A02D05E11C4700081D23 /* Info.h */; };
+		FD74A03105E11C5400081D23 /* Info.m in Sources */ = {isa = PBXBuildFile; fileRef = FD74A02F05E11C5400081D23 /* Info.m */; };
+		FD74A03205E11C5400081D23 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD74A03005E11C5400081D23 /* main.m */; };
+		FD74A03505E11C6800081D23 /* SpirexInfo.nib in Resources */ = {isa = PBXBuildFile; fileRef = FD74A03305E11C6800081D23 /* SpirexInfo.nib */; };
+		FD74A04C05E11E6200081D23 /* SaverSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04605E11E6200081D23 /* SaverSettings.h */; };
+		FD74A04D05E11E6200081D23 /* RingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04705E11E6200081D23 /* RingBuffer.h */; };
+		FD74A04E05E11E6200081D23 /* Point3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04805E11E6200081D23 /* Point3D.h */; };
+		FD74A04F05E11E6200081D23 /* Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04905E11E6200081D23 /* Color.h */; };
+		FD74A05005E11E6200081D23 /* SpirexGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04A05E11E6200081D23 /* SpirexGL.h */; };
+		FD74A05105E11E6200081D23 /* SpirexGeom.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A04B05E11E6200081D23 /* SpirexGeom.h */; };
+		FD74A05605E11E8500081D23 /* SaverSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05205E11E8500081D23 /* SaverSettings.cpp */; };
+		FD74A05705E11E8500081D23 /* SpirexGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05305E11E8500081D23 /* SpirexGL.cpp */; };
+		FD74A05805E11E8500081D23 /* SpirexGeom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05405E11E8500081D23 /* SpirexGeom.cpp */; };
+		FD74A05905E11E8500081D23 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05505E11E8500081D23 /* Color.cpp */; };
+		FD74A05E05E11ECB00081D23 /* Spirex3DView.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05A05E11ECB00081D23 /* Spirex3DView.mm */; };
+		FD74A05F05E11ECB00081D23 /* SettingsSheet.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05B05E11ECB00081D23 /* SettingsSheet.mm */; };
+		FD74A06005E11ECB00081D23 /* FileImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05C05E11ECB00081D23 /* FileImageView.mm */; };
+		FD74A06105E11ECB00081D23 /* SpirexScreenSaverView.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD74A05D05E11ECB00081D23 /* SpirexScreenSaverView.mm */; };
+		FD74A06605E11EE800081D23 /* Spirex3DView.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A06205E11EE800081D23 /* Spirex3DView.h */; };
+		FD74A06705E11EE800081D23 /* SettingsSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A06305E11EE800081D23 /* SettingsSheet.h */; };
+		FD74A06805E11EE800081D23 /* FileImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A06405E11EE800081D23 /* FileImageView.h */; };
+		FD74A06905E11EE800081D23 /* SpirexScreenSaverView.h in Headers */ = {isa = PBXBuildFile; fileRef = FD74A06505E11EE800081D23 /* SpirexScreenSaverView.h */; };
+		FD74A07505E11F2100081D23 /* Spirex.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FD74A06D05E11F2100081D23 /* Spirex.JPG */; };
+		FD74A07605E11F2100081D23 /* Earth.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD74A06E05E11F2100081D23 /* Earth.jpg */; };
+		FD74A07705E11F2100081D23 /* Flower.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FD74A06F05E11F2100081D23 /* Flower.JPG */; };
+		FD74A07805E11F2100081D23 /* Europa.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07005E11F2100081D23 /* Europa.jpg */; };
+		FD74A07905E11F2100081D23 /* Moon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07105E11F2100081D23 /* Moon.jpg */; };
+		FD74A07A05E11F2100081D23 /* Mars.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07205E11F2100081D23 /* Mars.jpg */; };
+		FD74A07B05E11F2100081D23 /* Origami.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07305E11F2100081D23 /* Origami.JPG */; };
+		FD74A07C05E11F2100081D23 /* Borg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07405E11F2100081D23 /* Borg.jpg */; };
+		FD74A07F05E11F6000081D23 /* gpl.txt in Resources */ = {isa = PBXBuildFile; fileRef = FD74A07E05E11F6000081D23 /* gpl.txt */; };
+		FD74A08105E11F7100081D23 /* Read Me First.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FD74A08005E11F7100081D23 /* Read Me First.rtf */; };
+		FD74A08305E11F8500081D23 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD74A08205E11F8500081D23 /* Presets.plist */; };
+		FD74A08B05E120C500081D23 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD74A08A05E120C500081D23 /* OpenGL.framework */; };
+		FD74A0A005E120EA00081D23 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD74A09F05E120EA00081D23 /* ScreenSaver.framework */; };
+		FD74A0B405E122E200081D23 /* SettingsDrawer.nib in Resources */ = {isa = PBXBuildFile; fileRef = FD74A0B305E122E200081D23 /* SettingsDrawer.nib */; };
+		FD74A0B505E1242300081D23 /* SpirexInfo.app in Resources */ = {isa = PBXBuildFile; fileRef = FD74A02505E11BBB00081D23 /* SpirexInfo.app */; };
+		FD74A0C105E142E400081D23 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD74A09F05E120EA00081D23 /* ScreenSaver.framework */; };
+		FD8C86EA05E4A9850087C7FD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD8C86E905E4A9850087C7FD /* SystemConfiguration.framework */; };
+		FD8C86EB05E4A9850087C7FD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD8C86E905E4A9850087C7FD /* SystemConfiguration.framework */; };
+		FDC6CE5405E1AF440010388A /* Updater.h in Headers */ = {isa = PBXBuildFile; fileRef = FDC6CE5205E1AF440010388A /* Updater.h */; };
+		FDC6CE5505E1AF440010388A /* Updater.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC6CE5305E1AF440010388A /* Updater.m */; };
+		FDC6CE5605E1AF440010388A /* Updater.h in Headers */ = {isa = PBXBuildFile; fileRef = FDC6CE5205E1AF440010388A /* Updater.h */; };
+		FDC6CE5705E1AF440010388A /* Updater.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC6CE5305E1AF440010388A /* Updater.m */; };
+		FDC6CE8605E1DF730010388A /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FDC6CE8505E1DF730010388A /* Icon.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FD85DC7A05E1E67000D0E2A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD74A01905E11BA100081D23 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD74A02405E11BBB00081D23;
+			remoteInfo = SpirexInfo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		524460211A031B0700D715BD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "/Users/John/Library/Screen Savers";
+			dstSubfolderSpec = 0;
+			files = (
+				524460221A031B2100D715BD /* Spirex Dev.saver in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5207D4F309B11F6000E7C8BD /* myGlut_shapes.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = myGlut_shapes.c; path = "../src-common/myGlut_shapes.c"; sourceTree = SOURCE_ROOT; };
+		5207D4F709B1207200E7C8BD /* myGlut_teapot.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = myGlut_teapot.c; path = "../src-common/myGlut_teapot.c"; sourceTree = SOURCE_ROOT; };
+		52A05E6109B1335A00329C24 /* myGl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = myGl.h; path = "../src-common/myGl.h"; sourceTree = SOURCE_ROOT; };
+		52F0069509B1172F00BBFE08 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		52F0069D09B117A700BBFE08 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		52F006A309B1182900BBFE08 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		52F006D509B11BB000BBFE08 /* myGlut.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = myGlut.h; path = "../src-common/myGlut.h"; sourceTree = SOURCE_ROOT; };
+		52F9FF310F4BD017006681A4 /* myGlut_cylinder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = myGlut_cylinder.c; path = "../src-common/myGlut_cylinder.c"; sourceTree = SOURCE_ROOT; };
+		FD74A02505E11BBB00081D23 /* SpirexInfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpirexInfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD74A02805E11BBB00081D23 /* SpirexInfo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpirexInfo-Info.plist"; sourceTree = "<group>"; };
+		FD74A02D05E11C4700081D23 /* Info.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Info.h; sourceTree = "<group>"; };
+		FD74A02F05E11C5400081D23 /* Info.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Info.m; sourceTree = "<group>"; };
+		FD74A03005E11C5400081D23 /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FD74A03405E11C6800081D23 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SpirexInfo.nib; sourceTree = "<group>"; };
+		FD74A03605E11CCF00081D23 /* Spirex_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Spirex_Prefix.pch; sourceTree = "<group>"; };
+		FD74A04105E11E1D00081D23 /* Spirex Dev.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spirex Dev.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD74A04205E11E1D00081D23 /* Spirex-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Spirex-Info.plist"; sourceTree = "<group>"; };
+		FD74A04605E11E6200081D23 /* SaverSettings.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SaverSettings.h; path = "../src-common/SaverSettings.h"; sourceTree = "<group>"; };
+		FD74A04705E11E6200081D23 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = RingBuffer.h; path = "../src-common/RingBuffer.h"; sourceTree = "<group>"; };
+		FD74A04805E11E6200081D23 /* Point3D.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Point3D.h; path = "../src-common/Point3D.h"; sourceTree = "<group>"; };
+		FD74A04905E11E6200081D23 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Color.h; path = "../src-common/Color.h"; sourceTree = "<group>"; };
+		FD74A04A05E11E6200081D23 /* SpirexGL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SpirexGL.h; path = "../src-common/SpirexGL.h"; sourceTree = "<group>"; };
+		FD74A04B05E11E6200081D23 /* SpirexGeom.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SpirexGeom.h; path = "../src-common/SpirexGeom.h"; sourceTree = "<group>"; };
+		FD74A05205E11E8500081D23 /* SaverSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = SaverSettings.cpp; path = "../src-common/SaverSettings.cpp"; sourceTree = "<group>"; };
+		FD74A05305E11E8500081D23 /* SpirexGL.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = SpirexGL.cpp; path = "../src-common/SpirexGL.cpp"; sourceTree = "<group>"; };
+		FD74A05405E11E8500081D23 /* SpirexGeom.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = SpirexGeom.cpp; path = "../src-common/SpirexGeom.cpp"; sourceTree = "<group>"; };
+		FD74A05505E11E8500081D23 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Color.cpp; path = "../src-common/Color.cpp"; sourceTree = "<group>"; };
+		FD74A05A05E11ECB00081D23 /* Spirex3DView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = Spirex3DView.mm; sourceTree = "<group>"; };
+		FD74A05B05E11ECB00081D23 /* SettingsSheet.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsSheet.mm; sourceTree = "<group>"; };
+		FD74A05C05E11ECB00081D23 /* FileImageView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = FileImageView.mm; sourceTree = "<group>"; };
+		FD74A05D05E11ECB00081D23 /* SpirexScreenSaverView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = SpirexScreenSaverView.mm; sourceTree = "<group>"; };
+		FD74A06205E11EE800081D23 /* Spirex3DView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Spirex3DView.h; sourceTree = "<group>"; };
+		FD74A06305E11EE800081D23 /* SettingsSheet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SettingsSheet.h; sourceTree = "<group>"; };
+		FD74A06405E11EE800081D23 /* FileImageView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FileImageView.h; sourceTree = "<group>"; };
+		FD74A06505E11EE800081D23 /* SpirexScreenSaverView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SpirexScreenSaverView.h; sourceTree = "<group>"; };
+		FD74A06D05E11F2100081D23 /* Spirex.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Spirex.JPG; path = "../src-common/res/Spirex.JPG"; sourceTree = "<group>"; };
+		FD74A06E05E11F2100081D23 /* Earth.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Earth.jpg; path = "../src-common/res/Earth.jpg"; sourceTree = "<group>"; };
+		FD74A06F05E11F2100081D23 /* Flower.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Flower.JPG; path = "../src-common/res/Flower.JPG"; sourceTree = "<group>"; };
+		FD74A07005E11F2100081D23 /* Europa.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Europa.jpg; path = "../src-common/res/Europa.jpg"; sourceTree = "<group>"; };
+		FD74A07105E11F2100081D23 /* Moon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Moon.jpg; path = "../src-common/res/Moon.jpg"; sourceTree = "<group>"; };
+		FD74A07205E11F2100081D23 /* Mars.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Mars.jpg; path = "../src-common/res/Mars.jpg"; sourceTree = "<group>"; };
+		FD74A07305E11F2100081D23 /* Origami.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Origami.JPG; path = "../src-common/res/Origami.JPG"; sourceTree = "<group>"; };
+		FD74A07405E11F2100081D23 /* Borg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Borg.jpg; path = "../src-common/res/Borg.jpg"; sourceTree = "<group>"; };
+		FD74A07E05E11F6000081D23 /* gpl.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = gpl.txt; path = ../gpl.txt; sourceTree = "<group>"; };
+		FD74A08005E11F7100081D23 /* Read Me First.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Read Me First.rtf"; sourceTree = "<group>"; };
+		FD74A08205E11F8500081D23 /* Presets.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Presets.plist; sourceTree = "<group>"; };
+		FD74A08A05E120C500081D23 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		FD74A09F05E120EA00081D23 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = /System/Library/Frameworks/ScreenSaver.framework; sourceTree = "<absolute>"; };
+		FD74A0B305E122E200081D23 /* SettingsDrawer.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SettingsDrawer.nib; sourceTree = "<group>"; };
+		FD8C86E905E4A9850087C7FD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		FDC6CE5205E1AF440010388A /* Updater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Updater.h; sourceTree = "<group>"; };
+		FDC6CE5305E1AF440010388A /* Updater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Updater.m; sourceTree = "<group>"; };
+		FDC6CE8505E1DF730010388A /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD74A02305E11BBB00081D23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A0C105E142E400081D23 /* ScreenSaver.framework in Frameworks */,
+				FD8C86EA05E4A9850087C7FD /* SystemConfiguration.framework in Frameworks */,
+				52F0069609B1172F00BBFE08 /* Cocoa.framework in Frameworks */,
+				52F0069E09B117A700BBFE08 /* AppKit.framework in Frameworks */,
+				52F006A409B1182900BBFE08 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD74A03F05E11E1D00081D23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A08B05E120C500081D23 /* OpenGL.framework in Frameworks */,
+				FD74A0A005E120EA00081D23 /* ScreenSaver.framework in Frameworks */,
+				FD8C86EB05E4A9850087C7FD /* SystemConfiguration.framework in Frameworks */,
+				52F0069709B1172F00BBFE08 /* Cocoa.framework in Frameworks */,
+				52F0069F09B117A700BBFE08 /* AppKit.framework in Frameworks */,
+				52F006A509B1182900BBFE08 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5242A68809B261EF00827D81 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				52F9FF310F4BD017006681A4 /* myGlut_cylinder.c */,
+				52A05E6109B1335A00329C24 /* myGl.h */,
+				5207D4F709B1207200E7C8BD /* myGlut_teapot.c */,
+				5207D4F309B11F6000E7C8BD /* myGlut_shapes.c */,
+				FD74A04905E11E6200081D23 /* Color.h */,
+				FD74A05505E11E8500081D23 /* Color.cpp */,
+				FD74A04805E11E6200081D23 /* Point3D.h */,
+				FD74A04705E11E6200081D23 /* RingBuffer.h */,
+				FD74A04B05E11E6200081D23 /* SpirexGeom.h */,
+				FD74A05405E11E8500081D23 /* SpirexGeom.cpp */,
+				FD74A04A05E11E6200081D23 /* SpirexGL.h */,
+				FD74A05305E11E8500081D23 /* SpirexGL.cpp */,
+				52F006D509B11BB000BBFE08 /* myGlut.h */,
+				FD74A04605E11E6200081D23 /* SaverSettings.h */,
+				FD74A05205E11E8500081D23 /* SaverSettings.cpp */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		FD74A01505E11BA100081D23 /* Spirex */ = {
+			isa = PBXGroup;
+			children = (
+				5242A68809B261EF00827D81 /* Common */,
+				FD74A02905E11C0700081D23 /* Classes */,
+				FD74A02A05E11C1500081D23 /* Misc Sources */,
+				FD74A02B05E11C2300081D23 /* Resources */,
+				FD74A08705E120A600081D23 /* Frameworks */,
+				FD74A02605E11BBB00081D23 /* Products */,
+			);
+			name = Spirex;
+			sourceTree = "<group>";
+		};
+		FD74A02605E11BBB00081D23 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD74A02505E11BBB00081D23 /* SpirexInfo.app */,
+				FD74A04105E11E1D00081D23 /* Spirex Dev.saver */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD74A02905E11C0700081D23 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FD74A06405E11EE800081D23 /* FileImageView.h */,
+				FD74A05C05E11ECB00081D23 /* FileImageView.mm */,
+				FD74A02D05E11C4700081D23 /* Info.h */,
+				FD74A02F05E11C5400081D23 /* Info.m */,
+				FDC6CE5205E1AF440010388A /* Updater.h */,
+				FDC6CE5305E1AF440010388A /* Updater.m */,
+				FD74A06305E11EE800081D23 /* SettingsSheet.h */,
+				FD74A05B05E11ECB00081D23 /* SettingsSheet.mm */,
+				FD74A06205E11EE800081D23 /* Spirex3DView.h */,
+				FD74A05A05E11ECB00081D23 /* Spirex3DView.mm */,
+				FD74A06505E11EE800081D23 /* SpirexScreenSaverView.h */,
+				FD74A05D05E11ECB00081D23 /* SpirexScreenSaverView.mm */,
+				FD74A03005E11C5400081D23 /* main.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		FD74A02A05E11C1500081D23 /* Misc Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FD74A03605E11CCF00081D23 /* Spirex_Prefix.pch */,
+			);
+			name = "Misc Sources";
+			sourceTree = "<group>";
+		};
+		FD74A02B05E11C2300081D23 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FD74A07D05E11F5600081D23 /* Docs */,
+				FD74A06C05E11F0D00081D23 /* Images */,
+				FD74A08205E11F8500081D23 /* Presets.plist */,
+				FD74A02805E11BBB00081D23 /* SpirexInfo-Info.plist */,
+				FD74A04205E11E1D00081D23 /* Spirex-Info.plist */,
+				FD74A03305E11C6800081D23 /* SpirexInfo.nib */,
+				FD74A0B305E122E200081D23 /* SettingsDrawer.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		FD74A06C05E11F0D00081D23 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				FDC6CE8505E1DF730010388A /* Icon.icns */,
+				FD74A06D05E11F2100081D23 /* Spirex.JPG */,
+				FD74A06E05E11F2100081D23 /* Earth.jpg */,
+				FD74A06F05E11F2100081D23 /* Flower.JPG */,
+				FD74A07005E11F2100081D23 /* Europa.jpg */,
+				FD74A07105E11F2100081D23 /* Moon.jpg */,
+				FD74A07205E11F2100081D23 /* Mars.jpg */,
+				FD74A07305E11F2100081D23 /* Origami.JPG */,
+				FD74A07405E11F2100081D23 /* Borg.jpg */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		FD74A07D05E11F5600081D23 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				FD74A08005E11F7100081D23 /* Read Me First.rtf */,
+				FD74A07E05E11F6000081D23 /* gpl.txt */,
+			);
+			name = Docs;
+			sourceTree = "<group>";
+		};
+		FD74A08705E120A600081D23 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				52F006A309B1182900BBFE08 /* Foundation.framework */,
+				52F0069D09B117A700BBFE08 /* AppKit.framework */,
+				52F0069509B1172F00BBFE08 /* Cocoa.framework */,
+				FD74A08A05E120C500081D23 /* OpenGL.framework */,
+				FD74A09F05E120EA00081D23 /* ScreenSaver.framework */,
+				FD8C86E905E4A9850087C7FD /* SystemConfiguration.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FD74A02005E11BBB00081D23 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A02E05E11C4700081D23 /* Info.h in Headers */,
+				FDC6CE5605E1AF440010388A /* Updater.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD74A03C05E11E1D00081D23 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A04C05E11E6200081D23 /* SaverSettings.h in Headers */,
+				FD74A04D05E11E6200081D23 /* RingBuffer.h in Headers */,
+				FD74A04E05E11E6200081D23 /* Point3D.h in Headers */,
+				FD74A04F05E11E6200081D23 /* Color.h in Headers */,
+				FD74A05005E11E6200081D23 /* SpirexGL.h in Headers */,
+				FD74A05105E11E6200081D23 /* SpirexGeom.h in Headers */,
+				FD74A06605E11EE800081D23 /* Spirex3DView.h in Headers */,
+				FD74A06705E11EE800081D23 /* SettingsSheet.h in Headers */,
+				FD74A06805E11EE800081D23 /* FileImageView.h in Headers */,
+				FD74A06905E11EE800081D23 /* SpirexScreenSaverView.h in Headers */,
+				FDC6CE5405E1AF440010388A /* Updater.h in Headers */,
+				52F006D809B11BB000BBFE08 /* myGlut.h in Headers */,
+				52A05E6209B1335A00329C24 /* myGl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		FD74A02405E11BBB00081D23 /* SpirexInfo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52488D9E09B0CCE700E80165 /* Build configuration list for PBXNativeTarget "SpirexInfo" */;
+			buildPhases = (
+				FD74A02005E11BBB00081D23 /* Headers */,
+				FD74A02105E11BBB00081D23 /* Resources */,
+				FD74A02205E11BBB00081D23 /* Sources */,
+				FD74A02305E11BBB00081D23 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpirexInfo;
+			productName = SpirexInfo;
+			productReference = FD74A02505E11BBB00081D23 /* SpirexInfo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FD74A04005E11E1D00081D23 /* Spirex */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52488DA209B0CCE700E80165 /* Build configuration list for PBXNativeTarget "Spirex" */;
+			buildPhases = (
+				FD74A03C05E11E1D00081D23 /* Headers */,
+				FD74A03D05E11E1D00081D23 /* Resources */,
+				FD74A03E05E11E1D00081D23 /* Sources */,
+				FD74A03F05E11E1D00081D23 /* Frameworks */,
+				524460211A031B0700D715BD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD85DC7B05E1E67000D0E2A2 /* PBXTargetDependency */,
+			);
+			name = Spirex;
+			productName = Spirex;
+			productReference = FD74A04105E11E1D00081D23 /* Spirex Dev.saver */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FD74A01905E11BA100081D23 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
+			buildConfigurationList = 52488DA609B0CCE700E80165 /* Build configuration list for PBXProject "Spirex" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FD74A01505E11BA100081D23 /* Spirex */;
+			productRefGroup = FD74A02605E11BBB00081D23 /* Products */;
+			projectDirPath = "";
+			projectRoot = ..;
+			targets = (
+				FD74A02405E11BBB00081D23 /* SpirexInfo */,
+				FD74A04005E11E1D00081D23 /* Spirex */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FD74A02105E11BBB00081D23 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A03505E11C6800081D23 /* SpirexInfo.nib in Resources */,
+				FDC6CE8605E1DF730010388A /* Icon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD74A03D05E11E1D00081D23 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A07505E11F2100081D23 /* Spirex.JPG in Resources */,
+				FD74A07605E11F2100081D23 /* Earth.jpg in Resources */,
+				FD74A07705E11F2100081D23 /* Flower.JPG in Resources */,
+				FD74A07805E11F2100081D23 /* Europa.jpg in Resources */,
+				FD74A07905E11F2100081D23 /* Moon.jpg in Resources */,
+				FD74A07A05E11F2100081D23 /* Mars.jpg in Resources */,
+				FD74A07B05E11F2100081D23 /* Origami.JPG in Resources */,
+				FD74A07C05E11F2100081D23 /* Borg.jpg in Resources */,
+				FD74A07F05E11F6000081D23 /* gpl.txt in Resources */,
+				FD74A08105E11F7100081D23 /* Read Me First.rtf in Resources */,
+				FD74A08305E11F8500081D23 /* Presets.plist in Resources */,
+				FD74A0B405E122E200081D23 /* SettingsDrawer.nib in Resources */,
+				FD74A0B505E1242300081D23 /* SpirexInfo.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD74A02205E11BBB00081D23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A03105E11C5400081D23 /* Info.m in Sources */,
+				FD74A03205E11C5400081D23 /* main.m in Sources */,
+				FDC6CE5705E1AF440010388A /* Updater.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD74A03E05E11E1D00081D23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD74A05605E11E8500081D23 /* SaverSettings.cpp in Sources */,
+				FD74A05705E11E8500081D23 /* SpirexGL.cpp in Sources */,
+				FD74A05805E11E8500081D23 /* SpirexGeom.cpp in Sources */,
+				FD74A05905E11E8500081D23 /* Color.cpp in Sources */,
+				FD74A05E05E11ECB00081D23 /* Spirex3DView.mm in Sources */,
+				FD74A05F05E11ECB00081D23 /* SettingsSheet.mm in Sources */,
+				FD74A06005E11ECB00081D23 /* FileImageView.mm in Sources */,
+				FD74A06105E11ECB00081D23 /* SpirexScreenSaverView.mm in Sources */,
+				FDC6CE5505E1AF440010388A /* Updater.m in Sources */,
+				5207D4F409B11F6000E7C8BD /* myGlut_shapes.c in Sources */,
+				5207D4F809B1207200E7C8BD /* myGlut_teapot.c in Sources */,
+				52F9FF320F4BD017006681A4 /* myGlut_cylinder.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD85DC7B05E1E67000D0E2A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD74A02405E11BBB00081D23 /* SpirexInfo */;
+			targetProxy = FD85DC7A05E1E67000D0E2A2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FD74A03305E11C6800081D23 /* SpirexInfo.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FD74A03405E11C6800081D23 /* English */,
+			);
+			name = SpirexInfo.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5242A67909B25FF300827D81 /* Universal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "SpirexInfo-Info.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = SpirexInfo;
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Universal;
+		};
+		5242A67A09B25FF300827D81 /* Universal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "Spirex-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = Spirex;
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Universal;
+		};
+		5242A67B09B25FF300827D81 /* Universal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.6;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Universal;
+		};
+		52488D9F09B0CCE700E80165 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "SpirexInfo-Info.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = SpirexInfo;
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Development;
+		};
+		52488DA009B0CCE700E80165 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "SpirexInfo-Info.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = SpirexInfo;
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			name = Deployment;
+		};
+		52488DA309B0CCE700E80165 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "Spirex-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = "Spirex Dev";
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Development;
+		};
+		52488DA409B0CCE700E80165 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 373;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Spirex_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "Spirex-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = Spirex;
+				SDKROOT = macosx;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Deployment;
+		};
+		52488DA709B0CCE700E80165 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.6;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Development;
+		};
+		52488DA809B0CCE700E80165 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.6;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		52488D9E09B0CCE700E80165 /* Build configuration list for PBXNativeTarget "SpirexInfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52488D9F09B0CCE700E80165 /* Development */,
+				52488DA009B0CCE700E80165 /* Deployment */,
+				5242A67909B25FF300827D81 /* Universal */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		52488DA209B0CCE700E80165 /* Build configuration list for PBXNativeTarget "Spirex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52488DA309B0CCE700E80165 /* Development */,
+				52488DA409B0CCE700E80165 /* Deployment */,
+				5242A67A09B25FF300827D81 /* Universal */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		52488DA609B0CCE700E80165 /* Build configuration list for PBXProject "Spirex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52488DA709B0CCE700E80165 /* Development */,
+				52488DA809B0CCE700E80165 /* Deployment */,
+				5242A67B09B25FF300827D81 /* Universal */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FD74A01905E11BA100081D23 /* Project object */;
+}

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Earth</key>
+    <dict>
+        <key>curveCount</key>       <integer>12</integer>
+        <key>curveLength</key>      <integer>50</integer>
+        <key>speed</key>            <integer>10</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <false/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <false/>
+        <key>mode</key>             <string>WrappedCubes</string>
+        <key>texturePath</key>      <string>Earth</string>
+    </dict>
+    <key>Planet Homer</key>
+    <dict>
+        <key>curveCount</key>       <integer>12</integer>
+        <key>curveLength</key>      <integer>50</integer>
+        <key>speed</key>            <integer>10</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <false/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <true/>
+        <key>mode</key>             <string>Toroids</string>
+        <key>texturePath</key>      <string>Earth</string>
+    </dict>
+    <key>Spirals</key>
+    <dict>
+        <key>curveCount</key>       <integer>16</integer>
+        <key>curveLength</key>      <integer>200</integer>
+        <key>speed</key>            <integer>50</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <true/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <false/>
+        <key>mode</key>             <string>OriginalCounterRotate2D</string>
+        <key>texturePath</key>      <string></string>
+    </dict>
+    <key>Ribbons</key>
+    <dict>
+        <key>curveCount</key>       <integer>32</integer>
+        <key>curveLength</key>      <integer>15</integer>
+        <key>speed</key>            <integer>33</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <true/>
+        <key>inColor</key>          <true/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <false/>
+        <key>mode</key>             <string>Curves</string>
+        <key>texturePath</key>      <string>Spirex</string>
+    </dict>
+    <key>Spheres</key>
+    <dict>
+        <key>curveCount</key>       <integer>24</integer>
+        <key>curveLength</key>      <integer>50</integer>
+        <key>speed</key>            <integer>15</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <true/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <true/>
+        <key>triAxial</key>         <false/>
+        <key>mode</key>             <string>Spheres</string>
+        <key>texturePath</key>      <string></string>
+    </dict>
+    <key>Blobs</key>
+    <dict>
+        <key>curveCount</key>       <integer>24</integer>
+        <key>curveLength</key>      <integer>50</integer>
+        <key>speed</key>            <integer>15</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <true/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <true/>
+        <key>mode</key>             <string>Spheres</string>
+        <key>texturePath</key>      <string>Spirex</string>
+    </dict>
+    <key>Torqued Ellipses</key>
+    <dict>
+        <key>curveCount</key>       <integer>16</integer>
+        <key>curveLength</key>      <integer>50</integer>
+        <key>speed</key>            <integer>15</integer>
+        <key>evolution</key>        <integer>50</integer>
+        <key>thickLines</key>       <false/>
+        <key>inColor</key>          <true/>
+        <key>fixed</key>            <false/>
+        <key>points</key>           <false/>
+        <key>triAxial</key>         <true/>
+        <key>mode</key>             <string>Cylinders</string>
+        <key>texturePath</key>      <string>Europa</string>
+    </dict>
+</dict>
+</plist>

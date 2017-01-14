@@ -1,0 +1,24 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                configureSpirex = id; 
+                openSpirex = id; 
+                stepAnimation = id; 
+                toggleAnimation = id; 
+            }; 
+            CLASS = SpirexController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                configureButton = NSButton; 
+                openButton = NSButton; 
+                spirexWindow = NSWindow; 
+                startStopButton = NSButton; 
+                stepButton = NSButton; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
