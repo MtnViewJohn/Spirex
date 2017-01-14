@@ -38,7 +38,7 @@
 #include "VersionInfo.h"
 #include "Texture.h"
 #include <shellapi.h>
-#include <shfolder.h>
+#include <Shlobj.h>
 
 #include <pshpack1.h>
 typedef struct DLGTEMPLATEEX
@@ -597,9 +597,17 @@ static void InitDialog(HWND hwnd, LPARAM lParam)
   Ofn.lpstrInitialDir = InitDir;
   Ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   
-  if (SHGetFolderPath(NULL, CSIDL_MYPICTURES, NULL, 0, InitDir) != S_OK) 
-  	if (SHGetFolderPath(NULL, CSIDL_COMMON_DOCUMENTS, NULL, 0, InitDir) != S_OK)
-  		InitDir[0] = '\0';
+  PWSTR path = 0;
+  if (SHGetKnownFolderPath(FOLDERID_Pictures, 0, NULL, &path) == S_OK ||
+      SHGetKnownFolderPath(FOLDERID_PublicDocuments, 0, NULL, &path) == S_OK)
+  {
+      size_t count;
+      if (wcstombs_s(&count, InitDir, MAX_PATH, path, MAX_PATH) != 0)
+          InitDir[0] = '\0';
+      CoTaskMemFree(static_cast<void*>(path));
+  } else {
+    InitDir[0] = '\0';
+  }
 }
 
 struct FileList

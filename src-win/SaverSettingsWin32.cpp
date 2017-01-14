@@ -28,7 +28,6 @@
 #include "myWindows.h"
 #include <regstr.h>
 #include <shlwapi.h>
-#include <shfolder.h>
 
 #pragma warning ( push )
 #pragma warning ( disable : 4005 )
