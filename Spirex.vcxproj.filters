@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{19e7bf17-f24d-4cb5-928a-80df9c0eaeba}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{b85af5ea-d65e-4555-a3fd-f5a179e1596f}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f9a9c6f4-5657-44e8-bccb-5c54b9db66a5}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src-common\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\Configure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\FileCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\LinkWin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\myGlut_cylinder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\myGlut_shapes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\myGlut_teapot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\SaverSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\SaverSettingsWin32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\SaverWin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\SelfDelete.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\Spirex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\SpirexGeom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-common\SpirexGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\SpirexScr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src-win\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src-win\res\SpirexScr.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src-win\CGdiPlusBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\Configure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\Debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\FileCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\LinkWin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\myGl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\myGlut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\myWindows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\Point3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\RESOURCE.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\RingBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\SaverSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\SaverSettingsWin32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\SaverWin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\Spirex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\SpirexGeom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-common\SpirexGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\SpirexScr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src-win\VersionInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src-win\res\BL_no.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\BL_yes.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\BR_no.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\BR_yes.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\Spirex.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\TL_no.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\TL_yes.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\TR_no.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src-win\res\TR_yes.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src-win\res\blank.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
