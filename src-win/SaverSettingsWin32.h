@@ -34,19 +34,19 @@
 class SaverSettingsWin32
 { 
 public:
-	SaverSettings	mSettings;
-	static bool		Randomize;
-	static bool Check4Updates;
+	SaverSettings   mSettings;
+	static bool     Randomize;
+	static bool     Check4Updates;
 	static FILETIME LastUpdateCheck;
-	static int  LevelOfDetail;
-	static int  DisableHotCorner;
+	static int      LevelOfDetail;
+	static int      DisableHotCorner;
 	
 	
 	
-	static unsigned long	PasswordDelay;   // in seconds
-	static unsigned long	MouseThreshold;  // in pixels
-	static bool				MuteSound;
-	static HWND				ConfigWindow;
+	static unsigned long    PasswordDelay;   // in seconds
+	static unsigned long    MouseThreshold;  // in pixels
+	static bool             MuteSound;
+	static HWND             ConfigWindow;
 	
 	SaverSettingsWin32();
 	SaverSettingsWin32(const SaverSettingsWin32&);

@@ -33,44 +33,44 @@
 
 class Spirex
 {
-	Point3D			mScreenCenter;
-	RECT      mRect;
-	float			mScale;
-	SaverSettings	mSettings;
-	SpirexGeom		mGeom;
-	
-	HDC		mHdc;
-	HWND	mHwnd;
-	bool mEraseScreen;
-	unsigned int mRenderCount;
+    Point3D	        mScreenCenter;
+    RECT            mRect;
+    float           mScale;
+    SaverSettings   mSettings;
+    SpirexGeom      mGeom;
 
-	
-	
-	GLuint mTexture[1]; /* Textures */
-	void SetupTexture();
+    HDC             mHdc;
+    HWND            mHwnd;
+    bool            mEraseScreen;
+    unsigned int    mRenderCount;
 
-	void checkGLError();
 
-	static HANDLE CurrentGfxOwner;
-	bool GetGfxMutex();
 
-	
-	bool setupPixelFormat();
-	bool pixelsAreSetup;
+    GLuint mTexture[1]; /* Textures */
+    void SetupTexture();
+
+    void checkGLError();
+
+    static HANDLE CurrentGfxOwner;
+    bool GetGfxMutex();
+
+
+    bool setupPixelFormat();
+    bool pixelsAreSetup;
 
 public:
-	Spirex(const SaverSettings& mSettings, int sizex, int sizey, HWND hwnd);
-	~Spirex();
-	void NewSaverSettings(const SaverSettings& settings);
-	void NextStep();
-	void Render(int rate);
-	void SetupGfx();
-	void DestroyGfx();
-	void Clear();
+    Spirex(const SaverSettings& mSettings, int sizex, int sizey, HWND hwnd);
+    ~Spirex();
+    void NewSaverSettings(const SaverSettings& settings);
+    void NextStep();
+    void Render(int rate);
+    void SetupGfx();
+    void DestroyGfx();
+    void Clear();
 private:
-	Spirex(const Spirex&);	
-	Spirex& operator=(const Spirex&);
-		// not implemented, can't be assigned or copied
+    Spirex(const Spirex&);
+    Spirex& operator=(const Spirex&);
+    // not implemented, can't be assigned or copied
 };
 
 #endif // INCLUDED_SPIREX

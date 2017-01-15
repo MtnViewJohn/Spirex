@@ -28,24 +28,24 @@
 class LinkWin
 {
 private:
-	HINSTANCE mInstHandle;
-	bool mVisited;
-	bool mEntered;
-	bool mButtonDown;
-	HFONT mLinkFontHandle;
-	LRESULT CALLBACK LinkWinProc(HWND hwnd, UINT msg, 
-		WPARAM wParam, LPARAM lParam);
+    HINSTANCE mInstHandle;
+    bool mVisited;
+    bool mEntered;
+    bool mButtonDown;
+    HFONT mLinkFontHandle;
+    LRESULT CALLBACK LinkWinProc(HWND hwnd, UINT msg,
+                                 WPARAM wParam, LPARAM lParam);
 
-	LinkWin(const LinkWin&);			// no automatic copy constructor
-	LinkWin& operator=(const LinkWin&);	// or assignment operator
+    LinkWin(const LinkWin&);			// no automatic copy constructor
+    LinkWin& operator=(const LinkWin&);	// or assignment operator
 
 public:
-	LinkWin(HWND hparwnd, RECT screenRect, HINSTANCE hInst);
-	~LinkWin();
-	
-	static void InitLinkWin(HINSTANCE instHandle);
-  static LRESULT CALLBACK LinkWindowProc(HWND hwnd, UINT msg, 
-  	WPARAM wParam, LPARAM lParam);
+    LinkWin(HWND hparwnd, RECT screenRect, HINSTANCE hInst);
+    ~LinkWin();
+
+    static void InitLinkWin(HINSTANCE instHandle);
+    static LRESULT CALLBACK LinkWindowProc(HWND hwnd, UINT msg,
+                                           WPARAM wParam, LPARAM lParam);
 };
 
 

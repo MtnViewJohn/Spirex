@@ -53,11 +53,6 @@ private:
 	static long SaverCount;
 	static bool	ThereIsAnUpdate;
 	
-	bool mChangedOK;
-	bool mChangedMode;
-	bool EnsureMode(DWORD width, DWORD height);
-	void ExitMode();
-	
 	static SaverWin* SaverWinList;
 	SaverWin* mNextSaverWin;
 

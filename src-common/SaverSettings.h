@@ -30,87 +30,89 @@
 class SaverSettings
 {
 public:
-  enum RenderMode {Original2D = 0, OriginalCounterRotate2D = 1,
-    Original2DWith3DGeometry = 2, Curves = 4, Spheres = 5,
-    PointModeSpheres = 3, Disks = 6, Cubes = 7, Squares = 8, Conics = 9,
-    Toroids = 10, Teapots = 11, WrappedCubes = 12, Cylinders = 13};
-  int				mVersion;
-  int				mSize;
-  unsigned int	mCurveCount;	// Spirex settings
-  unsigned int	mCurveLength;
-  unsigned int	mAngleChangeRate;
-  unsigned int	mEvolutionRate;
-  bool			mThickLines;
-  bool			mInColor;
-  bool			mFixed;
-  bool			mPoints;
-  bool			mTriAxial;
-  RenderMode    mMode;
-  std::string   mName;
+    enum RenderMode {
+        Original2D = 0, OriginalCounterRotate2D = 1,
+        Original2DWith3DGeometry = 2, Curves = 4, Spheres = 5,
+        PointModeSpheres = 3, Disks = 6, Cubes = 7, Squares = 8, Conics = 9,
+        Toroids = 10, Teapots = 11, WrappedCubes = 12, Cylinders = 13
+    };
+    int             mVersion;
+    int             mSize;
+    unsigned int    mCurveCount;	// Spirex settings
+    unsigned int    mCurveLength;
+    unsigned int    mAngleChangeRate;
+    unsigned int    mEvolutionRate;
+    bool            mThickLines;
+    bool            mInColor;
+    bool            mFixed;
+    bool            mPoints;
+    bool            mTriAxial;
+    RenderMode      mMode;
+    std::string     mName;
 
-  bool usesTexture() const;
-  bool usesFixed() const;
-  bool usesThickness() const;
-  bool usesLength() const;
-  bool usesPolygons() const;
-  bool usesTriAxial() const;
+    bool usesTexture() const;
+    bool usesFixed() const;
+    bool usesThickness() const;
+    bool usesLength() const;
+    bool usesPolygons() const;
+    bool usesTriAxial() const;
 
 private:
     std::string mTexturePath;
 
 public:
-  enum {MaxCurveCount = 32, MaxCurveLength = 500};
+    enum { MaxCurveCount = 32, MaxCurveLength = 500 };
 
-  SaverSettings();
-  ~SaverSettings() = default;
-  SaverSettings(const SaverSettings&) = default;
-  SaverSettings(SaverSettings&&) noexcept = default;
-  SaverSettings& operator=(const SaverSettings&) = default;
-  SaverSettings& operator=(SaverSettings&&) = default;
-  SaverSettings(	unsigned int CurveCount, unsigned int CurveLength,
-    unsigned int mAngleChangeRate,  unsigned int EvolutionRate,
-    bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-    RenderMode Mode);
-  SaverSettings(	unsigned int CurveCount, unsigned int CurveLength,
-    unsigned int mAngleChangeRate,  unsigned int EvolutionRate,
-    bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-    RenderMode Mode, const char* TextureStr);
-  SaverSettings(	unsigned int CurveCount, unsigned int CurveLength,
-    unsigned int mAngleChangeRate,  unsigned int EvolutionRate,
-    bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-    RenderMode Mode, const char* TexturePtr, unsigned int TextureLen);
+    SaverSettings();
+    ~SaverSettings() = default;
+    SaverSettings(const SaverSettings&) = default;
+    SaverSettings(SaverSettings&&) noexcept = default;
+    SaverSettings& operator=(const SaverSettings&) = default;
+    SaverSettings& operator=(SaverSettings&&) = default;
+    SaverSettings(unsigned int CurveCount, unsigned int CurveLength,
+        unsigned int mAngleChangeRate, unsigned int EvolutionRate,
+        bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+        RenderMode Mode);
+    SaverSettings(unsigned int CurveCount, unsigned int CurveLength,
+        unsigned int mAngleChangeRate, unsigned int EvolutionRate,
+        bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+        RenderMode Mode, const char* TextureStr);
+    SaverSettings(unsigned int CurveCount, unsigned int CurveLength,
+        unsigned int mAngleChangeRate, unsigned int EvolutionRate,
+        bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+        RenderMode Mode, const char* TexturePtr, unsigned int TextureLen);
 
 
-  bool operator==(const SaverSettings& other) const;
+    bool operator==(const SaverSettings& other) const;
 
-  void InitDefaults();
+    void InitDefaults();
 
-  void			setTexture(const char* ptr, size_t len);
-  void			setTexture(const char* str);
-  void			clearTexture();
-  void          qualify();
+    void            setTexture(const char* ptr, size_t len);
+    void            setTexture(const char* str);
+    void            clearTexture();
+    void            qualify();
 
-  const char*   getTexturePtr() const   { return mTexturePath.empty() ? nullptr : mTexturePath.c_str(); }
-  size_t        getTextureLen()	const	{ return mTexturePath.length(); }
-  const char*   getTextureStr() const;	// never returns null
-  size_t        getTextureStrlen() const;
+    const char*     getTexturePtr() const { return mTexturePath.empty() ? nullptr : mTexturePath.c_str(); }
+    size_t          getTextureLen()	const { return mTexturePath.length(); }
+    const char*     getTextureStr() const;	// never returns null
+    size_t          getTextureStrlen() const;
 };
 
 inline bool SaverSettings::usesTexture() const
 {
-  return (mMode > PointModeSpheres) && !mPoints;
+    return (mMode > PointModeSpheres) && !mPoints;
 };
 
 inline bool SaverSettings::usesFixed() const
 {
-  return ((mMode >= Spheres) || (mMode == PointModeSpheres));
+    return ((mMode >= Spheres) || (mMode == PointModeSpheres));
 }
 
 inline bool SaverSettings::usesThickness() const
 {
-  return (usesFixed() && mFixed)
-    || (mMode <= Curves)
-    || mPoints;
+    return (usesFixed() && mFixed)
+        || (mMode <= Curves)
+        || mPoints;
 };
 
 inline bool SaverSettings::usesLength() const
@@ -120,12 +122,12 @@ inline bool SaverSettings::usesLength() const
 
 inline bool SaverSettings::usesPolygons() const
 {
-  return (mMode > Original2DWith3DGeometry);
+    return (mMode > Original2DWith3DGeometry);
 }
 
 inline bool SaverSettings::usesTriAxial() const
 {
-  return (mMode >= PointModeSpheres);
+    return (mMode >= PointModeSpheres);
 };
 
 #endif // INCLUDED_SAVERSETTINGS

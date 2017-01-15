@@ -28,35 +28,35 @@
 
 void SaverSettings::InitDefaults()
 {
-	mVersion = 0;
-	mSize = sizeof(SaverSettings);
+    mVersion = 0;
+    mSize = sizeof(SaverSettings);
 
-	mCurveCount = 16;
-	mCurveLength = 50;
-	mAngleChangeRate = 50;
-	mEvolutionRate = 50;
-	mThickLines = false;
-	mInColor = true;
-	mFixed = false;
-  mPoints = false;
-  mTriAxial = false;
-	mMode = Original2D;
-	mName.clear();
+    mCurveCount = 16;
+    mCurveLength = 50;
+    mAngleChangeRate = 50;
+    mEvolutionRate = 50;
+    mThickLines = false;
+    mInColor = true;
+    mFixed = false;
+    mPoints = false;
+    mTriAxial = false;
+    mMode = Original2D;
+    mName.clear();
 
-	clearTexture();
+    clearTexture();
 }
 
 SaverSettings::SaverSettings()
 {
-	InitDefaults();
+    InitDefaults();
 }
 
 SaverSettings::SaverSettings(
-	unsigned int CurveCount,	 	unsigned int CurveLength,
-	unsigned int AngleChangeRate,	unsigned int EvolutionRate,
-	bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-  RenderMode Mode) :
-    mVersion(0),
+    unsigned int CurveCount, unsigned int CurveLength,
+    unsigned int AngleChangeRate, unsigned int EvolutionRate,
+    bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+    RenderMode Mode)
+  : mVersion(0),
     mSize(sizeof(SaverSettings)),
     mCurveCount(CurveCount),
     mCurveLength(CurveLength),
@@ -72,45 +72,45 @@ SaverSettings::SaverSettings(
 }
 
 SaverSettings::SaverSettings(
-	unsigned int CurveCount,	 	unsigned int CurveLength,
-	unsigned int AngleChangeRate,	unsigned int EvolutionRate,
-	bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-  RenderMode Mode, const char* TextureStr) :
-	mVersion(0),
-	mSize(sizeof(SaverSettings)),
-	mCurveCount(CurveCount),
-	mCurveLength(CurveLength),
-	mAngleChangeRate(AngleChangeRate),
-	mEvolutionRate(EvolutionRate),
-	mThickLines(ThickLines),
-	mInColor(InColor),
-	mFixed(Fixed),
-  mPoints(Points),
-  mTriAxial(TriAxial),
-	mMode(Mode)
+    unsigned int CurveCount, unsigned int CurveLength,
+    unsigned int AngleChangeRate, unsigned int EvolutionRate,
+    bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+    RenderMode Mode, const char* TextureStr)
+  : mVersion(0),
+    mSize(sizeof(SaverSettings)),
+    mCurveCount(CurveCount),
+    mCurveLength(CurveLength),
+    mAngleChangeRate(AngleChangeRate),
+    mEvolutionRate(EvolutionRate),
+    mThickLines(ThickLines),
+    mInColor(InColor),
+    mFixed(Fixed),
+    mPoints(Points),
+    mTriAxial(TriAxial),
+    mMode(Mode)
 {
-	setTexture(TextureStr);
+    setTexture(TextureStr);
 }
 
 SaverSettings::SaverSettings(
-	unsigned int CurveCount,	 	unsigned int CurveLength,
-	unsigned int AngleChangeRate,	unsigned int EvolutionRate,
-	bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
-  RenderMode Mode, const char* TexturePtr, unsigned int TextureLen) :
-	mVersion(0),
-	mSize(sizeof(SaverSettings)),
-	mCurveCount(CurveCount),
-	mCurveLength(CurveLength),
-	mAngleChangeRate(AngleChangeRate),
-	mEvolutionRate(EvolutionRate),
-	mThickLines(ThickLines),
-	mInColor(InColor),
-	mFixed(Fixed),
+    unsigned int CurveCount, unsigned int CurveLength,
+    unsigned int AngleChangeRate, unsigned int EvolutionRate,
+    bool  ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
+    RenderMode Mode, const char* TexturePtr, unsigned int TextureLen)
+  : mVersion(0),
+    mSize(sizeof(SaverSettings)),
+    mCurveCount(CurveCount),
+    mCurveLength(CurveLength),
+    mAngleChangeRate(AngleChangeRate),
+    mEvolutionRate(EvolutionRate),
+    mThickLines(ThickLines),
+    mInColor(InColor),
+    mFixed(Fixed),
     mPoints(Points),
     mTriAxial(TriAxial),
-	mMode(Mode)
+    mMode(Mode)
 {
-	setTexture(TexturePtr, TextureLen);
+    setTexture(TexturePtr, TextureLen);
 }
 
 
