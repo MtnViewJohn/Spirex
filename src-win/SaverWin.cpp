@@ -678,7 +678,6 @@ SaverWin::SaverWin(HWND hparwnd, SaverMode Mode, const SaverSettingsWin32& newSe
 :	mHwnd(NULL),
 	mParentHwnd(hparwnd),
 	mRect(screenRect),
-	mScrDev(""),
 	mSaverMode(Mode),
 	mInstHandle(hInst),
 	mChangedOK(false),

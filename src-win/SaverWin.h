@@ -43,7 +43,6 @@ private:
 	HWND mParentHwnd;
 	RECT mRect;
 	int height, width;
-	const char* mScrDev;
 	SaverMode mSaverMode;
 	HINSTANCE mInstHandle;
 	DWORD mInitTime;    		// in ms
