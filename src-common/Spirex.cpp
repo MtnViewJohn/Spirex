@@ -145,7 +145,7 @@ void Spirex::SetupGfx()
     setupPixelFormat();		// try to setup pixels early and unconditionally
     if (hGLRC == NULL) {
         glFlush();	// dummy call to force loading of opengl32.dll
-        if (setupPixelFormat() || ((hGLRC = wglCreateContext(mHdc)) == NULL) ||
+        if (!setupPixelFormat() || ((hGLRC = wglCreateContext(mHdc)) == NULL) ||
             !wglMakeCurrent(mHdc, hGLRC))
         {
             // we failed to setup OpenGL
@@ -217,7 +217,7 @@ bool Spirex::setupPixelFormat()
     BOOL retVal;
 
     if (pixelsAreSetup)
-        return false;		// only call once per window
+        return true;		// only call once per window
 
       // set the pixel format for the DC
     ZeroMemory(&pfd, sizeof(pfd));
@@ -225,27 +225,22 @@ bool Spirex::setupPixelFormat()
     pfd.nVersion = 1;
     pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
     pfd.iPixelType = PFD_TYPE_RGBA;
-    pfd.cColorBits = 32;
+    pfd.cColorBits = 24;
     pfd.cDepthBits = 16;
     pfd.iLayerType = PFD_MAIN_PLANE;
 
     SelectedPixelFormat = ChoosePixelFormat(mHdc, &pfd);
     if (SelectedPixelFormat == 0)
-        return true;
+        return false;
 
     retVal = DescribePixelFormat(mHdc, SelectedPixelFormat,
-
-
-
-
-
-        sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+                                 sizeof(PIXELFORMATDESCRIPTOR), &pfd);
     if (retVal == 0)
-        return true;
+        return false;
 
     retVal = SetPixelFormat(mHdc, SelectedPixelFormat, &pfd);
     if (retVal != TRUE)
-        return true;
+        return false;
     else
         pixelsAreSetup = true;
 
@@ -254,9 +249,9 @@ bool Spirex::setupPixelFormat()
     OutputDebugString(buf);
 
     if ((pfd.dwFlags & PFD_NEED_PALETTE) || (pfd.iPixelType == PFD_TYPE_COLORINDEX))
-        return true;
+        return false;
 
-    return false;
+    return true;
 }
 
 void Spirex::SetupTexture()
