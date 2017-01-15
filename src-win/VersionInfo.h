@@ -25,11 +25,11 @@
 #define INCLUDED_VERSIONINFO
 
 #define VersionNum1	2
-#define VersionNum2	25
+#define VersionNum2	27
 #define VersionNum3	0
-#define VersionNum4	317
-#define VersionString "2.25\0"
-#define CopyrightString "Copyright © 2001-2009 John Horigan\0"
+#define VersionNum4	318
+#define VersionString "2.27\0"
+#define CopyrightString "Copyright © 2001-2017 John Horigan\0"
 #define TextureFile "Spirex.jpg"
 #define URLString "http:/" "/www.ozonehouse.com/Spirex/"
 #define DownloadURLString "http:/" "/www.ozonehouse.com/Spirex/download.html"
