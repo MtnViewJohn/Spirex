@@ -29,6 +29,7 @@
 #include "myWindows.h"
 #include "SaverSettings.h"
 #include "SaverSettingsWin32.h"
+#include <memory>
 
 
 class Spirex;
@@ -60,7 +61,7 @@ private:
 	static SaverWin* SaverWinList;
 	SaverWin* mNextSaverWin;
 
-	Spirex* mAnimator;
+	std::unique_ptr<Spirex> mAnimator;
 	bool mAnimate;
 
 	SaverSettingsWin32 mSettings;		// current settings, owned by animate thread

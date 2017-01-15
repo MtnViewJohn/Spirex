@@ -167,7 +167,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(	HWND hwnd, UINT msg,
 			width = ((LPCREATESTRUCT)lParam)->cx;
 			mHwnd = hwnd;
 			
-			mAnimator = new Spirex(mSettings.mSettings, width, height, hwnd);
+			mAnimator = std::make_unique<Spirex>(mSettings.mSettings, width, height, hwnd);
 			GetCursorPos(&mInitCursorPos);
 			mLastRender = mInitTime = GetTickCount();
 
@@ -415,8 +415,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(	HWND hwnd, UINT msg,
 			Debug("POSTQUITMESSAGE from WM_DESTROY!!");
 			return FALSE;
 		case WM_NCDESTROY:
-			delete mAnimator;
-			mAnimator = 0;
+			mAnimator.reset();
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
@@ -683,7 +682,6 @@ SaverWin::SaverWin(HWND hparwnd, SaverMode Mode, const SaverSettingsWin32& newSe
 	mChangedOK(false),
 	mChangedMode(false),
 	mNextSaverWin(SaverWinList),
-	mAnimator(NULL),
 	mAnimate(false),
 	mSettings(newSettings),
 	mWTimerID(0),
