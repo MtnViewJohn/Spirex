@@ -547,11 +547,7 @@ DWORD SaverWin::StartWindow()
 	} else {
 		DWORD exstyle, style;
 		if (DEBUG) {
-    	char* buf = new char[100];  // who cares about this leak?
-			wsprintf(buf, "Spirex: (%d,%d) to (%d,%d)",
-				mRect.left, mRect.top,
-				mRect.right, mRect.bottom);
-			name = buf;
+			name = "Spirex debug";
 			cx /= 3;
 			cy /= 3;
 			exstyle = 0;
