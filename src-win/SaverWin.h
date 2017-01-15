@@ -43,9 +43,7 @@ private:
 	HWND mParentHwnd;
 	RECT mRect;
 	int height, width;
-	char* mScrDev;
-	SaverSettingsWin32::DisplayMode mScrMode;
-	SaverSettingsWin32::DisplayMode mOrigScrMode;
+	const char* mScrDev;
 	SaverMode mSaverMode;
 	HINSTANCE mInstHandle;
 	DWORD mInitTime;    		// in ms
@@ -94,8 +92,7 @@ private:
 	static void Initialize();
 public:
 	SaverWin(	HWND hparwnd, SaverMode mSaverMode, const SaverSettingsWin32& newSettings, 
-				RECT screenRect, HINSTANCE hInst, const char* ScrDev = 0, 
-				SaverSettingsWin32::DisplayMode ScrMode = SaverSettingsWin32::DisplayNative);
+				RECT screenRect, HINSTANCE hInst);
 	static void Terminate();
 	void StopAnimation();
 	void StartAnimation();

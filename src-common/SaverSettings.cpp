@@ -38,7 +38,6 @@ void SaverSettings::InitDefaults()
 	mAngleChangeRate = 50;
 	mEvolutionRate = 50;
 	mThickLines = false;
-	m3DRender = true;
 	mInColor = true;
 	mFixed = false;
   mPoints = false;
@@ -69,7 +68,6 @@ SaverSettings::SaverSettings(const SaverSettings& oldSettings) :
     mAngleChangeRate(oldSettings.mAngleChangeRate),
     mEvolutionRate(oldSettings.mEvolutionRate),
     mThickLines(oldSettings.mThickLines),
-    m3DRender(oldSettings.m3DRender),
     mInColor(oldSettings.mInColor),
     mFixed(oldSettings.mFixed),
     mPoints(oldSettings.mPoints),
@@ -97,7 +95,6 @@ SaverSettings& SaverSettings::operator=(const SaverSettings& oldSettings)
     mAngleChangeRate = oldSettings.mAngleChangeRate;
     mEvolutionRate = oldSettings.mEvolutionRate;
     mThickLines = oldSettings.mThickLines;
-    m3DRender = oldSettings.m3DRender;
     mInColor = oldSettings.mInColor;
     mFixed = oldSettings.mFixed;
     mPoints = oldSettings.mPoints;
@@ -129,7 +126,6 @@ SaverSettings::SaverSettings(
     mAngleChangeRate(AngleChangeRate),
     mEvolutionRate(EvolutionRate),
     mThickLines(ThickLines),
-    m3DRender(true),
     mInColor(InColor),
     mFixed(Fixed),
     mPoints(Points),
@@ -153,7 +149,6 @@ SaverSettings::SaverSettings(
 	mAngleChangeRate(AngleChangeRate),
 	mEvolutionRate(EvolutionRate),
 	mThickLines(ThickLines),
-	m3DRender(true),
 	mInColor(InColor),
 	mFixed(Fixed),
   mPoints(Points),
@@ -178,7 +173,6 @@ SaverSettings::SaverSettings(
 	mAngleChangeRate(AngleChangeRate),
 	mEvolutionRate(EvolutionRate),
 	mThickLines(ThickLines),
-	m3DRender(true),
 	mInColor(InColor),
 	mFixed(Fixed),
     mPoints(Points),
@@ -201,7 +195,6 @@ bool SaverSettings::operator==(const SaverSettings& other) const
         && mAngleChangeRate == other.mAngleChangeRate
         && mEvolutionRate == other.mEvolutionRate
         && mThickLines == other.mThickLines
-        && m3DRender == other.m3DRender
         && mInColor == other.mInColor
         && mFixed == other.mFixed
         && mPoints == other.mPoints
@@ -251,10 +244,10 @@ size_t SaverSettings::getTextureStrlen() const
 
 void SaverSettings::qualify()
 {
-    if (!usesTexture(true)) clearTexture();
-    mFixed = mFixed && usesFixed(true);
-    mTriAxial = mTriAxial && usesTriAxial(true);
-    mThickLines = mThickLines && usesThickness(true);
+    if (!usesTexture()) clearTexture();
+    mFixed = mFixed && usesFixed();
+    mTriAxial = mTriAxial && usesTriAxial();
+    mThickLines = mThickLines && usesThickness();
 }
 
 

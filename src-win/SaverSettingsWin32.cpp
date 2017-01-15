@@ -46,15 +46,10 @@ unsigned long	SaverSettingsWin32::MouseThreshold;  // in pixels
 bool 			SaverSettingsWin32::MuteSound;
 bool			SaverSettingsWin32::Randomize;
 bool			SaverSettingsWin32::Check4Updates;
-SaverSettingsWin32::DisplayMode	SaverSettingsWin32::LoResAlways;
-SaverSettingsWin32::DisplayMode	SaverSettingsWin32::LoResMultiMon;
 int 			SaverSettingsWin32::LevelOfDetail;
 int 			SaverSettingsWin32::DisableHotCorner;
 FILETIME		SaverSettingsWin32::LastUpdateCheck;
-SaverSettingsWin32::DisplayMode SaverSettingsWin32::Battery;
-SaverSettingsWin32::DisplayMode SaverSettingsWin32::ResolvedMode;
 HWND			SaverSettingsWin32::ConfigWindow;
-bool			SaverSettingsWin32::BatteryModeDisplay = false;
 
 #define REGSTR_PATH_PLUSSCR (REGSTR_PATH_SETUP "\\Screen Savers")
 #define REGSTR_PATH_CONFIG  ("Software\\OzoneSoft\\Spirex Saver")
@@ -93,21 +88,18 @@ void SaverSettingsWin32::InitDefaults()
 	mSettings.mVersion = CurrentVersion;
 	mSettings.InitDefaults();
 	mSettings.setTexture(IDT_SPIREX);
-	m2DSubset = true;
 }
 
 SaverSettingsWin32::SaverSettingsWin32()
 {
 	mSettings.mVersion = CurrentVersion;
 	mSettings.setTexture(IDT_SPIREX);
-	m2DSubset = true;
 }
 
 SaverSettingsWin32::SaverSettingsWin32(const SaverSettingsWin32& oldSettings)
 :	mSettings(oldSettings.mSettings)
 {
 	mSettings.mVersion = CurrentVersion;
-	m2DSubset = oldSettings.m2DSubset;
 }
 
 
@@ -115,7 +107,6 @@ SaverSettingsWin32& SaverSettingsWin32::operator=(const SaverSettingsWin32& oldS
 {
 	if (this == &oldSettings) return *this;
 	mSettings = oldSettings.mSettings;
-	m2DSubset = oldSettings.m2DSubset;
 	return *this;
 }
 
@@ -131,11 +122,7 @@ void SaverSettingsWin32::ReadGeneralRegistry(bool temp)
 	SaverSettingsWin32::MuteSound = true;
 	SaverSettingsWin32::ConfigWindow = NULL;
 	SaverSettingsWin32::Randomize = false;
-	SaverSettingsWin32::Battery = DisplayNative;
-	SaverSettingsWin32::ResolvedMode = DisplayNative;
 	SaverSettingsWin32::Check4Updates = true;
-	SaverSettingsWin32::LoResAlways = DisplayNative;
-	SaverSettingsWin32::LoResMultiMon = DisplayNative;
 	SaverSettingsWin32::LevelOfDetail = 100;
 	SaverSettingsWin32::DisableHotCorner = -1;
 	SaverSettingsWin32::LastUpdateCheck.dwLowDateTime = 0;
@@ -189,27 +176,6 @@ void SaverSettingsWin32::ReadGeneralRegistry(bool temp)
 			SaverSettingsWin32::LastUpdateCheck = time;
 
 		valsize = sizeof(val);
-		res = RegQueryValueEx(skey, "BatteryMode", 0, &valtype,
-				(LPBYTE)&val, &valsize);
-		if (res == ERROR_SUCCESS && valtype == REG_DWORD && 
-				val >= DisplayNative && val <= DisplayNo3D)
-			SaverSettingsWin32::Battery = (DisplayMode)val;
-
-		valsize = sizeof(val);
-		res = RegQueryValueEx(skey, "LoResAlways", 0, &valtype,
-				(LPBYTE)&val, &valsize);
-		if (res == ERROR_SUCCESS && valtype == REG_DWORD && 
-				val >= DisplayNative && val <= DisplayNo3D) 
-			SaverSettingsWin32::LoResAlways = (DisplayMode)val;
-
-		valsize = sizeof(val);
-		res = RegQueryValueEx(skey, "LoResMultiMon", 0, &valtype,
-				(LPBYTE)&val, &valsize);
-		if (res == ERROR_SUCCESS && valtype == REG_DWORD && 
-				val >= DisplayNative && val <= DisplayNo3D)
-			SaverSettingsWin32::LoResMultiMon = (DisplayMode)val;
-
-		valsize = sizeof(val);
 		res = RegQueryValueEx(skey, "LevelOfDetail", 0, &valtype,
 				(LPBYTE)&val, &valsize);
 		if (res == ERROR_SUCCESS && valtype == REG_DWORD && val >= 50 && val <= 200)
@@ -240,12 +206,6 @@ void SaverSettingsWin32::WriteGlobalSettings(bool temp)
 	res = RegSetValueEx(skey, "Randomize", 0, REG_DWORD, (BYTE *)(&val), valsize);
 	val = Check4Updates ? 1 : 0;
 	res = RegSetValueEx(skey, "CheckForUpdates", 0, REG_DWORD, (BYTE *)(&val), valsize);
-	val = (DWORD)Battery;
-	res = RegSetValueEx(skey, "BatteryMode", 0, REG_DWORD, (BYTE *)(&val), valsize);
-	val = (DWORD)LoResAlways;
-	res = RegSetValueEx(skey, "LoResAlways", 0, REG_DWORD, (BYTE *)(&val), valsize);
-	val = (DWORD)LoResMultiMon;
-	res = RegSetValueEx(skey, "LoResMultiMon", 0, REG_DWORD, (BYTE *)(&val), valsize);
 	val = (DWORD)LevelOfDetail;
 	res = RegSetValueEx(skey, "LevelOfDetail", 0, REG_DWORD, (BYTE *)(&val), valsize);
 	val = (DWORD)(DisableHotCorner + 1);	// add 1 to convert -1 .. 3 to (unsigned) 0 .. 4
@@ -306,7 +266,6 @@ void SaverSettingsWin32::InitPresetsRegistry()
 	res = RegDeleteKey(HKEY_CURRENT_USER, REGSTR_PATH_PRESETS);
 
 	SaverSettingsWin32 s;
-	s.m2DSubset = true;
 
 	//					         crv len spd evol thick color fixed points tri-axial
 	//  Mode
@@ -494,8 +453,7 @@ bool SaverSettingsWin32::ReadConfig(const char* path, const char* settingName)
     }
 
     if (!strcmp(valueNameBuffer, "TwoDSubset")) {
-            m2DSubset = buffer.mDWORD;
-            continue;
+            continue;   // Recognize but ignore old setting
     }
 
 		// The named value is unknown
@@ -598,10 +556,6 @@ void SaverSettingsWin32::WriteConfig(const char* path, const char* settingName)
     res = RegSetValueEx(skey, "TriAxial", 0, REG_DWORD, (BYTE*)&valueDWORD, sizeof(DWORD));
     if (res != ERROR_SUCCESS) break;
 
-    valueDWORD = m2DSubset;
-    res = RegSetValueEx(skey, "TwoDSubset", 0, REG_DWORD, (BYTE*)&valueDWORD, sizeof(DWORD));
-    if (res != ERROR_SUCCESS) break;
-
 		res = RegSetValueEx(skey, "TexturePath", 0, REG_SZ, (BYTE*)mSettings.getTextureStr(),
 			mSettings.getTextureStrlen() + 1);
 		if (res != ERROR_SUCCESS) break;
@@ -691,9 +645,9 @@ void SaverSettingsWin32::WriteCurrentSettings(bool temp)
 	WriteConfig(temp ? REGSTR_PATH_TMPCONFIG : REGSTR_PATH_CONFIG, "Settings");
 }
 
-void SaverSettingsWin32::ReadRandomPreset(bool TwoDMode)
+void SaverSettingsWin32::ReadRandomPreset()
 {
-	SaverSettingsWin32::PresetIter presets(TwoDMode);
+	SaverSettingsWin32::PresetIter presets;
 	if (presets.mPresetCount == 0) {
 	  InitDefaults();
 	  return;
@@ -711,36 +665,22 @@ void SaverSettingsWin32::ReadRandomPreset(bool TwoDMode)
 
 void SaverSettingsWin32::PowerAwareness(bool isScreenSaver)
 {
-	BatteryModeDisplay = false;
-	ResolvedMode = LoResAlways;
 	SYSTEM_POWER_STATUS sps;
 	GetSystemPowerStatus(&sps);
-	if ((sps.ACLineStatus == 0) && isScreenSaver && (Battery > LoResAlways))
-		ResolvedMode = Battery;
-		
-	if (ResolvedMode == DisplayNo3D) {
-		mSettings.m3DRender = false;
-		BatteryModeDisplay = LoResAlways != DisplayNo3D;
-		if (!m2DSubset)
-		  ReadRandomPreset(true);
-	} else {
-		mSettings.m3DRender = true;
-	}
 }
 
 
 
-SaverSettingsWin32::PresetIter::PresetIter(bool TwoDSubset)
+SaverSettingsWin32::PresetIter::PresetIter()
 :	mPresetCount(0),
 	mPresetKey(0),
 	mCurrentSetting(0),
 	mCurrentIndex(0),
 	mBuffer(0),
-	mBufferSize(0),
-	m2DSubset(TwoDSubset)
+	mBufferSize(0)
 {
 	InitIter();
-	if (!m2DSubset && mPresetCount == 0) {
+	if (mPresetCount == 0) {
 		InitPresetsRegistry();
 		InitIter();
 		if (mPresetCount == 0) {
@@ -799,7 +739,7 @@ bool SaverSettingsWin32::PresetIter::nextPreset()
 	SaverSettingsWin32 s;
 
 	while (RegEnumKeyEx(mPresetKey, mCurrentIndex++, mBuffer, &keyNameLength, 0, 0, 0, 0) == ERROR_SUCCESS) {
-		if (s.ReadPreset(mBuffer) && (!m2DSubset || s.m2DSubset)) {
+		if (s.ReadPreset(mBuffer)) {
 			mCurrentSetting++;
       return true;
 		}

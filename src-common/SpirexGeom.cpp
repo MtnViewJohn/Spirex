@@ -322,10 +322,6 @@ void SpirexGeom::plotPoint(double FixedSphereAngle1, double FixedSphereAngle2, d
 			width = mWidthRingBufferArray[curve].get(0);
 		}
 
-		if (!mSettings.m3DRender) {
-			here = here * mScale + mScreenCenter;
-			here.setInt();
-		}
 		mPointRingBufferArray[curve].add(here);
 		mWidthRingBufferArray[curve].add(width);
 		mNormalRingBufferArray[curve].add(normal);
@@ -336,10 +332,6 @@ void SpirexGeom::plotPoint(double FixedSphereAngle1, double FixedSphereAngle2, d
     mRadius4RingBufferArray[curve].add(MovingSphereRadius4);
 
 	} else {
-		if (!mSettings.m3DRender) {
-			newHead = newHead * mScale + mScreenCenter;
-			newHead.setInt();
-		}
 		mPointRingBufferArray[curve].add(newHead);
 		mColorRingBufferArray[curve].add(colorRGB);
 	}
@@ -407,8 +399,6 @@ void SpirexGeom::init()
 	newGeometryDest();
 
 	Point3D initXYZ;
-	if (!mSettings.m3DRender)
-		initXYZ = mScreenCenter;
 	Point3D initNormal(0.0F, 0.0F, 1.0F);
 	Point3D initWidth(LineWidthBy2, 0.0F, 0.0F);
 	ColorRGB initRGB = initColor;
@@ -446,7 +436,6 @@ void SpirexGeom::NewSaverSettings(const SaverSettings& settings)
 							|| (settings.mCurveLength != mSettings.mCurveLength));
 	// initialize if changing from a 3D mode to a 2D mode or a 2D mode to a 2D mode
 	// or if changing from a 3D mode to a 3D mode and changing curve count or length
-	bool newRender = 	settings.m3DRender 	!= mSettings.m3DRender;
 
 	mSettings = settings;
     mSettings.qualify();
@@ -456,7 +445,7 @@ void SpirexGeom::NewSaverSettings(const SaverSettings& settings)
 	mTargetCurveSlew = settings.mCurveCount * TicksPerCount;
 	mTargetLength = settings.mCurveLength;
 
-	if (newMode || newRender) {
+	if (newMode) {
 		mSettings.mCurveCount = settings.mCurveCount;
 		mSettings.mCurveLength = settings.mCurveLength;
 		init();

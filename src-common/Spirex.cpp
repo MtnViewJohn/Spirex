@@ -57,73 +57,6 @@ static DWORD Cvt2ARGB(const ColorRGB& c)
 void Spirex::NextStep()
 {
   mGeom.NextStep();
-  if (mSettings.m3DRender) return;
-
-  Graphics g(mHdc);
-  
-  if (mEraseScreen) {
-    g.Clear(Color(0,0,0));
-    RECT rc;
-    Debug(mHwnd, "Background purportedly cleared.");
-    if (GetClipBox(mHdc, &rc) == NULLREGION) {
-      Debug(mHwnd, "Trying to draw when clip is null.");
-    } 
-    if (!IsWindowVisible(mHwnd)) {
-      Debug(mHwnd, "Trying to draw when WS_VISIBLE bit is clear.");
-    } 
-    mEraseScreen = false;
-    
-    if (SaverSettingsWin32::BatteryModeDisplay)
-    {
-      FontFamily  family(L"Arial");
-      Font f(&family, 12, FontStyleRegular, UnitPixel);
-      SolidBrush b(Color(64,64,64));
-      g.DrawString(L"Battery saver:", -1, &f, PointF(10, 20), &b);
-      g.DrawString(L"3D mode disabled.", -1, &f, PointF(10, 35), &b);
-    }
-  }
-
-  float size = mSettings.mThickLines ? 2.0 : 1.0;
-  Pen blackPen(Color(0, 0, 0), size);
-  SolidBrush eraser(Color(0,0,0));
-  
-  unsigned int curve;
-  for (curve = 0; curve < mGeom.mSettings.mCurveCount; curve++) {
-    Point3D tail = mGeom.mPointRingBufferArray[curve].tail(0);
-    Point3D nextTail = mGeom.mPointRingBufferArray[curve].tail(1);
-
-    if (mSettings.mPoints) {
-      if (mSettings.mThickLines) {
-        g.DrawEllipse(&blackPen, tail.x, tail.y, size, size);
-        g.FillEllipse(&eraser, tail.x, tail.y, size, size);
-      } else {
-        g.DrawLine(&blackPen, tail.x, tail.y, tail.x + 0.1, tail.y + 0.1);
-      }
-    } else {
-      g.DrawLine(&blackPen, tail.x, tail.y, nextTail.x, nextTail.y);
-    }
-  }
-
-  for (curve = 0; curve < mGeom.mSettings.mCurveCount; curve++) {
-    Point3D newHead = mGeom.mPointRingBufferArray[curve].get(0);
-    Point3D oldHead = mGeom.mPointRingBufferArray[curve].get(1);
-    ColorRGB colorRGB = mGeom.mColorRingBufferArray[curve].get(0);
-    Color c(Cvt2ARGB(colorRGB));
-
-    if (mSettings.mPoints) {
-        Pen p(c, 1.0);
-      if (mSettings.mThickLines) {
-        SolidBrush b(c);
-        g.DrawEllipse(&p, newHead.x, newHead.y, size, size);
-        g.FillEllipse(&b, newHead.x, newHead.y, size, size);
-      } else {
-        g.DrawLine(&p, newHead.x, newHead.y, newHead.x + 0.1, newHead.y + 0.1);
-      }
-    } else {
-      Pen p(c, size);
-      g.DrawLine(&p, newHead.x, newHead.y, oldHead.x, oldHead.y);
-    }
-  }
 }
 
 
@@ -134,7 +67,6 @@ void Spirex::Render(int rate)
   if (GetClipBox(mHdc, &rc) == NULLREGION) 
   	return;
 
-  if (mSettings.m3DRender) {
     checkGLError();
 
     SpirexGL::Render(rate, mGeom);
@@ -143,7 +75,6 @@ void Spirex::Render(int rate)
     mRenderCount++;
 
     checkGLError();
-  }
 }
 
 void Spirex::Clear()
@@ -184,8 +115,7 @@ void Spirex::NewSaverSettings(const SaverSettings& settings)
 {
   bool decreaseCurves = settings.mCurveCount < mSettings.mCurveCount;
   bool thicknessChange =	(settings.mThickLines  	 !=	mSettings.mThickLines);
-  bool new3DEnv = 	(settings.m3DRender 	 != mSettings.m3DRender) ||
-                    lstrcmpi(settings.getTextureStr(), mSettings.getTextureStr());
+  bool new3DEnv = 	lstrcmpi(settings.getTextureStr(), mSettings.getTextureStr());
   bool new3DMode = 	(settings.mMode != mSettings.mMode) ||
                     (settings.mPoints != mSettings.mPoints);
 
@@ -199,13 +129,7 @@ void Spirex::NewSaverSettings(const SaverSettings& settings)
 
   mGeom.NewSaverSettings(settings);
 
-  mEraseScreen |= (new3DMode || decreaseCurves || thicknessChange || new3DEnv) && !mSettings.m3DRender;
-  if (decreaseCurves && !mSettings.m3DRender) {
-    mGeom.mSettings.mCurveCount = mSettings.mCurveCount;
-    mGeom.init();
-  }
-
-  if (new3DMode && mSettings.m3DRender)
+  if (new3DMode)
     SpirexGL::InitMode(mGeom);
 
   if (new3DEnv) 
@@ -218,15 +142,14 @@ void Spirex::SetupGfx()
   mHdc = GetDC(mHwnd);
 	HGLRC hGLRC = wglGetCurrentContext();
 	setupPixelFormat();		// try to setup pixels early and unconditionally
-  if (mSettings.m3DRender && (hGLRC == NULL)) {
+  if (hGLRC == NULL) {
     glFlush();	// dummy call to force loading of opengl32.dll
     if (setupPixelFormat() || ((hGLRC = wglCreateContext(mHdc)) == NULL) ||
       !wglMakeCurrent(mHdc, hGLRC))
     {
       // we failed to setup OpenGL
       DebugWin();
-      mSettings.m3DRender = false;
-      mGeom.init();
+      FatalExit(1);
     } else {
       SetupTexture();
       SpirexGL::InitGL(mGeom, mScreenCenter.x * 2.0F, mScreenCenter.y * 2.0F);

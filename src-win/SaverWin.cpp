@@ -192,21 +192,6 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(	HWND hwnd, UINT msg,
 			Debug(hwnd, "WM_USER_SETTINGS");
 			// Copy the new settings and then delete them
 			SaverSettingsWin32 *settings = (SaverSettingsWin32 *)wParam;
-			if (mOrigScrMode < SaverSettingsWin32::ResolvedMode)
-				mScrMode = SaverSettingsWin32::ResolvedMode;
-			else 
-				mScrMode = mOrigScrMode;
-		 	settings->mSettings.m3DRender = mScrMode != SaverSettingsWin32::DisplayNo3D;
-#if 0
-// Yay! I fixed the "GDI doesn't draw bug" on switching from OpenGL to GDI.
-// I can comment out this code.
-	   	if (!settings->m3DRender && mSettings.m3DRender && 
-    			(mSaverMode != Preview)) {
-				Debug("WM_USER_SETTINGS: sending close");
-				CloseSaverWindow();			// I hate doing this
-				return TRUE;
-    	}
-#endif // 0
 			mSettings = *settings;
 			delete settings;
     	SpirexGL::LevelOfDetail = SaverSettingsWin32::LevelOfDetail;
@@ -335,7 +320,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(	HWND hwnd, UINT msg,
 
 				if (SaverSettingsWin32::Randomize) {
 					SaverSettingsWin32 temp;
-					temp.ReadRandomPreset(!mSettings.mSettings.m3DRender);
+					temp.ReadRandomPreset();
 					NewSaverSettings(temp);
 				}
 				
@@ -552,35 +537,8 @@ DWORD SaverWin::StartWindow()
 	HWND w;
 	MSG msg;
 
-  if (mScrMode != SaverSettingsWin32::DisplayNative && 
-  		mScrMode != SaverSettingsWin32::DisplayNo3D &&
-  		mSaverMode != Preview) {
-		bool res = false;
-    if (mScrMode == SaverSettingsWin32::Display800x600) 
-    	res = EnsureMode(800, 600);
-     else 
-    	res = EnsureMode(640, 480);
-
-    if (res) {
-    	DEVMODE newDM;
-    	newDM.dmSize = sizeof(DEVMODE);
-      EnumDisplaySettings(mScrDev, ENUM_CURRENT_SETTINGS, &newDM);
-      mRect.left = newDM.dmPosition.x;
-      mRect.top = newDM.dmPosition.y;
-      cx = newDM.dmPelsWidth;
-      cy = newDM.dmPelsHeight;
-      char buf[100];
-      wsprintf(buf, "New display:%s size:%d, %d position:%d, %d depth:%d freq:%dHz flags:%x",
-        mScrDev, newDM.dmPelsWidth, newDM.dmPelsHeight, 
-        newDM.dmPosition.x, newDM.dmPosition.y, newDM.dmBitsPerPel,
-        newDM.dmDisplayFrequency, newDM.dmDisplayFlags);
-      Debug(buf);
-    }
-  }
-
 	if (mSaverMode == Preview) {
 		name = "SaverPreview";
- 		mScrMode = SaverSettingsWin32::DisplayNative;
 		w = CreateWindowEx(
 			0, "ScrClass", name,
 			WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
@@ -599,7 +557,6 @@ DWORD SaverWin::StartWindow()
 			cy /= 3;
 			exstyle = 0;
 			style = WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-   		mScrMode = SaverSettingsWin32::DisplayNative;
 		} else {
 			name = "Spirex";
 			exstyle = WS_EX_TOPMOST;
@@ -717,14 +674,11 @@ void SaverWin::ExitMode()
 
 
 SaverWin::SaverWin(HWND hparwnd, SaverMode Mode, const SaverSettingsWin32& newSettings, 
-  RECT screenRect, HINSTANCE hInst, const char* ScrDev, 
-  SaverSettingsWin32::DisplayMode ScrMode)
+  RECT screenRect, HINSTANCE hInst)
 :	mHwnd(NULL),
 	mParentHwnd(hparwnd),
 	mRect(screenRect),
-	mScrDev(0),
-	mScrMode(ScrMode),
-	mOrigScrMode(ScrMode),
+	mScrDev(""),
 	mSaverMode(Mode),
 	mInstHandle(hInst),
 	mChangedOK(false),
@@ -733,7 +687,6 @@ SaverWin::SaverWin(HWND hparwnd, SaverMode Mode, const SaverSettingsWin32& newSe
 	mAnimator(NULL),
 	mAnimate(false),
 	mSettings(newSettings),
-	mOriginal3DRender(newSettings.mSettings.m3DRender),
 	mWTimerID(0),
 	mPresetTimerID(0),
 	mThread(NULL),
@@ -745,24 +698,12 @@ SaverWin::SaverWin(HWND hparwnd, SaverMode Mode, const SaverSettingsWin32& newSe
 
 	mParentThread = GetCurrentThreadId();
 	
-	if (ScrDev && *ScrDev) { 
-	  // If I were good I would add a destructor for this. But SaverWins only get
-	  // destroyed at program exit so why bother.
-	  mScrDev = new char[strlen(ScrDev) + 1];
-	  strcpy(mScrDev, ScrDev);
-	}
-		
 	mSettings.PowerAwareness(mSaverMode == ScreenSaver);
-	if (mScrMode < SaverSettingsWin32::ResolvedMode)
-		mScrMode = SaverSettingsWin32::ResolvedMode;
-	mSettings.mSettings.m3DRender = mScrMode != SaverSettingsWin32::DisplayNo3D;
 
 	if (SaverSettingsWin32::Randomize) {
-	  bool ThreeDRender = mSettings.mSettings.m3DRender;
 		SaverSettingsWin32 temp;
-		temp.ReadRandomPreset(!mSettings.mSettings.m3DRender);
+		temp.ReadRandomPreset();
     mSettings = temp;
-		mSettings.mSettings.m3DRender = ThreeDRender;
 	}
 
 	if (!Initialized) {

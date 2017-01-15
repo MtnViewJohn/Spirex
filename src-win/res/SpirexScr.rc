@@ -218,17 +218,10 @@ BEGIN
 
 #define Battery_X 179
 #define Battery_Y Update_Y + 49
-  GROUPBOX    "Battery Saver", ID_BATTERY_BOX, Battery_X, Battery_Y, 133, 28
-  LTEXT         "On Battery", IDT_RES_BATTERY, Battery_X + 6, Battery_Y + 12, 39, 10
-  COMBOBOX      IDC_RES_BATTERY, Battery_X + 46, Battery_Y + 11, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
 
 #define Perf_X  179
 #define Perf_Y  Battery_Y + 32
-  GROUPBOX      "Performance Settings", ID_PERF_BOX, Perf_X, Perf_Y, 133, 67
-  LTEXT         "One Display", IDT_RES_ALWAYS,Perf_X + 6, Perf_Y + 12, 39, 10
-  COMBOBOX      IDC_RES_ALWAYS, Perf_X + 46, Perf_Y + 11, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
-  LTEXT         ">1 Displays", IDT_RES_MULTI,Perf_X + 6, Perf_Y + 27, 39, 10
-  COMBOBOX      IDC_RES_MULTI, Perf_X + 46, Perf_Y + 26, 82, 90, CBS_DROPDOWNLIST | WS_TABSTOP
+  GROUPBOX      "Performance Settings", ID_PERF_BOX, Perf_X, Perf_Y + 29, 133, 38
   LTEXT           "Detail:", IDT_DETAIL, Perf_X + 6, Perf_Y + 41, 20, 10
   CONTROL       "", IDC_DETAIL, TRACKBAR_CLASS, TBS_NOTICKS | WS_TABSTOP,
                   Perf_X + 26, Perf_Y + 41, 103, 12

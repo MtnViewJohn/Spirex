@@ -50,12 +50,6 @@ static DWORD StartTickCount;
 
 #define MyGUID "\\{0A9A8E5B-1D0D-44A0-A163-8C149DCAE3F7}"
 
-static int MonitorCount = 0;
-struct MyMonitorInfo {
-  RECT  location;
-  char  devname[CCHDEVICENAME];
-  bool	primary;
-} Monitors[16];
 #if DEBUG
 HANDLE loghandle;
 
@@ -78,29 +72,6 @@ void Debug(const char *c)
 	//WriteFile(loghandle, buf, len, &len, NULL);
 }
 #endif
-
-
-static void ChangePassword(HWND hwnd)
-{ // This only ever gets called under '95, when started with the /a option.
-	HINSTANCE hmpr = ::LoadLibrary("MPR.DLL");
-	if (hmpr == NULL) {
-		Debug("MPR.DLL not found: cannot change password.");
-		return;
-	}
-	typedef VOID (WINAPI *PWDCHANGEPASSWORD) 
-			(LPCSTR lpcRegkeyname, HWND hwnd, UINT uiReserved1, UINT uiReserved2);
-	PWDCHANGEPASSWORD PwdChangePassword = 
-			(PWDCHANGEPASSWORD)::GetProcAddress(hmpr, "PwdChangePasswordA");
-	if (PwdChangePassword == NULL) {
-		FreeLibrary(hmpr); 
-		Debug("PwdChangeProc not found: cannot change password");
-		return;
-	}
-	PwdChangePassword("SCRSAVE", hwnd, 0, 0); 
-	FreeLibrary(hmpr);
-}
-
-
 
 
 #if DEBUG
@@ -171,102 +142,24 @@ static bool UninstallSaver()
 typedef HANDLE HMONITOR;
 #endif
 
-BOOL CALLBACK MyMonitorEnumProc(HMONITOR hmon, HDC, LPRECT lprc, LPARAM settings)
-{
-	bool found = false;	
-	MONITORINFOEX MIex;
-	MIex.cbSize = sizeof(MONITORINFOEX);
-	if (!GetMonitorInfo(hmon, &MIex))
-	  return TRUE;
-
-  // Make sure this display is non-virtual and attached to the desktop
-  DISPLAY_DEVICE dd;
-  dd.cb = sizeof(DISPLAY_DEVICE);
-  for (int i = 0; EnumDisplayDevices(MIex.szDevice, i, &dd, 0); i++) {
-    if ((dd.StateFlags  & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP) && 
-      !(dd.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER)) {
-      found = true;
-      break;
-    }
-  }
-  if (!found)
-    return TRUE;
-
-  DEVMODE dm;
-  dm.dmSize = sizeof(DEVMODE);
-  EnumDisplaySettings(MIex.szDevice, ENUM_CURRENT_SETTINGS, &dm);
-  char buf[100];
-  wsprintf(buf, "Found display:%s size:%d, %d position:%d, %d depth:%d freq:%dHz flags:%x",
-    MIex.szDevice, dm.dmPelsWidth, dm.dmPelsHeight, 
-    dm.dmPosition.x, dm.dmPosition.y, dm.dmBitsPerPel,
-    dm.dmDisplayFrequency, dm.dmDisplayFlags);
-  Debug(buf);
-
-  if (MonitorCount < 16) {
-    Monitors[MonitorCount].location = *lprc;
-    Monitors[MonitorCount].primary = (dm.dmPosition.x == 0) && 
-    																 (dm.dmPosition.y == 0);
-    strcpy(Monitors[MonitorCount].devname, MIex.szDevice);
-    MonitorCount++;
-  }
-	return TRUE;
-}
-
-// Rather than try to debug why OpenGL dies when NetMeeting is running
-// I am going to throw up my hands and drop into 2D mode.
-BOOL CALLBACK NetMeetingChecker(HWND hwnd, LPARAM NetMeetingIsLoaded)
-{
-	char titleBuf[200];
-	if (!GetWindowText(hwnd, titleBuf, 200)) 
-		return TRUE;
-		
-	if (!strncmp(titleBuf, "NetMeeting", 10)) {
-		*((bool*)NetMeetingIsLoaded) = true;
-		return FALSE;
-	}
-	return TRUE;
-}
-		
 
 void DoScreenSaver(HINSTANCE hInstance, HWND hwnd, SaverSettingsWin32& settings)
 {
-	bool NetMeetingIsLoaded = false;
 	SaverWin* sw1 = NULL;
 	
-	// Check if NetMeeting is running and force 2D mode if it is.
-	//EnumWindows(NetMeetingChecker, (LPARAM)(&NetMeetingIsLoaded));
-	if (NetMeetingIsLoaded)
-		SaverSettingsWin32::LoResAlways = SaverSettingsWin32::DisplayNo3D;
-		
-		
 	RECT rc = {0, 0, 0, 0};
 	if (hwnd) {
 		GetClientRect(hwnd, &rc);
 		sw1 = new SaverWin(hwnd, SaverWin::Preview, settings, rc, hInstance);
 	} else {
-		EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, (LPARAM)&settings);
-		if (MonitorCount == 0) 
-			return;
+		//EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, (LPARAM)&settings);
+        int left = GetSystemMetrics(SM_XVIRTUALSCREEN);
+        int top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+        int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+        int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
-		SaverSettingsWin32::DisplayMode ScrMode;
-		if (MonitorCount == 0 || 
-			SaverSettingsWin32::LoResMultiMon == SaverSettingsWin32::DisplayNo3D) 
-			ScrMode = SaverSettingsWin32::LoResAlways;
-		else 
-			ScrMode = SaverSettingsWin32::LoResMultiMon;
-
-		for (int i = 0; i < MonitorCount; i++) {
-			SaverSettingsWin32 localSettings = settings;
-
-			SaverSettingsWin32::DisplayMode LocalScrMode = ScrMode;
-
-			if (!Monitors[i].primary && 
-				SaverSettingsWin32::LoResMultiMon == SaverSettingsWin32::DisplayNo3D) 
-				LocalScrMode = SaverSettingsWin32::DisplayNo3D;
-
-			sw1 = new SaverWin(NULL, SaverWin::ScreenSaver, localSettings, 
-				Monitors[i].location, hInstance, Monitors[i].devname, LocalScrMode);
-		}
+        RECT rc{ left, top, left + width, top + height };
+        sw1 = new SaverWin(NULL, SaverWin::ScreenSaver, settings, rc, hInstance);
 	}
 	
 	UINT nPreviousState;
@@ -320,7 +213,7 @@ void CheckDisableHotCorner()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 { 
-	enum SaverMode {smNone, smConfig, smPassword, smPreview, smSaver, smBigPreview};
+	enum SaverMode {smNone, smConfig, smPreview, smSaver, smBigPreview};
 	SaverMode ScrMode = smNone;
 	SaverSettingsWin32 settings;
 	bool devMode;
@@ -397,11 +290,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 			else 
 				hwnd = (HWND)atoi(c); 
 			ScrMode = smConfig;
-		} else if (*c == 'a' || *c == 'A') {
-			c++; 
-			while (*c == ' ' || *c == ':') c++; 
-			hwnd = (HWND)atoi(c); 
-			ScrMode = smPassword;
 		}
 	}
 	
@@ -416,9 +304,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   GdiplusStartup(&GdiPToken, &GdiPStartInput, &GdiPStartOutput);
 
 	switch (ScrMode) {
-		case smPassword:
-			ChangePassword(hwnd);
-			break;
 		case smConfig:
 			CreateConfigDialog(hInstance, hwnd);
 			break;

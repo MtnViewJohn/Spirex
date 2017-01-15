@@ -40,7 +40,6 @@ public:
   unsigned int	mAngleChangeRate;
   unsigned int	mEvolutionRate;
   bool			mThickLines;
-  bool			m3DRender;
   bool			mInColor;
   bool			mFixed;
   bool			mPoints;
@@ -48,12 +47,12 @@ public:
   RenderMode		mMode;
   char*			mName;
 
-  bool usesTexture(bool enableOpenGL = true) const;
-  bool usesFixed(bool enableOpenGL = true) const;
-  bool usesThickness(bool enableOpenGL = true) const;
-  bool usesLength(bool enableOpenGL = true) const;
+  bool usesTexture() const;
+  bool usesFixed() const;
+  bool usesThickness() const;
+  bool usesLength() const;
   bool usesPolygons() const;
-  bool usesTriAxial(bool enableOpenGL = true) const;
+  bool usesTriAxial() const;
 
 private:
   size_t        mTextureLen;
@@ -95,46 +94,36 @@ public:
   size_t        getTextureStrlen() const;
 };
 
-inline bool SaverSettings::usesTexture(bool enableOpenGL) const
+inline bool SaverSettings::usesTexture() const
 {
-  return m3DRender
-    && (mMode > PointModeSpheres)
-    && !mPoints
-    && enableOpenGL;
+  return (mMode > PointModeSpheres) && !mPoints;
 };
 
-inline bool SaverSettings::usesFixed(bool enableOpenGL) const
+inline bool SaverSettings::usesFixed() const
 {
-  return m3DRender
-    && ((mMode >= Spheres) || (mMode == PointModeSpheres))
-    && enableOpenGL;
+  return ((mMode >= Spheres) || (mMode == PointModeSpheres));
 }
 
-inline bool SaverSettings::usesThickness(bool enableOpenGL) const
+inline bool SaverSettings::usesThickness() const
 {
-  return (usesFixed(enableOpenGL) && mFixed)
-    || !m3DRender
+  return (usesFixed() && mFixed)
     || (mMode <= Curves)
-    || !enableOpenGL
     || mPoints;
 };
 
-inline bool SaverSettings::usesLength(bool enableOpenGL) const
+inline bool SaverSettings::usesLength() const
 {
-  return !m3DRender
-    || (mMode < PointModeSpheres)
-    || (mMode == Curves)
-    || !enableOpenGL;
+    return (mMode < PointModeSpheres) || (mMode == Curves);
 };
 
 inline bool SaverSettings::usesPolygons() const
 {
-  return m3DRender &&	(mMode > Original2DWith3DGeometry);
+  return (mMode > Original2DWith3DGeometry);
 }
 
-inline bool SaverSettings::usesTriAxial(bool enableOpenGL) const
+inline bool SaverSettings::usesTriAxial() const
 {
-  return m3DRender && (mMode >= PointModeSpheres) && enableOpenGL;
+  return (mMode >= PointModeSpheres);
 };
 
 #endif // INCLUDED_SAVERSETTINGS

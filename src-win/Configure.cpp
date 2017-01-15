@@ -110,31 +110,6 @@ static const ModeName NameList[] = {
 };
 static const int NameListCount = sizeof(NameList) / sizeof(NameList[0]);
 
-struct DisplayModes
-{
-  char* mName;
-  SaverSettingsWin32::DisplayMode mMode;
-};
-static const DisplayModes DisplayModeList[] = {
-	{ "Native Resolution", SaverSettingsWin32::DisplayNative },
-	{ "800x600 Resolution", SaverSettingsWin32::Display800x600 },
-	{ "640x480 Resolution", SaverSettingsWin32::Display640x480 },
-	{ "No 3D Acceleration", SaverSettingsWin32::DisplayNo3D }
-};
-static const DisplayModes Display2ModeList[] = {
-	{ "Same as 1st Display", SaverSettingsWin32::DisplayNative },
-	{ "800x600 Resolution", SaverSettingsWin32::Display800x600 },
-	{ "640x480 Resolution", SaverSettingsWin32::Display640x480 },
-	{ "No 3D on 2nd Display", SaverSettingsWin32::DisplayNo3D }
-};
-static const DisplayModes BatteryModeList[] = {
-	{ "Same as AC Mode", SaverSettingsWin32::DisplayNative },
-	{ "800x600 Resolution", SaverSettingsWin32::Display800x600 },
-	{ "640x480 Resolution", SaverSettingsWin32::Display640x480 },
-	{ "No 3D Acceleration", SaverSettingsWin32::DisplayNo3D }
-};
-static const int DisplayModeListCount = sizeof(DisplayModeList) / sizeof(DisplayModeList[0]);
-
 static void ChangeToolTip(HWND hwnd, HWND TTHWND, int control, const char* tip, bool getEditBox);
 
 
@@ -166,13 +141,6 @@ static void GetAdvSettingsFromDlg(HWND hwnd)
 {
   SaverSettingsWin32::Check4Updates = 
     (IsDlgButtonChecked(hwnd, IDC_CHECK_UPDATES) == BST_CHECKED);
-
-  int modenum = SendDlgItemMessage(hwnd, IDC_RES_ALWAYS, CB_GETCURSEL, 0, 0);
-	SaverSettingsWin32::LoResAlways = DisplayModeList[modenum].mMode;
-  modenum = SendDlgItemMessage(hwnd, IDC_RES_MULTI, CB_GETCURSEL, 0, 0);
-	SaverSettingsWin32::LoResMultiMon = DisplayModeList[modenum].mMode;
-  modenum = SendDlgItemMessage(hwnd, IDC_RES_BATTERY, CB_GETCURSEL, 0, 0);
-	SaverSettingsWin32::Battery = DisplayModeList[modenum].mMode;
 	
   SaverSettingsWin32::LevelOfDetail = SendDlgItemMessage(hwnd, IDC_DETAIL, TBM_GETPOS, 0, 0);
 }
@@ -209,18 +177,6 @@ static void SetAdvDlgFromSettings(HWND hwnd)
 {
   CheckDlgButton(hwnd, IDC_CHECK_UPDATES, SaverSettingsWin32::Check4Updates ? BST_CHECKED : BST_UNCHECKED);
 
-  for (int i = 0; i < DisplayModeListCount; i++) {
-    if (DisplayModeList[i].mMode == SaverSettingsWin32::LoResAlways) {
-      SendDlgItemMessage(hwnd, IDC_RES_ALWAYS, CB_SETCURSEL, i, 0);
-    }
-    if (DisplayModeList[i].mMode == SaverSettingsWin32::LoResMultiMon) {
-      SendDlgItemMessage(hwnd, IDC_RES_MULTI, CB_SETCURSEL, i, 0);
-    }
-    if (DisplayModeList[i].mMode == SaverSettingsWin32::Battery) {
-      SendDlgItemMessage(hwnd, IDC_RES_BATTERY, CB_SETCURSEL, i, 0);
-    }
-  }
-
   SendDlgItemMessage(hwnd, IDC_DETAIL, TBM_SETPOS,
     (WPARAM)TRUE, (LPARAM) (LONG) SaverSettingsWin32::LevelOfDetail);
 }
@@ -234,8 +190,7 @@ static void UpdateTextureThumbnail(HWND hwnd)
 
   GetClientRect(GetDlgItem(hwnd, IDC_TEXTURE), &trect);
 
-  bool enableOpenGL = SaverSettingsWin32::LoResAlways != SaverSettingsWin32::DisplayNo3D;
-  if (Configuration.mSettings.usesTexture(enableOpenGL)) 
+  if (Configuration.mSettings.usesTexture()) 
     Thumbnail = new Texture(Configuration.mSettings.getTextureStr(), Texture::WinBitmap, 
       trect.right - trect.left + 1, trect.bottom - trect.top + 1);
 
@@ -266,8 +221,6 @@ static void ReadPresetsRegistry(HWND presetWin, bool combo)
       SaverSettingsWin32 preset;
       if (preset.ReadPreset(lvI.pszText)) {
         int i = ListView_InsertItem(presetWin, &lvI);
-        if (i > -1)
-          ListView_SetCheckState(presetWin, i, preset.m2DSubset?TRUE:FALSE);
       }
     }
 }
@@ -301,8 +254,6 @@ static void UpdatePresetLists(bool isAdd, char* name)
       SaverSettingsWin32 preset;
       if (preset.ReadPreset(lvI.pszText) && ListView_FindItem(PresetList, -1, &lvFI) == -1) {
         int i = ListView_InsertItem(PresetList, &lvI);
-        if (i > -1)
-          ListView_SetCheckState(PresetList, i, preset.m2DSubset?TRUE:FALSE);
       }
     } else {
       LVFINDINFO lvFI;
@@ -385,12 +336,11 @@ static void MaybeEnableSave(HWND hwnd)
       EnableWindow(GetDlgItem(hwnd, IDC_SAVE), TRUE);
     }
   }
-  bool enableOpenGL = SaverSettingsWin32::LoResAlways != SaverSettingsWin32::DisplayNo3D;
-  bool enableFixed = Configuration.mSettings.usesFixed(enableOpenGL) && !SaverSettingsWin32::Randomize;
-  bool enableThick = Configuration.mSettings.usesThickness(enableOpenGL) && !SaverSettingsWin32::Randomize;
-  bool enableLength = Configuration.mSettings.usesLength(enableOpenGL) && !SaverSettingsWin32::Randomize;
-  bool enableTexture = Configuration.mSettings.usesTexture(enableOpenGL) && !SaverSettingsWin32::Randomize;
-  bool enableTriAxial = Configuration.mSettings.usesTriAxial(enableOpenGL) && !SaverSettingsWin32::Randomize;
+  bool enableFixed = Configuration.mSettings.usesFixed() && !SaverSettingsWin32::Randomize;
+  bool enableThick = Configuration.mSettings.usesThickness() && !SaverSettingsWin32::Randomize;
+  bool enableLength = Configuration.mSettings.usesLength() && !SaverSettingsWin32::Randomize;
+  bool enableTexture = Configuration.mSettings.usesTexture() && !SaverSettingsWin32::Randomize;
+  bool enableTriAxial = Configuration.mSettings.usesTriAxial() && !SaverSettingsWin32::Randomize;
   EnableWindow(GetDlgItem(hwnd, IDC_THICK), enableThick);
   EnableWindow(GetDlgItem(hwnd, IDC_FIXED), enableFixed);
   EnableWindow(GetDlgItem(hwnd, IDC_POINTS), !SaverSettingsWin32::Randomize);
@@ -1080,12 +1030,6 @@ static BOOL CALLBACK AdvConfigDialogProc(HWND hwnd, UINT msg,
       SendDlgItemMessage(hwnd, IDC_DETAIL, TBM_SETRANGE,
         (WPARAM)FALSE, (LPARAM) MAKELONG((short)50, (short)200));
 
-		  for (int j = 0; j < DisplayModeListCount; j++) {
-		    SendDlgItemMessage(hwnd, IDC_RES_ALWAYS, CB_ADDSTRING, 0, (LPARAM)DisplayModeList[j].mName);
-		    SendDlgItemMessage(hwnd, IDC_RES_MULTI, CB_ADDSTRING, 0, (LPARAM)Display2ModeList[j].mName);
-		    SendDlgItemMessage(hwnd, IDC_RES_BATTERY, CB_ADDSTRING, 0, (LPARAM)BatteryModeList[j].mName);
-		  }
-		  
       char buf[100];
       wsprintf(buf, "Spirex, version %s", VersionString);
       SendDlgItemMessage(hwnd, IDT_VERSION, WM_SETTEXT, (WPARAM) 0, (LPARAM)buf);
@@ -1186,7 +1130,6 @@ static BOOL CALLBACK AdvConfigDialogProc(HWND hwnd, UINT msg,
 }
 
 static bool OldRandom;
-static SaverSettingsWin32::DisplayMode OldDisplayMode;
 static SaverSettingsWin32 OldConfig;
 
 static BOOL CALLBACK SubsetDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -1233,7 +1176,6 @@ static BOOL CALLBACK SubsetDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
       switch (note->code) {
         case PSN_KILLACTIVE:
           SaverSettingsWin32::Randomize = OldRandom;
-          SaverSettingsWin32::LoResAlways = OldDisplayMode;
           Configuration = OldConfig;
           PreviewWin->NewSaverSettings(Configuration);
           PSHnote = (PSHNOTIFY*)lParam;
@@ -1244,10 +1186,8 @@ static BOOL CALLBACK SubsetDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
           HWND ctrl = GetDlgItem(hwnd, IDC_PREVIEW);
           SetParent(PreviewWin->mHwnd, ctrl);
           OldRandom = SaverSettingsWin32::Randomize;
-          OldDisplayMode = SaverSettingsWin32::LoResAlways;
           OldConfig = Configuration;
           SaverSettingsWin32::Randomize = false;
-          SaverSettingsWin32::LoResAlways = SaverSettingsWin32::DisplayNo3D;
           PreviewWin->NewSaverSettings(Configuration);
           PreviewWin->Clear();
           return 0;
@@ -1264,7 +1204,6 @@ static BOOL CALLBACK SubsetDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
           for (int i = 0; i < max; i++) {
             lvI.iItem = i;
             if (ListView_GetItem(PresetList, &lvI) && preset.ReadPreset(buf)) {
-              preset.m2DSubset = ListView_GetCheckState(PresetList, i);
               preset.WritePreset(buf);
             }
           }
@@ -1364,7 +1303,7 @@ static int CALLBACK RemoveContextHelpProc(HWND hwnd, UINT message, LPARAM lParam
 
 static HWND CreatePropSheet(HINSTANCE hInst, HWND hwnd)
 {
-  PROPSHEETPAGE psp[3];
+  PROPSHEETPAGE psp[2];
   PROPSHEETHEADER psh;
 
   psp[0].dwSize = sizeof(PROPSHEETPAGE);
@@ -1386,16 +1325,6 @@ static HWND CreatePropSheet(HINSTANCE hInst, HWND hwnd)
   psp[1].pszTitle = "Advanced";
   psp[1].lParam = 0;
   psp[1].pfnCallback = NULL;
-
-  psp[2].dwSize = sizeof(PROPSHEETPAGE);
-  psp[2].dwFlags = PSP_USETITLE;
-  psp[2].hInstance = hInst;
-  psp[2].pszTemplate = MAKEINTRESOURCE(DLG_2D_CONFIG);
-  psp[2].pszIcon = NULL;
-  psp[2].pfnDlgProc = SubsetDialogProc;
-  psp[2].pszTitle = "2D Subset";
-  psp[2].lParam = 0;
-  psp[2].pfnCallback = NULL;
 
   psh.dwSize = sizeof(PROPSHEETHEADER);
   psh.dwFlags = PSH_USEICONID | PSH_PROPSHEETPAGE | PSH_USECALLBACK | PSH_NOAPPLYNOW; 

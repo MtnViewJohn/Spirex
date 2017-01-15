@@ -33,20 +33,12 @@
 class SaverSettingsWin32
 { 
 public:
-	enum DisplayMode {DisplayNative = 0, Display800x600 = 1, Display640x480 = 2,
-		DisplayNo3D = 3 };
 	SaverSettings	mSettings;
-	bool m2DSubset;
 	static bool		Randomize;
 	static bool Check4Updates;
 	static FILETIME LastUpdateCheck;
-	static DisplayMode Battery;
-	static DisplayMode ResolvedMode;
-	static DisplayMode LoResAlways;
-	static DisplayMode LoResMultiMon;
 	static int  LevelOfDetail;
 	static int  DisableHotCorner;
-	static bool BatteryModeDisplay;
 	
 	
 	
@@ -65,7 +57,7 @@ public:
 	static bool DeleteAllSettings();
 	bool ReadCurrentSettings(bool temp);
 	void WriteCurrentSettings(bool temp);
-	void ReadRandomPreset(bool TwoDMode);
+	void ReadRandomPreset();
 	bool ReadPreset(const char* presetName);
 	void WritePreset(const char* presetName);
 	bool ComparePreset(const char* presetName) const;
@@ -81,7 +73,7 @@ public:
 	public:
 		bool nextPreset();
 		inline char* currentPresetName() { return mBuffer; }
-		PresetIter(bool TwoDSubset = false);
+		PresetIter();
 		~PresetIter();
 		DWORD mPresetCount;
 		
@@ -91,7 +83,6 @@ public:
 		DWORD mCurrentIndex;
 		char*	mBuffer;
 		int		mBufferSize;
-		bool  m2DSubset;
 		void	InitIter();
 		
 		PresetIter(const PresetIter&);
