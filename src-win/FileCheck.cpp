@@ -30,10 +30,10 @@
 #include <Wininet.h>
 #include <stdio.h>
 #include "VersionInfo.h"
-
+#include <vector>
 
 static HWND MsgHwnd = NULL;
-static char* URL2Check = NULL;
+static std::vector<char> URL2Check;
 static const char* Site2Check;
 static const char* File2Check;
 static HANDLE CheckThread = NULL;
@@ -43,7 +43,7 @@ static HINTERNET hURL = NULL;
 
 static void GiveUp(DWORD exitCode)
 {
-	delete[] URL2Check;
+    URL2Check.clear();
 	CheckThread = NULL;
 	if (hURL)
 		InternetCloseHandle(hURL);
@@ -61,7 +61,9 @@ static DWORD WINAPI CheckThreadEntry(LPVOID)
 	BOOL			bHasDefaultRoute = FALSE;
 
 	GetIpForwardTable(NULL, &dwTableSize, FALSE);
-	pft = (MIB_IPFORWARDTABLE*) new BYTE[dwTableSize];
+
+    std::vector<BYTE> pftbuf(dwTableSize, '\0');
+	pft = reinterpret_cast<MIB_IPFORWARDTABLE*>(pftbuf.data());
 
 	if (GetIpForwardTable(pft, &dwTableSize, TRUE) == NO_ERROR) {
 		for (unsigned int nIndex = 0; nIndex < pft->dwNumEntries; nIndex++) {
@@ -72,8 +74,7 @@ static DWORD WINAPI CheckThreadEntry(LPVOID)
 			}
 		}
 	}
-
-	delete pft;
+    pftbuf.clear();
 
 	if (!bHasDefaultRoute)
 		GiveUp(FileCheck_No_Internet);
@@ -133,7 +134,7 @@ static DWORD WINAPI CheckThreadEntry(LPVOID)
   InternetSetOption(hInternetSession, INTERNET_OPTION_DATA_RECEIVE_TIMEOUT, 
     (LPVOID)(&timeout), sizeof(DWORD));
 
-	hURL = InternetOpenUrl(hInternetSession, URL2Check, NULL, 0, 
+	hURL = InternetOpenUrl(hInternetSession, URL2Check.data(), NULL, 0, 
 		INTERNET_FLAG_NO_CACHE_WRITE, 0);
 	if (hURL == NULL)
 		GiveUp(FileCheck_Cannot_Reach_Site);
@@ -177,10 +178,11 @@ void FileCheck(HWND hwnd, const char* site, const char* file2check)
 		
 	MsgHwnd = hwnd;
 	DWORD URLSize = strlen(site) + strlen(file2check) + 100;
-	URL2Check = new char[URLSize + 1];
-	if (UrlCombine(site, file2check, URL2Check, &URLSize, 0) != S_OK) {
-		delete[] URL2Check;
-		MsgHwnd = NULL;
+	if (URL2Check.size() <= URLSize)
+        URL2Check.resize(URLSize + 1);
+	if (UrlCombine(site, file2check, URL2Check.data(), &URLSize, 0) != S_OK) {
+        URL2Check.clear();
+        MsgHwnd = NULL;
 		return;
 	}
 
