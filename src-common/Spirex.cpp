@@ -35,6 +35,7 @@
 #include <math.h>
 #include <stdlib.h>
 //#include <GdiPlus.h>
+#include <memory>
 
 using namespace Gdiplus;
 
@@ -261,7 +262,7 @@ void Spirex::SetupTexture()
   if (mSettings.getTextureStrlen() != 0) {
     // Generate and load texture
     glGenTextures(1, mTexture);
-    Texture *tex = new Texture(mSettings.getTextureStr(), Texture::OpenGLDIB);
+    std::unique_ptr<Texture> tex = std::make_unique<Texture>(mSettings.getTextureStr(), Texture::OpenGLDIB);
 
     // Try to load texture. If loaded then bind it. Otherwise
     // erase the local copy of the texture path so that InitMode will
@@ -271,8 +272,6 @@ void Spirex::SetupTexture()
     } else {
       mSettings.clearTexture();
     }
-
-    delete tex;
   }
 }
 
