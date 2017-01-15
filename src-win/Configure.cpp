@@ -290,24 +290,15 @@ static void InitPresetList(HWND presetWin, const SaverSettingsWin32& current)
 
 static char* GetPresetText(HWND presetWin)
 {
-  static char* buffer;
-  static int length = 0;
+  static std::vector<char> buffer;
 
-  if (!length) {
-    length = 2;
-    buffer = new char[length];
-  }
+  size_t currentLength = SendMessage(presetWin, WM_GETTEXTLENGTH, (WPARAM)0, (LPARAM)0) + 1;
+  if (currentLength >= buffer.size())
+      buffer.resize(currentLength);
 
-  int currentLength = SendMessage(presetWin, WM_GETTEXTLENGTH, (WPARAM)0, (LPARAM)0);
-  if (currentLength >= length) {
-    delete buffer;
-    length = currentLength + 1;
-    buffer = new char[length];
-  }
+  SendMessage(presetWin, WM_GETTEXT, (WPARAM)buffer.size(), (LPARAM)buffer.data());
 
-  SendMessage(presetWin, WM_GETTEXT, (WPARAM)length, (LPARAM)buffer);
-
-  return buffer;
+  return buffer.data();
 }
 
 
@@ -681,16 +672,15 @@ static BOOL HandlePresetCommands(HWND hwnd, int code, LPARAM lParam)
       if (sel < 0) break;
       int length = SendMessage((HWND)lParam, CB_GETLBTEXTLEN, (WPARAM) sel, (LPARAM) 0);
       if (length == CB_ERR) break;
-      char* buf = new char[length + 1];
-      SendMessage((HWND)lParam, CB_GETLBTEXT, (WPARAM) sel, (LPARAM) buf);
-      Debug(buf);
-      Configuration.ReadPreset(buf);
+      std::vector<char> buf(length + 1, '\0');
+      SendMessage((HWND)lParam, CB_GETLBTEXT, (WPARAM) sel, (LPARAM) buf.data());
+      Debug(buf.data());
+      Configuration.ReadPreset(buf.data());
       UpdateTextureEnable();
       SetDlgFromSettings(hwnd, Configuration);
       UpdateTextureThumbnail(hwnd);
       InitTextureUD(hwnd);
       PreviewWin->NewSaverSettings(Configuration);
-      delete buf;
       break;
     }
     case CBN_EDITCHANGE: {
