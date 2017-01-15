@@ -122,8 +122,8 @@ void Spirex::NewSaverSettings(const SaverSettings& settings)
   if (new3DEnv)
   	DestroyGfx();
   	
- 	if (mSettings.mName)
- 		Debug(mHwnd, mSettings.mName);
+ 	if (!mSettings.mName.empty())
+ 		Debug(mHwnd, mSettings.mName.c_str());
 
   mSettings = settings;
 

@@ -601,10 +601,8 @@ bool SaverSettingsWin32::ReadCurrentSettings(bool temp)
 bool SaverSettingsWin32::ReadPreset(const char* presetName)
 {
 	if (ReadConfig(REGSTR_PATH_PRESETS, presetName)) {
-		delete[] mSettings.mName;
-		mSettings.mName = new char[strlen(presetName) + 1];
-		strcpy(mSettings.mName, presetName);
-		return true;
+        mSettings.mName.assign(presetName);
+        return true;
 	}
 	return false;
 }

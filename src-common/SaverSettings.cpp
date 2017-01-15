@@ -22,9 +22,7 @@
 //
 
 #include "SaverSettings.h"
-#define _CRT_SECURE_NO_DEPRECATE 1
 //#include "Debug.h"
-#include <string.h>
 
 
 
@@ -43,75 +41,14 @@ void SaverSettings::InitDefaults()
   mPoints = false;
   mTriAxial = false;
 	mMode = Original2D;
-	mName = 0;
+	mName.clear();
 
 	clearTexture();
 }
 
 SaverSettings::SaverSettings()
-	: mTextureLen(0), mTexturePtr(0)
 {
 	InitDefaults();
-}
-
-SaverSettings::~SaverSettings()
-{
-	clearTexture();
-	delete[] mName;
-}
-
-SaverSettings::SaverSettings(const SaverSettings& oldSettings) :
-    mVersion(oldSettings.mVersion),
-    mSize(sizeof(SaverSettings)),
-    mCurveCount(oldSettings.mCurveCount),
-    mCurveLength(oldSettings.mCurveLength),
-    mAngleChangeRate(oldSettings.mAngleChangeRate),
-    mEvolutionRate(oldSettings.mEvolutionRate),
-    mThickLines(oldSettings.mThickLines),
-    mInColor(oldSettings.mInColor),
-    mFixed(oldSettings.mFixed),
-    mPoints(oldSettings.mPoints),
-    mTriAxial(oldSettings.mTriAxial),
-    mMode(oldSettings.mMode),
-    mName(0),
-    mTextureLen(0),
-    mTexturePtr(0)
-{
-	setTexture(oldSettings.mTexturePtr, oldSettings.mTextureLen);
-	if (oldSettings.mName) {
-		mName = new char[strlen(oldSettings.mName) + 1];
-		strcpy(mName, oldSettings.mName);
-	}
-}
-
-SaverSettings& SaverSettings::operator=(const SaverSettings& oldSettings)
-{
-	if (this == &oldSettings) return *this;
-
-    mVersion = oldSettings.mVersion;
-    mSize = sizeof(SaverSettings);
-    mCurveCount = oldSettings.mCurveCount;
-    mCurveLength = oldSettings.mCurveLength;
-    mAngleChangeRate = oldSettings.mAngleChangeRate;
-    mEvolutionRate = oldSettings.mEvolutionRate;
-    mThickLines = oldSettings.mThickLines;
-    mInColor = oldSettings.mInColor;
-    mFixed = oldSettings.mFixed;
-    mPoints = oldSettings.mPoints;
-    mTriAxial = oldSettings.mTriAxial;
-    mMode = oldSettings.mMode;
-
-	if (oldSettings.mName) {
-		mName = new char[strlen(oldSettings.mName) + 1];
-		strcpy(mName, oldSettings.mName);
-	} else {
-		delete[] mName;
-		mName = 0;
-	}
-	
-	setTexture(oldSettings.mTexturePtr, oldSettings.mTextureLen);
-
-	return *this;
 }
 
 SaverSettings::SaverSettings(
@@ -130,10 +67,7 @@ SaverSettings::SaverSettings(
     mFixed(Fixed),
     mPoints(Points),
     mTriAxial(TriAxial),
-    mMode(Mode),
-    mName(0),
-    mTextureLen(0),
-    mTexturePtr(0)
+    mMode(Mode)
 {
 }
 
@@ -153,10 +87,7 @@ SaverSettings::SaverSettings(
 	mFixed(Fixed),
   mPoints(Points),
   mTriAxial(TriAxial),
-	mMode(Mode),
-	mName(0),
-	mTextureLen(0),
-	mTexturePtr(0)
+	mMode(Mode)
 {
 	setTexture(TextureStr);
 }
@@ -177,10 +108,7 @@ SaverSettings::SaverSettings(
 	mFixed(Fixed),
     mPoints(Points),
     mTriAxial(TriAxial),
-	mMode(Mode),
-	mName(0),
-	mTextureLen(0),
-	mTexturePtr(0)
+	mMode(Mode)
 {
 	setTexture(TexturePtr, TextureLen);
 }
@@ -188,7 +116,7 @@ SaverSettings::SaverSettings(
 
 bool SaverSettings::operator==(const SaverSettings& other) const
 {
-	return mVersion == other.mVersion
+    return mVersion == other.mVersion
         && mSize == other.mSize
         && mCurveCount == other.mCurveCount
         && mCurveLength == other.mCurveLength
@@ -200,46 +128,38 @@ bool SaverSettings::operator==(const SaverSettings& other) const
         && mPoints == other.mPoints
         && mTriAxial == other.mTriAxial
         && mMode == other.mMode
-        && mTextureLen == other.mTextureLen
-        && (((mTexturePtr == 0) && (other.mTexturePtr == 0))
-            || ((mTexturePtr != 0) && (other.mTexturePtr != 0)
-                && !memcmp(mTexturePtr, other.mTexturePtr, mTextureLen)));
+        && mTexturePath == other.mTexturePath;
 }
 
 void SaverSettings::clearTexture()
 {
-	delete[] mTexturePtr;
-	mTextureLen = 0;
-	mTexturePtr = 0;
+    mTexturePath.clear();
 }
 
 void SaverSettings::setTexture(const char* TexturePtr, size_t TextureLen)
 {
-	if (TextureLen <= 0  ||  TextureLen != mTextureLen) {
-		clearTexture();
-	}
-	if (TextureLen > 0  &&  TexturePtr) {
-		if (!mTexturePtr) {
-			mTextureLen = TextureLen;
-			mTexturePtr = new char[mTextureLen];
-		}
-		memcpy(mTexturePtr, TexturePtr, mTextureLen);
-	}
+    if (!TexturePtr || TextureLen == 0)
+        mTexturePath.clear();
+    else
+        mTexturePath.assign(TexturePtr, TextureLen);
 }
 
 void SaverSettings::setTexture(const char* TextureStr)
 {
-	setTexture(TextureStr, TextureStr ? (strlen(TextureStr)+1) : 0);
+    if (TextureStr)
+        mTexturePath.assign(TextureStr);
+    else
+        mTexturePath.clear();
 }
 
 const char* SaverSettings::getTextureStr() const
 {
-	return mTexturePtr ? mTexturePtr : "";
+    return mTexturePath.c_str();
 }
 
 size_t SaverSettings::getTextureStrlen() const
 {
-	return mTexturePtr ? strlen(mTexturePtr) : 0;
+    return mTexturePath.length();;
 }
 
 void SaverSettings::qualify()

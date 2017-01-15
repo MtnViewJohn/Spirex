@@ -25,6 +25,7 @@
 #define INCLUDED_SAVERSETTINGS
 
 #include <cstddef>
+#include <string>
 
 class SaverSettings
 {
@@ -44,8 +45,8 @@ public:
   bool			mFixed;
   bool			mPoints;
   bool			mTriAxial;
-  RenderMode		mMode;
-  char*			mName;
+  RenderMode    mMode;
+  std::string   mName;
 
   bool usesTexture() const;
   bool usesFixed() const;
@@ -55,16 +56,17 @@ public:
   bool usesTriAxial() const;
 
 private:
-  size_t        mTextureLen;
-  char* 			mTexturePtr;
+    std::string mTexturePath;
 
 public:
   enum {MaxCurveCount = 32, MaxCurveLength = 500};
 
   SaverSettings();
-  ~SaverSettings();
-  SaverSettings(const SaverSettings&);
-  SaverSettings& operator=(const SaverSettings&);
+  ~SaverSettings() = default;
+  SaverSettings(const SaverSettings&) = default;
+  SaverSettings(SaverSettings&&) noexcept = default;
+  SaverSettings& operator=(const SaverSettings&) = default;
+  SaverSettings& operator=(SaverSettings&&) = default;
   SaverSettings(	unsigned int CurveCount, unsigned int CurveLength,
     unsigned int mAngleChangeRate,  unsigned int EvolutionRate,
     bool ThickLines, bool InColor, bool Fixed, bool Points, bool TriAxial,
@@ -88,8 +90,8 @@ public:
   void			clearTexture();
   void          qualify();
 
-  const char*   getTexturePtr() const   { return mTexturePtr; }
-  size_t        getTextureLen()	const	{ return mTextureLen; }
+  const char*   getTexturePtr() const   { return mTexturePath.empty() ? nullptr : mTexturePath.c_str(); }
+  size_t        getTextureLen()	const	{ return mTexturePath.length(); }
   const char*   getTextureStr() const;	// never returns null
   size_t        getTextureStrlen() const;
 };
