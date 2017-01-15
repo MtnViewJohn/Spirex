@@ -56,6 +56,10 @@ typedef struct DLGTEMPLATEEX
 } DLGTEMPLATEEX, *LPDLGTEMPLATEEX;
 #include <poppack.h>
 
+#include <vector>
+#include <string>
+#include <algorithm>
+
 using namespace Gdiplus;
 
 
@@ -560,88 +564,41 @@ static void InitDialog(HWND hwnd, LPARAM lParam)
   }
 }
 
-struct FileList
-{
-  char mFileName[MAX_PATH + 1];
-  FileList* mNext;
-};
-static struct FileList *TextureList = 0;
-static char TextureDir[MAX_PATH + 1];
+static std::string TextureDir;
+static std::vector<std::string> TextureList;
 
 static void InitTextureUD(HWND hwnd)
 {
   // Free the previous texture list
-  FileList* list = TextureList;
-  TextureList = 0;
-  *TextureDir = '\0';
-  while (list) {
-    FileList* nextList = list->mNext;
-    delete list;
-    list = nextList;
-  }
-
-  int textureCount = 0;
+    TextureList.clear();
+    TextureDir.clear();
+    std::string name;
 
   // determine if texture is embedded or a file
   if ((Configuration.mSettings.getTextureStrlen() == 0) ||
-      (*(Configuration.mSettings.getTextureStr()) == '#')) {
-
-      struct FileList *NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_SPIREX);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_ORIGAMI);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_MOON);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_MARS);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_FLOWER);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_EUROPA);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_EARTH);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, IDT_BORG);
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, "");
-      NewTextureFile->mNext = TextureList; TextureList = NewTextureFile;
-
-      textureCount = 9;
+      (*(Configuration.mSettings.getTextureStr()) == '#'))
+  {
+      TextureList.reserve(8);
+      TextureList.assign({ IDT_SPIREX , IDT_ORIGAMI , IDT_MOON , IDT_MARS , IDT_FLOWER, IDT_EUROPA, IDT_EARTH, IDT_BORG});
+      name.assign(Configuration.mSettings.getTextureStr());
   } else {
     // get the texture directory and create a handle to search it
-    strcpy(TextureDir, Configuration.mSettings.getTextureStr());
-    char* dirPtr = strrchr(TextureDir, '\\');
-    if (dirPtr == 0)
+    TextureDir.assign(Configuration.mSettings.getTextureStr());
+    size_t dirPtr = TextureDir.rfind('\\');
+    if (dirPtr == std::string::npos)
       return;
 
-    dirPtr[1] = '*';
-    dirPtr[2] = '\0';
+    name = TextureDir.substr(dirPtr + 1);
+    TextureDir.resize(dirPtr + 1);
+    TextureDir.append(1, '*');
 
     WIN32_FIND_DATA w32fd;
-    HANDLE FindFile = FindFirstFile(TextureDir, &w32fd);
+    HANDLE FindFile = FindFirstFile(TextureDir.c_str(), &w32fd);
     if (FindFile == INVALID_HANDLE_VALUE) {
       DebugWin();
       return;
     }
-    dirPtr[1] = '\0';	// remove wildcard so textureDir can be used
+    TextureDir.resize(dirPtr + 1);
 
     do {
       // skip directories and hidden/system files
@@ -673,61 +630,36 @@ static void InitTextureUD(HWND hwnd)
       continue;
 
       // Create new texture item
-      struct FileList *NewTextureFile = new FileList;
-      strcpy(NewTextureFile->mFileName, w32fd.cFileName);
-      textureCount++;
-
-      // Insert it in the list in alphabetical order
-      struct FileList **ListInsertPt = &TextureList;
-      while (*ListInsertPt) {
-        if (lstrcmpi(w32fd.cFileName, (*ListInsertPt)->mFileName) >= 0)
-          break;
-        ListInsertPt = &((*ListInsertPt)->mNext);
-      }
-      NewTextureFile->mNext = *ListInsertPt;
-      *ListInsertPt = NewTextureFile;
+      TextureList.emplace_back(w32fd.cFileName);
     } while (FindNextFile(FindFile, &w32fd) || (GetLastError() != ERROR_NO_MORE_FILES));
+    std::sort(TextureList.begin(), TextureList.end());
   }
 
 
   // find where the current texture is in the list
-  int i;
-  struct FileList *listPt;
-  const char* namePtr = strrchr(Configuration.mSettings.getTextureStr(), '\\');
-  if (!namePtr)
-    namePtr = Configuration.mSettings.getTextureStr();	// embedded
-  else
-    namePtr++;
+  auto whichTexture = std::find(TextureList.begin(), TextureList.end(), name);
 
-  for (i = 1, listPt = TextureList; i <= textureCount; i++, listPt = listPt->mNext)
-    if (lstrcmpi(listPt->mFileName, namePtr) == 0)
-      break;
-
-  if (i > textureCount) {
-    Debug("Couldn't find current texture in list.");
-    i = 1;
+  if (whichTexture == TextureList.end()) {
+      Debug("Couldn't find current texture in list.");
+      whichTexture = TextureList.begin();
   }
 
   // initialize the Up-Down control for the current texture directory
-  SendDlgItemMessage(hwnd, IDC_TEXTURE_UD, UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)textureCount, (short)1));
-  SendDlgItemMessage(hwnd, IDC_TEXTURE_UD, UDM_SETPOS, 0, (LPARAM)MAKELONG((short)i, 0));
+  SendDlgItemMessage(hwnd, IDC_TEXTURE_UD, UDM_SETRANGE, 0, (LPARAM)MAKELONG((short)TextureList.size(), (short)1));
+  SendDlgItemMessage(hwnd, IDC_TEXTURE_UD, UDM_SETPOS, 0, (LPARAM)MAKELONG((short)((whichTexture - TextureList.begin()) + 1), 0));
 }
 
-static void GetNextTexture(HWND hwnd, int pos)
+static void GetNextTexture(HWND hwnd, size_t pos)
 {
-  char textureName[MAX_PATH + 1];
-  strcpy(textureName, TextureDir);
-
-  struct FileList *listPt = TextureList;
-  for (int i = 1; i < pos; i++)
-    listPt = listPt->mNext;
-
-  strcat(textureName, listPt->mFileName);
-  if (lstrcmpi(textureName, Configuration.mSettings.getTextureStr())) {
-    Configuration.mSettings.setTexture(textureName);
-    PreviewWin->NewSaverSettings(Configuration);
-    UpdateTextureThumbnail(hwnd);
-  }
+    std::string textureName = TextureDir;
+    if (pos > 0 && pos <= TextureList.size()) {
+        textureName.append(TextureList[pos - 1]);
+        if (lstrcmpi(textureName.c_str(), Configuration.mSettings.getTextureStr())) {
+            Configuration.mSettings.setTexture(textureName.c_str());
+            PreviewWin->NewSaverSettings(Configuration);
+            UpdateTextureThumbnail(hwnd);
+        }
+    }
 }
 
 
@@ -990,7 +922,7 @@ static BOOL CALLBACK ConfigDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
       if (ControlsValid && LOWORD(wParam) != SB_THUMBTRACK) {
         if ((HWND)lParam == GetDlgItem(hwnd, IDC_TEXTURE_UD)) {
           if (LOWORD(wParam) == SB_THUMBPOSITION) {
-            int pos = HIWORD(wParam);
+            size_t pos = static_cast<size_t>(HIWORD(wParam));
             GetNextTexture(hwnd, pos);
             return 0;
           }
