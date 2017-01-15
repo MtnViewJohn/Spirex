@@ -26,6 +26,7 @@
 
 #include "myWindows.h"
 #include "myGl.h"
+#include <memory>
 
 namespace Gdiplus {
 	class Bitmap;
@@ -37,7 +38,7 @@ class Texture
 public:
 	enum TextureFormat { UnknownFormat = 0, WinBitmap = 1, OpenGLDIB = 2 };
 	Texture(const char *name, TextureFormat fmt, int setWidth = 0, int setHeight = 0);
-	~Texture();
+	~Texture() = default;
 	bool Load(GLuint t_name);
 	unsigned int GetWidth();
 	unsigned int GetHeight();
@@ -45,8 +46,8 @@ public:
 
 private:
 	TextureFormat mFormat;
-	Gdiplus::Bitmap*	mBM;			// data for GDI+ Bitmap texture
-	unsigned char*	mBits;			// data for OpenGLDIB texture
+	std::unique_ptr<Gdiplus::Bitmap>	mBM;			// data for GDI+ Bitmap texture
+	std::unique_ptr<unsigned char[]>	mBits;			// data for OpenGLDIB texture
 	int	mHeight, mWidth;
 };
 

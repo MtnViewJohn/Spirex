@@ -33,18 +33,8 @@
 
 using namespace Gdiplus;
 
-Texture::~Texture()
-{
-  if (mBits)
-    delete[] mBits;	
-  if (mBM)			
-    delete mBM;
-}
-
 Texture::Texture(const char *fname, TextureFormat fmt, int setWidth, int setHeight)
-: mFormat(UnknownFormat),
-  mBM(0),
-  mBits(0),
+: mFormat(fmt),
   mHeight(0),
   mWidth(0)
 {
@@ -74,8 +64,8 @@ Texture::Texture(const char *fname, TextureFormat fmt, int setWidth, int setHeig
     int newHeight = height * scale;
     int originX = (setWidth - newWidth) / 2;
     int originY = (setHeight - newHeight) / 2;
-    Bitmap* newBM = new Bitmap(setWidth, setHeight, PixelFormat24bppRGB);
-    Graphics g(newBM);
+    std::unique_ptr<Bitmap> newBM = std::make_unique<Bitmap>(setWidth, setHeight, PixelFormat24bppRGB);
+    Graphics g(newBM.get());
     g.Clear(Color(0xfff4f3ee));
     Rect destRect(originX, originY, newWidth, newHeight);
     g.SetInterpolationMode(InterpolationModeHighQualityBicubic);
@@ -85,14 +75,14 @@ Texture::Texture(const char *fname, TextureFormat fmt, int setWidth, int setHeig
     width = newWidth;
     height = newHeight;
     bmr.Empty(); bmf.Empty();
-    bm = bmf.m_pBitmap = newBM;
+    bm = bmf.m_pBitmap = newBM.release();
   } else if (fmt == OpenGLDIB) {
     // resize to next power-of-two
     for (setWidth = 1; setWidth < width; setWidth <<= 1);
     for (setHeight = 1; setHeight < height; setHeight <<= 1);
     Rect destRect(0, 0, setWidth, setHeight);
-    Bitmap* newBM = new Bitmap(setWidth, setHeight, PixelFormat24bppRGB);
-    Graphics g(newBM);
+    std::unique_ptr<Bitmap> newBM = std::make_unique<Bitmap>(setWidth, setHeight, PixelFormat24bppRGB);
+    Graphics g(newBM.get());
     g.SetInterpolationMode(InterpolationModeHighQualityBicubic);
     g.DrawImage(bm, destRect, 0, 0, width, height,
       UnitPixel, NULL, NULL, NULL);
@@ -100,34 +90,33 @@ Texture::Texture(const char *fname, TextureFormat fmt, int setWidth, int setHeig
     width = setWidth;
     height = setHeight;
     bmr.Empty(); bmf.Empty();
-    bm = bmf.m_pBitmap = newBM;
+    bm = bmf.m_pBitmap = newBM.release();
   }
 
 
   switch (fmt) {
     case WinBitmap: 
-      mBM = bm;
+      mBM.reset(bm);
       bmf.m_pBitmap = bmr.m_pBitmap = 0;
       break;
     case OpenGLDIB: {
       BitmapData bmd;
       Rect r(0, 0, width, height);
-      mBits = new BYTE[width * height * 4];
+      mBits = std::make_unique<BYTE[]>(width * height * 4);
       bmd.Width = width;
       bmd.Height = height;
       bmd.Stride = 4*width;
       bmd.PixelFormat = PixelFormat32bppARGB;
-      bmd.Scan0 = (void*)mBits;
+      bmd.Scan0 = (void*)mBits.get();
       bmd.Reserved = NULL;
       if (bm->LockBits(&r, ImageLockModeRead | ImageLockModeUserInputBuf,
         PixelFormat32bppARGB, &bmd) !=  Ok) {
         DebugWin();
-        delete[] mBits;
-        mBits = 0;
+        mBits.reset();
         return;
       }
       // Convert GDI+ BGRA to OpenGL RGBA
-      DWORD* bits = (DWORD*)mBits;
+      DWORD* bits = (DWORD*)mBits.get();
       for (int i = 0; i < height * width; i++) {
         DWORD pixel = bits[i];
         bits[i] = (pixel & 0xff00ff00) | ((pixel & 0xff) << 16) | ((pixel & 0xff0000) >> 16);
@@ -142,7 +131,6 @@ Texture::Texture(const char *fname, TextureFormat fmt, int setWidth, int setHeig
 
   mWidth = width;
   mHeight = height;
-  mFormat = fmt;
 }
 
 
@@ -162,9 +150,9 @@ bool Texture::Load(GLuint t_name)
   glBindTexture(GL_TEXTURE_2D, t_name);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA,
-    GL_UNSIGNED_BYTE, mBits);
+    GL_UNSIGNED_BYTE, mBits.get());
   gluBuild2DMipmaps(GL_TEXTURE_2D, 3, mWidth, mHeight, GL_RGBA,
-    GL_UNSIGNED_BYTE, mBits);
+    GL_UNSIGNED_BYTE, mBits.get());
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -183,7 +171,7 @@ unsigned int Texture::GetHeight()
 
 Bitmap* Texture::GetBM()
 {
-  return mBM;
+  return mBM.get();
 }
 
 
