@@ -25,18 +25,19 @@
 #define INCLUDED_RINGBUFFER
 
 #include <assert.h>
+#include <memory>
 
 template <class T>
 class RingBuffer 
 {
-	T* buffer;
+	std::unique_ptr<T[]> buffer;
 	int bufferSize, ringSize;
 	int pointer;
 public:
 	RingBuffer():buffer(0),bufferSize(0),ringSize(0),pointer(0)	{}
 	RingBuffer(int sz, T init):buffer(0),bufferSize(0),ringSize(0),pointer(0)	
 		{resetBuffer(sz, init);}
-	~RingBuffer()	{ delete[] buffer; }
+    ~RingBuffer() = default;
 	void resetBuffer(int sz, T init);
 	void setSize(int sz);
 	void add(T item);
@@ -54,8 +55,7 @@ private:
 template <class T>
 void RingBuffer<T>::resetBuffer(int sz, T init)
 {
-	delete[] buffer;
-	buffer = new T[sz];
+    buffer = std::make_unique<T[]>(sz);
 	bufferSize = ringSize = sz;
 	for (int i = 0; i < bufferSize; i++) buffer[i] = init;
 	pointer = 0;
