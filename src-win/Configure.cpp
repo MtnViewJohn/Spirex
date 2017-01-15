@@ -59,13 +59,14 @@ typedef struct DLGTEMPLATEEX
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <memory>
 
 using namespace Gdiplus;
 
 
 static SaverSettingsWin32 Configuration;
 static SaverWin* PreviewWin = 0;
-static Texture* Thumbnail = 0;
+static std::unique_ptr<Texture> Thumbnail;
 static LinkWin* URLcontrol;
 static bool ControlsValid;
 static OPENFILENAME Ofn;				// common dialog box structure
@@ -189,13 +190,12 @@ static void UpdateTextureThumbnail(HWND hwnd)
 {
   RECT trect;
   
-  delete Thumbnail;
-  Thumbnail = 0;
+  Thumbnail.reset();
 
   GetClientRect(GetDlgItem(hwnd, IDC_TEXTURE), &trect);
 
   if (Configuration.mSettings.usesTexture()) 
-    Thumbnail = new Texture(Configuration.mSettings.getTextureStr(), Texture::WinBitmap, 
+    Thumbnail = std::make_unique<Texture>(Configuration.mSettings.getTextureStr(), Texture::WinBitmap, 
       trect.right - trect.left + 1, trect.bottom - trect.top + 1);
 
   BOOL bres = InvalidateRect(GetDlgItem(hwnd, IDC_TEXTURE), NULL, TRUE);
@@ -912,6 +912,7 @@ static BOOL CALLBACK ConfigDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
           SetWindowLong(hwnd, DWL_MSGRESULT, PSNRET_NOERROR);
           return TRUE;
         case PSN_RESET:
+            Thumbnail.release();    // let the last one leak
         	Debug(hwnd, "PSN_RESET");
           break;
       }
@@ -1053,6 +1054,7 @@ static BOOL CALLBACK AdvConfigDialogProc(HWND hwnd, UINT msg,
           return TRUE;
         case PSN_RESET:
           SetWindowLong(PropSheetHwnd, GWL_WNDPROC, (LONG) OrigSheetProc);
+          Thumbnail.release();      // let the last one leak
           break;
       }
       break;
