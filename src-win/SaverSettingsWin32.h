@@ -29,6 +29,7 @@
 #include "myWindows.h"
 #include <regstr.h>
 #include "SaverSettings.h"
+#include <vector>
 
 class SaverSettingsWin32
 { 
@@ -72,7 +73,7 @@ public:
 	{
 	public:
 		bool nextPreset();
-		inline char* currentPresetName() { return mBuffer; }
+		inline char* currentPresetName() { return mBuffer.data(); }
 		PresetIter();
 		~PresetIter();
 		DWORD mPresetCount;
@@ -81,8 +82,7 @@ public:
 		HKEY	mPresetKey;
 		DWORD	mCurrentSetting;
 		DWORD mCurrentIndex;
-		char*	mBuffer;
-		int		mBufferSize;
+		std::vector<char>	mBuffer;
 		void	InitIter();
 		
 		PresetIter(const PresetIter&);

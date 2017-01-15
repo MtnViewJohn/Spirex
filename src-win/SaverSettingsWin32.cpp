@@ -673,9 +673,7 @@ SaverSettingsWin32::PresetIter::PresetIter()
 :	mPresetCount(0),
 	mPresetKey(0),
 	mCurrentSetting(0),
-	mCurrentIndex(0),
-	mBuffer(0),
-	mBufferSize(0)
+	mCurrentIndex(0)
 {
 	InitIter();
 	if (mPresetCount == 0) {
@@ -702,8 +700,7 @@ void SaverSettingsWin32::PresetIter::InitIter()
 		0, 0, 0, 0, 0);
 	if (res != ERROR_SUCCESS) return;
 
-	mBufferSize = maxNameLength + 1;
-	mBuffer = new char[mBufferSize];
+	mBuffer.resize(maxNameLength + 1);
 
   mPresetCount = 32767;
   int count = 0;
@@ -721,7 +718,6 @@ void SaverSettingsWin32::PresetIter::InitIter()
 
 SaverSettingsWin32::PresetIter::~PresetIter()
 {
-	delete[] mBuffer;
 	if (mPresetKey != NULL)
 		RegCloseKey(mPresetKey);
 }
@@ -730,22 +726,22 @@ SaverSettingsWin32::PresetIter::~PresetIter()
 
 bool SaverSettingsWin32::PresetIter::nextPreset()
 {
-	if (mCurrentSetting >= mPresetCount)
-		return false;
+    if (mCurrentSetting >= mPresetCount)
+        return false;
 
-	DWORD keyNameLength = mBufferSize;
-	SaverSettingsWin32 s;
+    DWORD keyNameLength = mBuffer.size();
+    SaverSettingsWin32 s;
 
-	while (RegEnumKeyEx(mPresetKey, mCurrentIndex++, mBuffer, &keyNameLength, 0, 0, 0, 0) == ERROR_SUCCESS) {
-		if (s.ReadPreset(mBuffer)) {
-			mCurrentSetting++;
-      return true;
-		}
-		keyNameLength = mBufferSize;
-	}
+    while (RegEnumKeyEx(mPresetKey, mCurrentIndex++, mBuffer.data(), &keyNameLength, 0, 0, 0, 0) == ERROR_SUCCESS) {
+        if (s.ReadPreset(mBuffer.data())) {
+            mCurrentSetting++;
+            return true;
+        }
+        keyNameLength = mBuffer.size();
+    }
 
-	mCurrentSetting = mPresetCount;
-	return false;
+    mCurrentSetting = mPresetCount;
+    return false;
 }
 
 #if 0

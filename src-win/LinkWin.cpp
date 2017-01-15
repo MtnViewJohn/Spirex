@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <shellapi.h>
 #include "Debug.h"
+#include <vector>
 
 static bool Registered = false;
 	
@@ -70,18 +71,15 @@ LRESULT CALLBACK LinkWin::LinkWinProc(	HWND hwnd, UINT msg,
 		case WM_PAINT: {
 			// get the name of the control and display it as the URL
 			int len = GetWindowTextLength(hwnd);
-			char* namebuf;
-			namebuf = new char[len + 1];
-			int r = GetWindowText(hwnd, namebuf, len + 1);
+            std::vector<char> namebuf(len + 1, '\0');
+			int r = GetWindowText(hwnd, namebuf.data(), len + 1);
 			if (!r) Debug("Couldn't get link window name.");
 			
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps); 
-			TextOut(hdc, 0,0, namebuf, len);
+			TextOut(hdc, 0,0, namebuf.data(), len);
         	EndPaint(hwnd, &ps);
         	
-			delete[] namebuf;
-
       return TRUE;
     }
     case WM_MOUSEMOVE: {
