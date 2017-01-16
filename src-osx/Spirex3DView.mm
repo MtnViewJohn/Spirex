@@ -148,7 +148,8 @@
     unsigned char *theImageData;
     int rowNum, destRowNum;
     
-    theImage = [NSBitmapImageRep imageRepWithContentsOfFile:filename ];
+    NSData* theFile = [NSData dataWithContentsOfFile: filename];
+    theImage = [NSBitmapImageRep imageRepWithData: theFile];
     if(theImage != nil) {
         bitsPPixel = [theImage bitsPerPixel];
         bytesPRow = [theImage bytesPerRow];
