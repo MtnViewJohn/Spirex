@@ -121,11 +121,17 @@
 
 - (NSWindow*)configureSheet
 {
-	if (!mSheet)
-        if (![NSBundle loadNibNamed:@"SettingsDrawer" owner:self]) {
+    if (!mSheet) {
+        NSMutableArray *top = [NSMutableArray array];
+        if (![[NSBundle bundleForClass: [self class]] loadNibNamed:@"SettingsDrawer"
+                                                             owner: self
+                                                   topLevelObjects: &top])
+        {
             NSLog(@"Failed to load the config sheet");
             return nil;
         }
+        [top retain];
+    }
 
     return [mSheet showSheetWithSettings: mGeom->mSettings];
 }
