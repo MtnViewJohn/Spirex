@@ -84,7 +84,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 - (void) goToWebsite: (id) sender
 {
     [[NSWorkspace sharedWorkspace] openURL:
-        [NSURL URLWithString: @"http://www.ozonehouse.com/Spirex/"]];
+        [NSURL URLWithString: @"https://www.ozonehouse.com/Spirex/"]];
 }
 
 - (void) changeCheckForUpdate: (id) sender

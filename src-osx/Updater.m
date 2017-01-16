@@ -33,7 +33,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 static NSString* keyLastUpdateCheck = @"lastUpdateCheck";
 
 static NSString* urlUpdate
-    = @"http://www.ozonehouse.com/Spirex/SpirexMacOSXVersion.xml?v=%d&t=%1.0f";
+    = @"https://www.ozonehouse.com/Spirex/SpirexMacOSXVersion.xml?v=%d&t=%1.0f";
 static const char* updateServer
     = "www.ozonehouse.com";
     
