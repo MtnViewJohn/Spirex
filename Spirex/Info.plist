@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>Spirex 2.26, Copyright © 2001-2014 John Horigan</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.ozonehouse.spirex</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
