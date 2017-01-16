@@ -36,21 +36,21 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
     NSBundle* bundle = [NSBundle bundleForClass: [self class]];
 	mDefaults = [[Updater defaults] retain];
 
-    NSDictionary* info = [bundle infoDictionary];
-    [mVersion setStringValue: [NSString stringWithFormat: @"%@ (v%@)",
-        [info objectForKey: @"CFBundleShortVersionString"],
-        [info objectForKey: @"CFBundleVersion"] 
-        ]];
+    NSDictionary* info = bundle.infoDictionary;
+    mVersion.stringValue = [NSString stringWithFormat: @"%@ (v%@)",
+        info[@"CFBundleShortVersionString"],
+        info[@"CFBundleVersion"] 
+        ];
         
     BOOL checkForUpdate = 
         [mDefaults objectForKey: keyCheckForUpdates] == nil
         || [mDefaults boolForKey: keyCheckForUpdates];
         
-    [mCheckForUpdates setState: checkForUpdate ? NSOnState : NSOffState];
+    mCheckForUpdates.state = checkForUpdate ? NSOnState : NSOffState;
     
     
-    float areaHeight = [mUpdateArea frame].size.height;
-    mInfoFrameBig = [mInfoPanel frame];
+    float areaHeight = mUpdateArea.frame.size.height;
+    mInfoFrameBig = mInfoPanel.frame;
     mInfoFrameSmall = mInfoFrameBig;
     mInfoFrameSmall.size.height -= areaHeight;
     mInfoFrameSmall.origin.y += areaHeight;
@@ -76,7 +76,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 - (void) showUpdateArea: (id) sender;
 {
     [mInfoPanel setFrame: mInfoFrameBig display: TRUE animate: TRUE];
-    [[mInfoPanel contentView] addSubview: mUpdateArea];
+    [mInfoPanel.contentView addSubview: mUpdateArea];
 }
 
 
@@ -89,7 +89,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 
 - (void) changeCheckForUpdate: (id) sender
 {
-	BOOL checkForUpdates = [mCheckForUpdates state] == NSOnState;
+	BOOL checkForUpdates = mCheckForUpdates.state == NSOnState;
     
     BOOL oldCheckForUpdate = 
         [mDefaults objectForKey: keyCheckForUpdates] == nil

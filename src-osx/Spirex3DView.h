@@ -45,7 +45,7 @@ class SpirexGL;
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat;
 
-- (id) initWithFrame: (NSRect)frame andGeometry: (SpirexGeom*)geometry;
+- (instancetype) initWithFrame: (NSRect)frame andGeometry: (SpirexGeom*)geometry NS_DESIGNATED_INITIALIZER;
 - (void) setupTexture;
 - (void) settingsChanged;
 //- (GLubyte *) loadBufferFromImageFile: (NSString*) path: (int*) width: (int*) height;

@@ -52,7 +52,7 @@ static NSString* key3DMode			= @"3DMode";
 static bool
 getDictUnsignedInt(NSDictionary* dict, NSString* key, unsigned int& value)
 {
-	id obj = [dict objectForKey: key];
+	id obj = dict[key];
 	if (obj && [obj respondsToSelector: @selector(unsignedIntValue)]) {
 		value = [obj unsignedIntValue];
 		return true;
@@ -63,7 +63,7 @@ getDictUnsignedInt(NSDictionary* dict, NSString* key, unsigned int& value)
 static bool
 getDictBool(NSDictionary* dict, NSString* key, bool& value)
 {
-	id obj = [dict objectForKey: key];
+	id obj = dict[key];
 	if (obj && [obj respondsToSelector: @selector(boolValue)]) {
 		value = [obj boolValue];
 		return true;
@@ -74,7 +74,7 @@ getDictBool(NSDictionary* dict, NSString* key, bool& value)
 static bool
 getDictString(NSDictionary* dict, NSString* key, NSString*& value)
 {
-	id obj = [dict objectForKey: key];
+	id obj = dict[key];
 	if (obj && [obj isKindOfClass: [NSString class]]) {
 		value = obj;
 		return true;
@@ -88,23 +88,20 @@ modeDictionary()
 	static NSDictionary* modeDict = 0;
 	
 	if (!modeDict) {
-		modeDict = [[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInt: SaverSettings::Original2D], @"Original2D",
-			[NSNumber numberWithInt: SaverSettings::OriginalCounterRotate2D], @"OriginalCounterRotate2D",
-			[NSNumber numberWithInt: SaverSettings::Original2DWith3DGeometry], @"Original2DWith3DGeometry",
-			[NSNumber numberWithInt: SaverSettings::Curves], @"Curves",
-			[NSNumber numberWithInt: SaverSettings::Spheres], @"Spheres",
-			[NSNumber numberWithInt: SaverSettings::PointModeSpheres], @"PointModeSpheres",
-			[NSNumber numberWithInt: SaverSettings::Disks], @"Disks",
-			[NSNumber numberWithInt: SaverSettings::Cubes], @"Cubes",
-			[NSNumber numberWithInt: SaverSettings::Squares], @"Squares",
-			[NSNumber numberWithInt: SaverSettings::Conics], @"Conics",
-            [NSNumber numberWithInt: SaverSettings::Cylinders], @"Cylinders",
-			[NSNumber numberWithInt: SaverSettings::Toroids], @"Toroids",
-			[NSNumber numberWithInt: SaverSettings::Teapots], @"UtahTeapots",
-			[NSNumber numberWithInt: SaverSettings::WrappedCubes], @"WrappedCubes",
-			NULL
-			] retain];
+		modeDict = [@{@"Original2D": [NSNumber numberWithInt: SaverSettings::Original2D],
+			@"OriginalCounterRotate2D": [NSNumber numberWithInt: SaverSettings::OriginalCounterRotate2D],
+			@"Original2DWith3DGeometry": [NSNumber numberWithInt: SaverSettings::Original2DWith3DGeometry],
+			@"Curves": [NSNumber numberWithInt: SaverSettings::Curves],
+			@"Spheres": [NSNumber numberWithInt: SaverSettings::Spheres],
+			@"PointModeSpheres": [NSNumber numberWithInt: SaverSettings::PointModeSpheres],
+			@"Disks": [NSNumber numberWithInt: SaverSettings::Disks],
+			@"Cubes": [NSNumber numberWithInt: SaverSettings::Cubes],
+			@"Squares": [NSNumber numberWithInt: SaverSettings::Squares],
+			@"Conics": [NSNumber numberWithInt: SaverSettings::Conics],
+            @"Cylinders": [NSNumber numberWithInt: SaverSettings::Cylinders],
+			@"Toroids": [NSNumber numberWithInt: SaverSettings::Toroids],
+			@"UtahTeapots": [NSNumber numberWithInt: SaverSettings::Teapots],
+			@"WrappedCubes": [NSNumber numberWithInt: SaverSettings::WrappedCubes]} retain];
 	}
 	return modeDict;
 }
@@ -116,25 +113,21 @@ modeDictionary()
 	NSDictionary* modeDict = modeDictionary();
 	NSArray* modes =
 		[modeDict allKeysForObject: [NSNumber numberWithInt: settings.mMode]];
-	id modeObj = ([modes count] == 1)
-		? [modes objectAtIndex: 0]
+	id modeObj = (modes.count == 1)
+		? modes[0]
 		: [NSNumber numberWithInt: settings.mMode];
 	
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithUnsignedInt: settings.mCurveCount],			keyCurveCount,
-		[NSNumber numberWithUnsignedInt: settings.mCurveLength],		keyCurveLength,
-		[NSNumber numberWithUnsignedInt: settings.mAngleChangeRate],	keySpeed,
-		[NSNumber numberWithUnsignedInt: settings.mEvolutionRate],		keyEvolution,
-		[NSNumber numberWithBool: settings.mThickLines],		keyThickLines,
-		[NSNumber numberWithBool: settings.mInColor],			keyInColor,
-		[NSNumber numberWithBool: settings.mFixed],				keyFixed,
-		[NSNumber numberWithBool: settings.mPoints],			keyPoints,
-		[NSNumber numberWithBool: settings.mTriAxial],			keyTriAxial,
-		modeObj									,				keyMode,
-		[NSString stringWithCString: settings.getTextureStr()
-                           encoding: NSUTF8StringEncoding], keyTexturePath,
-		NULL
-		];
+	return @{keyCurveCount: @(settings.mCurveCount),
+		keyCurveLength: @(settings.mCurveLength),
+		keySpeed: @(settings.mAngleChangeRate),
+		keyEvolution: @(settings.mEvolutionRate),
+		keyThickLines: @(settings.mThickLines),
+		keyInColor: @(settings.mInColor),
+		keyFixed: @(settings.mFixed),
+		keyPoints: @(settings.mPoints),
+		keyTriAxial: @(settings.mTriAxial),
+		keyMode: modeObj,
+		keyTexturePath: @(settings.getTextureStr())};
 }
 
 + (SaverSettings)readSettingsFromDict: (NSDictionary*)dict
@@ -155,15 +148,15 @@ modeDictionary()
 	
 	bool oldMode = false;
 	
-	id modeObj = [dict objectForKey: keyMode];
+	id modeObj = dict[keyMode];
 	if (!modeObj) {
-		modeObj = [dict objectForKey: key3DMode];
+		modeObj = dict[key3DMode];
 		oldMode = true;
 	}
-	NSNumber* modeNum = [modeDict objectForKey: modeObj];
+	NSNumber* modeNum = modeDict[modeObj];
 	if (!modeNum) modeNum = modeObj;
 	if (modeNum  &&  [modeNum respondsToSelector: @selector(intValue)]) {
-		settings.mMode = (SaverSettings::RenderMode)[modeNum intValue];
+		settings.mMode = (SaverSettings::RenderMode)modeNum.intValue;
 	}
 
 	if (oldMode) {
@@ -193,7 +186,7 @@ modeDictionary()
 	
 	NSString* textureString = 0;
 	getDictString(dict, keyTexturePath, textureString);
-	settings.setTexture([textureString UTF8String]);
+	settings.setTexture(textureString.UTF8String);
 
 	return settings;
 }
@@ -252,19 +245,18 @@ modeDictionary()
 		
 	NSDictionary* presets
 		= [self userPresetsDictionaryFromDefaults: defaults];
-	if (!presets  ||  [presets count] == 0)
+	if (!presets  ||  presets.count == 0)
 		presets = [self standardPresetsDictionary];
 		
-	int index = SSRandomIntBetween(0, static_cast<int>([presets count] - 1));
+	int index = SSRandomIntBetween(0, static_cast<int>(presets.count - 1));
 	
 	NSDictionary* preset
-		= [presets objectForKey:
-			[[presets allKeys] objectAtIndex: index]];
+		= presets[presets.allKeys[index]];
 	
 	return [self readSettingsFromDict: preset];
 }
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (!self) return self;
@@ -285,11 +277,11 @@ modeDictionary()
 - (void)awakeFromNib
 {
     NSBundle* bundle = [NSBundle bundleForClass: [self class]];
-    NSDictionary* info = [bundle infoDictionary];
-    [mVersionLabel setStringValue: [NSString stringWithFormat: @"Spirex v%@",
-                               [info objectForKey: @"CFBundleShortVersionString"]
-                               ]];
-    [mCopyrightLabel setStringValue: [info objectForKey: @"NSHumanReadableCopyright"]];
+    NSDictionary* info = bundle.infoDictionary;
+    mVersionLabel.stringValue = [NSString stringWithFormat: @"Spirex v%@",
+                               info[@"CFBundleShortVersionString"]
+                               ];
+    mCopyrightLabel.stringValue = info[@"NSHumanReadableCopyright"];
     
     mUserPresets.clear();
     mStandardPresets.clear();
@@ -297,7 +289,7 @@ modeDictionary()
 
 	[mSettingsCurveNumber removeAllItems];
 	
-	NSMenu* countMenu = [mSettingsCurveNumber menu];
+	NSMenu* countMenu = mSettingsCurveNumber.menu;
 	
 	for (int i = 1; i <= SaverSettings::MaxCurveCount; ++i) {
 		NSMenuItem* item = [[NSMenuItem alloc]
@@ -306,7 +298,7 @@ modeDictionary()
 			keyEquivalent: @""];
 		if (!item) continue;
 		
-		[item setTag: i];
+		item.tag = i;
 		[countMenu addItem: item];
 		[item release];
 	};
@@ -315,7 +307,7 @@ modeDictionary()
 - (NSPanel*)showSheetWithSettings: (const SaverSettings&) settings;
 {
 	mRandom = [[SpirexScreenSaverView defaults] boolForKey: keyRandomPreset];
-	[mSavedRandom setState: mRandom ? NSOnState : NSOffState];
+	mSavedRandom.state = mRandom ? NSOnState : NSOffState;
 	
 	mSettings = settings;
 	
@@ -346,7 +338,7 @@ modeDictionary()
 	[self updateSavedUI];
     
     if (!mSaverPreview)
-        mSaverPreview = [[SpirexScreenSaverView alloc] initWithFrame: [mSaverPane bounds]
+        mSaverPreview = [[SpirexScreenSaverView alloc] initWithFrame: mSaverPane.bounds
                                                            isPreview: YES];
     [mSaverPane addSubview: mSaverPreview];
 
@@ -357,7 +349,7 @@ modeDictionary()
         mPreviewTimer = nil;
     }
     
-    mPreviewTimer = [NSTimer timerWithTimeInterval: [mSaverPreview animationTimeInterval]
+    mPreviewTimer = [NSTimer timerWithTimeInterval: mSaverPreview.animationTimeInterval
                                             target: self
                                           selector: @selector(timerAnimate:)
                                           userInfo: nil
@@ -382,7 +374,7 @@ modeDictionary()
 
 - (void)savedPick:(id) sender
 {
-	NSInteger i = [mSavedSettings indexOfSelectedItem];
+	NSInteger i = mSavedSettings.indexOfSelectedItem;
 	if (0 <= i  &&  i < mUserPresets.size())
 		mSettings = mUserPresets[i];
 	else {
@@ -399,8 +391,8 @@ modeDictionary()
 
 - (void)savedSave:(id) sender
 {
-	NSString* name = [mSavedName stringValue];
-	if ([name length] == 0) return;
+	NSString* name = mSavedName.stringValue;
+	if (name.length == 0) return;
 	
 	NSDictionary* preset = [SettingsSheet buildDictFromSettings: mSettings];
 
@@ -413,7 +405,7 @@ modeDictionary()
 	else
 		newPresets = [NSMutableDictionary dictionaryWithCapacity: 1];
 		
-	[newPresets setObject: preset forKey: name];
+	newPresets[name] = preset;
 	[defaults setObject: newPresets forKey: keyUserPresets];
     [defaults synchronize];
 
@@ -424,8 +416,8 @@ modeDictionary()
 
 - (void)savedDelete:(id) sender
 {
-	NSString* name = [mSavedSettings titleOfSelectedItem];
-	if ([name length] == 0) return;
+	NSString* name = mSavedSettings.titleOfSelectedItem;
+	if (name.length == 0) return;
 	
 	NSUserDefaults* defaults = [SpirexScreenSaverView defaults];
 	NSDictionary* presets = [defaults dictionaryForKey: keyUserPresets];
@@ -456,7 +448,7 @@ modeDictionary()
 
 - (void)savedRandomChanged:(id) sender
 {
-	mRandom = [mSavedRandom state] == NSOnState;
+	mRandom = mSavedRandom.state == NSOnState;
     if (sender != self) {
         NSUserDefaults* def = [SpirexScreenSaverView defaults];
 		[def setBool: mRandom forKey: keyRandomPreset];
@@ -495,16 +487,16 @@ modeDictionary()
 	[self enableSettings];
     [mSaverPreview newSettings: mSettings];
 	
-	NSInteger selectedIndex = [mSavedSettings indexOfSelectedItem];
+	NSInteger selectedIndex = mSavedSettings.indexOfSelectedItem;
 	if (selectedIndex >= 0) {
-		NSString* name = [mSavedSettings titleOfSelectedItem];
+		NSString* name = mSavedSettings.titleOfSelectedItem;
 		
 		if (selectedIndex > mUserPresets.size()) {
 			//XXX Localize this string
 			name = [NSString localizedStringWithFormat: @"Copy of %@", name];
 		}
 		
-		[mSavedName setStringValue: name];
+		mSavedName.stringValue = name;
 		[mSavedName setEnabled: YES];
 		[mSavedSettings selectItemAtIndex: -1];
 		
@@ -527,21 +519,21 @@ modeDictionary()
 			= [[self class] userPresetsDictionaryFromDefaults: defaults];
 		if (!presets) break;
 		
-		NSArray* keys = [presets allKeys];
+		NSArray* keys = presets.allKeys;
 		keys = [keys sortedArrayUsingSelector:
 			@selector(caseInsensitiveCompare:)];
 			
-		mUserPresets.reserve([keys count]);
+		mUserPresets.reserve(keys.count);
 		
-		for (int i = 0; i < [keys count]; ++i) {
-			NSString* key = [keys objectAtIndex: i];
+		for (int i = 0; i < keys.count; ++i) {
+			NSString* key = keys[i];
 			[mSavedSettings addItemWithTitle: key];
 			mUserPresets.push_back([SettingsSheet readSettingsFromDict:
-                                    [presets objectForKey: key]]);
+                                    presets[key]]);
 		};
 		
 		if (!mUserPresets.empty() > 0) {
-			[[mSavedSettings menu] addItem: [NSMenuItem separatorItem]];
+			[mSavedSettings.menu addItem: [NSMenuItem separatorItem]];
 		}
 	} while (false);
 
@@ -552,33 +544,33 @@ modeDictionary()
 		NSDictionary* presets = [[self class] standardPresetsDictionary];
 		if (!presets) break;
 		
-		NSArray* keys = [presets allKeys];
+		NSArray* keys = presets.allKeys;
 		keys = [keys sortedArrayUsingSelector:
 						@selector(caseInsensitiveCompare:)];
 
-		mStandardPresets.reserve([keys count]);
+		mStandardPresets.reserve(keys.count);
 		
-		for (int i = 0; i < [keys count]; ++i) {
-			NSString* key = [keys objectAtIndex: i];
+		for (int i = 0; i < keys.count; ++i) {
+			NSString* key = keys[i];
 			[mSavedSettings addItemWithTitle: key];
 			mStandardPresets.push_back([SettingsSheet readSettingsFromDict:
-											[presets objectForKey: key]]);
+											presets[key]]);
 		};
 	} while (false);
 }
 
 - (void)updateSavedUI
 {
-	NSInteger i = [mSavedSettings indexOfSelectedItem];
+	NSInteger i = mSavedSettings.indexOfSelectedItem;
 	if (i < 0) {
-		bool hasName = [[mSavedName stringValue] length] > 0;
-		[mSavedSaveButton setEnabled: hasName];
+		bool hasName = mSavedName.stringValue.length > 0;
+		mSavedSaveButton.enabled = hasName;
 		[mSavedDeleteButton setEnabled: NO];
 	}
 	else {
-		[mSavedName setStringValue: @""];
+		mSavedName.stringValue = @"";
 		[mSavedName setEnabled: NO];
-		[mSavedDeleteButton setEnabled: (i < mUserPresets.size())];
+		mSavedDeleteButton.enabled = (i < mUserPresets.size());
 		[mSavedSaveButton setEnabled: NO];
 	}
 }
@@ -587,66 +579,60 @@ modeDictionary()
 - (void)displaySettings
 {
 	[mSettingsMode selectItem:
-		[[mSettingsMode menu] itemWithTag: mSettings.mMode]];
+		[mSettingsMode.menu itemWithTag: mSettings.mMode]];
 
 	[mSettingsCurveNumber selectItem:
-		[[mSettingsCurveNumber menu] itemWithTag: mSettings.mCurveCount]];
+		[mSettingsCurveNumber.menu itemWithTag: mSettings.mCurveCount]];
 		
-	[mSettingsCurveLength   setIntValue: mSettings.mCurveLength];
-	[mSettingsSpeed			setIntValue: mSettings.mAngleChangeRate];
-	[mSettingsEvolutionRate setIntValue: mSettings.mEvolutionRate];
+	mSettingsCurveLength.intValue = mSettings.mCurveLength;
+	mSettingsSpeed.intValue = mSettings.mAngleChangeRate;
+	mSettingsEvolutionRate.intValue = mSettings.mEvolutionRate;
 	
-	[mSettingsThick			setState:
-		mSettings.mThickLines			? NSOnState : NSOffState];
-	[mSettingsColor			setState:
-		mSettings.mInColor				? NSOnState : NSOffState];
-	[mSettingsFixed			setState:
-		mSettings.mFixed				? NSOnState : NSOffState];
-	[mSettingsPoints		setState:
-		mSettings.mPoints				? NSOnState : NSOffState];
-	[mSettingsTriAxial      setState:
-		mSettings.mTriAxial			? NSOnState : NSOffState];
+	mSettingsThick.state =	mSettings.mThickLines			? NSOnState : NSOffState;
+	mSettingsColor.state =	mSettings.mInColor				? NSOnState : NSOffState;
+	mSettingsFixed.state =	mSettings.mFixed				? NSOnState : NSOffState;
+	mSettingsPoints.state =	mSettings.mPoints				? NSOnState : NSOffState;
+	mSettingsTriAxial.state =	mSettings.mTriAxial			? NSOnState : NSOffState;
 	
 	[mSettingsTexture setPath:
-		[NSString stringWithCString: mSettings.getTextureStr()
-                           encoding: NSUTF8StringEncoding]];
+		@(mSettings.getTextureStr())];
 	
 	[self enableSettings];
 }
 
 - (void)enableSettings
 {
-	[mSettingsMode			setEnabled: !mRandom];
-	[mSettingsCurveNumber   setEnabled: !mRandom];
-	[mSettingsCurveLength   setEnabled: !mRandom && mSettings.usesLength()];
-	[mSettingsSpeed			setEnabled: !mRandom];
-	[mSettingsEvolutionRate setEnabled: !mRandom];
-	[mSettingsThick			setEnabled: !mRandom && mSettings.usesThickness()];
-	[mSettingsColor			setEnabled: !mRandom];
-	[mSettingsFixed			setEnabled: !mRandom && mSettings.usesFixed()];
-	[mSettingsPoints		setEnabled: !mRandom];
-	[mSettingsTriAxial		setEnabled: !mRandom && mSettings.usesTriAxial()];
-	[mSettingsTexture		setEnabled: !mRandom && mSettings.usesTexture()];
+	mSettingsMode.enabled = !mRandom;
+	mSettingsCurveNumber.enabled = !mRandom;
+	mSettingsCurveLength.enabled = !mRandom && mSettings.usesLength();
+	mSettingsSpeed.enabled = !mRandom;
+	mSettingsEvolutionRate.enabled = !mRandom;
+	mSettingsThick.enabled = !mRandom && mSettings.usesThickness();
+	mSettingsColor.enabled = !mRandom;
+	mSettingsFixed.enabled = !mRandom && mSettings.usesFixed();
+	mSettingsPoints.enabled = !mRandom;
+	mSettingsTriAxial.enabled = !mRandom && mSettings.usesTriAxial();
+	mSettingsTexture.enabled = !mRandom && mSettings.usesTexture();
 }
 
 - (void)fetchSettings
 {
 	mSettings.mMode			= (SaverSettings::RenderMode)
-								  [[mSettingsMode selectedItem] tag];
-	mSettings.mCurveCount	= static_cast<int>([[mSettingsCurveNumber selectedItem] tag]);
-	mSettings.mCurveLength	= [mSettingsCurveLength intValue];
-	mSettings.mAngleChangeRate = [mSettingsSpeed intValue];
-	mSettings.mEvolutionRate   = [mSettingsEvolutionRate intValue];
+								  mSettingsMode.selectedItem.tag;
+	mSettings.mCurveCount	= static_cast<int>(mSettingsCurveNumber.selectedItem.tag);
+	mSettings.mCurveLength	= mSettingsCurveLength.intValue;
+	mSettings.mAngleChangeRate = mSettingsSpeed.intValue;
+	mSettings.mEvolutionRate   = mSettingsEvolutionRate.intValue;
 	
-	mSettings.mThickLines	= [mSettingsThick state] == NSOnState;
-	mSettings.mInColor		= [mSettingsColor state] == NSOnState;
-	mSettings.mFixed		= [mSettingsFixed state] == NSOnState;
-	mSettings.mPoints		= [mSettingsPoints state] == NSOnState;
-	mSettings.mTriAxial		= [mSettingsTriAxial state] == NSOnState;
+	mSettings.mThickLines	= mSettingsThick.state == NSOnState;
+	mSettings.mInColor		= mSettingsColor.state == NSOnState;
+	mSettings.mFixed		= mSettingsFixed.state == NSOnState;
+	mSettings.mPoints		= mSettingsPoints.state == NSOnState;
+	mSettings.mTriAxial		= mSettingsTriAxial.state == NSOnState;
 	
 	NSString* texturePath = [mSettingsTexture path];
-	if (texturePath  &&  [texturePath length] > 0)
-		mSettings.setTexture([texturePath UTF8String]);
+	if (texturePath  &&  texturePath.length > 0)
+		mSettings.setTexture(texturePath.UTF8String);
 	else
 		mSettings.clearTexture();
 }

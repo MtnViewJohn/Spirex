@@ -35,12 +35,12 @@
     NSTimeInterval  mSinceLastCheck;
 }
 
-- (id)initWithTarget: (id)target
+- (instancetype)initWithTarget: (id)target
     andAction: (SEL)action;
 - (void)dealloc;
 
 - (void)checkForUpdate: (BOOL)alwaysCheck;
-- (NSURL*)downloadURL;
+@property (readonly, copy) NSURL *downloadURL;
 + (NSUserDefaults*) defaults;
 
 // private

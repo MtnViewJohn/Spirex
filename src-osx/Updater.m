@@ -48,7 +48,7 @@ static int32_t instanceCounter = 0;
 
 @implementation Updater
 
-- (id) initWithTarget: (id)target
+- (instancetype) initWithTarget: (id)target
     andAction:(SEL)action;
 {
     mID = OSAtomicAdd32Barrier(1, &instanceCounter);
@@ -58,8 +58,7 @@ static int32_t instanceCounter = 0;
     mDefaults = [[Updater defaults] retain];
     
     mThisVersion =
-        [[[[NSBundle bundleForClass: [self class]] infoDictionary]
-            objectForKey: keyBundleVersion] intValue];
+        [[NSBundle bundleForClass: [self class]].infoDictionary[keyBundleVersion] intValue];
     if (mThisVersion == 0 || mThisVersion == INT_MIN || mThisVersion == INT_MAX)
         mThisVersion = 0;
 
@@ -103,7 +102,7 @@ static int32_t instanceCounter = 0;
         lastUpdateCheckDate = (NSDate*)lastUpdateCheck;
     
     if (lastUpdateCheckDate) {
-        mSinceLastCheck = - [lastUpdateCheckDate timeIntervalSinceNow];
+        mSinceLastCheck = - lastUpdateCheckDate.timeIntervalSinceNow;
     } else {
         mSinceLastCheck = -1;
     }
@@ -174,7 +173,7 @@ static int32_t instanceCounter = 0;
     [mDefaults synchronize];
         
     int updateVersion =
-        [[mUpdateInfo objectForKey: keyBundleVersion] intValue];
+        [mUpdateInfo[keyBundleVersion] intValue];
 
     if (mThisVersion == 0 || mThisVersion == INT_MIN || mThisVersion == INT_MAX
     ||  updateVersion == 0 || updateVersion == INT_MIN || updateVersion == INT_MAX
@@ -187,7 +186,7 @@ static int32_t instanceCounter = 0;
 
 - (NSURL*) downloadURL
 {
-    return [NSURL URLWithString: [mUpdateInfo objectForKey: keyDownloadURL]];
+    return [NSURL URLWithString: mUpdateInfo[keyDownloadURL]];
 }
 
 

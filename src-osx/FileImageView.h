@@ -43,8 +43,7 @@
 
 - (IBAction)imageStepperChanged:(id)sender;
 
-- (NSString*) path;
-- (void) setPath: (NSString*) path;
+@property (copy) NSString *path;
 
 - (void) updateImageList;
 

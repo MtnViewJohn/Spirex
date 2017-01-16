@@ -27,7 +27,7 @@
 
 + (NSString*) resolvePath: (NSString*) path
 {
-	if (!path || [path length] == 0 || [path isAbsolutePath])
+	if (!path || path.length == 0 || path.absolutePath)
 		return path;
 	
 	return [[NSBundle bundleForClass: [self class]] pathForImageResource: path];
@@ -42,7 +42,7 @@
 	
 	[self unregisterDraggedTypes];
 	[self registerForDraggedTypes:
-		[NSArray arrayWithObject: NSFilenamesPboardType]];
+		@[NSFilenamesPboardType]];
 	[self updateImageList];
 }
 
@@ -58,9 +58,9 @@
 {
     NSPasteboard *pboard = [sender draggingPasteboard];
 
-    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+    if ( [pboard.types containsObject:NSFilenamesPboardType] ) {
         NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-        NSUInteger numberOfFiles = [files count];
+        NSUInteger numberOfFiles = files.count;
 		if (numberOfFiles != 1)
 			return NSDragOperationNone;
     }
@@ -73,11 +73,11 @@
 {
     NSPasteboard *pboard = [sender draggingPasteboard];
 
-    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+    if ( [pboard.types containsObject:NSFilenamesPboardType] ) {
         NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-		if ([files count] != 1)
+		if (files.count != 1)
 			return NO;
-		id path = [files objectAtIndex: 0];
+		id path = files[0];
 		if (![path isKindOfClass: [NSString class]])
 			return NO;
 			
@@ -96,20 +96,20 @@
 
 - (IBAction)imageStepperChanged:(id)sender;
 {
-	[self setPath: [mOtherImages objectAtIndex: [mStepper intValue]]];
-	[self sendAction: [self action] to: [self target]];
+	[self setPath: mOtherImages[mStepper.intValue]];
+	[self sendAction: self.action to: self.target];
 } 
 
 - (IBAction)defaultImage:(id)sender
 {
 	[self setPath: @"Spirex"];
-	[self sendAction: [self action] to: [self target]];
+	[self sendAction: self.action to: self.target];
 }
 
 - (IBAction)clearImage:(id)sender
 {
 	[self setPath: @""];
-	[self sendAction: [self action] to: [self target]];
+	[self sendAction: self.action to: self.target];
 }
 
 - (NSString*) path
@@ -120,16 +120,15 @@
 - (void) setPath: (NSString*) path
 {
 	NSString* oldPath = mPath;
-	if (!path || [path length] == 0) {
+	if (!path || path.length == 0) {
 		mPath = @"";
 		[self setImage: NULL];
 	}
 	else {
 		mPath = [path retain];
-		[self setImage:
-			[[[NSImage alloc]
+		self.image =	[[[NSImage alloc]
 				initByReferencingFile: [[self class] resolvePath: mPath]]
-			autorelease]];
+			autorelease];
 	}
 	[oldPath release];
 	[self updateImageList];
@@ -139,15 +138,15 @@
 {
 	if (flag) {
 		[self setPath: mPath];
-		[mStepper setEnabled: [mOtherImages count] > 0];
+		mStepper.enabled = mOtherImages.count > 0;
 	}
 	else {
 		[self setImage: NULL];
 		[mStepper setEnabled: NO];
 	}
-	[super setEnabled: flag];
-	[mDefaultButton setEnabled: flag];
-	[mClearButton setEnabled: flag];
+	super.enabled = flag;
+	mDefaultButton.enabled = flag;
+	mClearButton.enabled = flag;
 }
 
 
@@ -155,19 +154,19 @@
 {
 	NSString* path = [[self class] resolvePath: mPath];
 	
-	if ([path length] == 0) {
+	if (path.length == 0) {
 		[mDirPath release];
 		mDirPath = @"";
 		[mOtherImages removeAllObjects];
-		[mStepper setMinValue: 0.0];
-		[mStepper setMaxValue: 0.0];
-		[mStepper setIntValue: 0];
-		[mStepper setIncrement: 1.0];
+		mStepper.minValue = 0.0;
+		mStepper.maxValue = 0.0;
+		mStepper.intValue = 0;
+		mStepper.increment = 1.0;
 		[mStepper setEnabled: NO];
 		return;
 	}
 
-	NSString* dirPath = [path stringByDeletingLastPathComponent];
+	NSString* dirPath = path.stringByDeletingLastPathComponent;
 	if ([mDirPath isEqualToString: dirPath])
 		return;
 	[mDirPath release];
@@ -182,16 +181,16 @@
 
 	while (NSString *fileName = [direnum nextObject]) {
 		[direnum skipDescendents]; // never recurse
-		if ([fileTypes containsObject: [fileName pathExtension]]) {
+		if ([fileTypes containsObject: fileName.pathExtension]) {
 			[mOtherImages addObject:
 				[dirPath stringByAppendingPathComponent: fileName]];
 		}
 	}
 	
-	[mStepper setMinValue: 0.0];
-	[mStepper setMaxValue: [mOtherImages count] - 1];
-	[mStepper setIntValue: static_cast<int>([mOtherImages indexOfObject: path])];
-	[mStepper setIncrement: 1.0];
+	mStepper.minValue = 0.0;
+	mStepper.maxValue = mOtherImages.count - 1;
+	mStepper.intValue = static_cast<int>([mOtherImages indexOfObject: path]);
+	mStepper.increment = 1.0;
 	[mStepper setEnabled: YES];
 }
 

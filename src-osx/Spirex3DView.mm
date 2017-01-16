@@ -50,7 +50,7 @@
 					autorelease];
 }
 
-- (id) initWithFrame: (NSRect)frame andGeometry: (SpirexGeom*)geometry
+- (instancetype) initWithFrame: (NSRect)frame andGeometry: (SpirexGeom*)geometry
 {
 	mPreparedGL = NO;
 	mPreparedGeom = NO;
@@ -102,8 +102,7 @@
 	}
 	
 	NSString* path
-		= [NSString stringWithCString: mGeom->mSettings.getTextureStr()
-                             encoding: NSUTF8StringEncoding];
+		= @(mGeom->mSettings.getTextureStr());
 	path = [[FileImageView class] resolvePath: path];
 	if (mTexture[0]  &&  [mTexturePath isEqualToString: path])
 		return;
@@ -151,18 +150,18 @@
     NSData* theFile = [NSData dataWithContentsOfFile: filename];
     theImage = [NSBitmapImageRep imageRepWithData: theFile];
     if(theImage != nil) {
-        bitsPPixel = [theImage bitsPerPixel];
-        bytesPRow = [theImage bytesPerRow];
+        bitsPPixel = theImage.bitsPerPixel;
+        bytesPRow = theImage.bytesPerRow;
         if (bitsPPixel == 24)        // No alpha channel
             mTexFormat[texIndex] = GL_RGB;
         else if (bitsPPixel == 32)   // There is an alpha channel
             mTexFormat[texIndex] = GL_RGBA;
-        mTexSize[texIndex].width = [theImage pixelsWide];
-        mTexSize[texIndex].height = [theImage pixelsHigh];
+        mTexSize[texIndex].width = theImage.pixelsWide;
+        mTexSize[texIndex].height = theImage.pixelsHigh;
         mTexBytes[texIndex] = (char*)calloc(bytesPRow * mTexSize[texIndex].height, 1);
         if (mTexBytes[texIndex] != NULL) {
             success = TRUE;
-            theImageData = [theImage bitmapData];
+            theImageData = theImage.bitmapData;
             destRowNum = 0;
             for (rowNum = mTexSize[texIndex].height - 1; rowNum >= 0;
                 rowNum--, destRowNum++ )
@@ -180,14 +179,14 @@
 
 - (void) drawRect: (NSRect)rect
 {
-	NSOpenGLContext* ctx = [self openGLContext];	
+	NSOpenGLContext* ctx = self.openGLContext;	
 	[ctx makeCurrentContext];
 
 	if (!mPreparedGL) {
 		GLint swapInt = 1;
 		[ctx setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];
 		
-		NSRect bounds = [self bounds];
+		NSRect bounds = self.bounds;
 		
         SpirexGL::InitGL(*mGeom, bounds.size.width, bounds.size.height);
             

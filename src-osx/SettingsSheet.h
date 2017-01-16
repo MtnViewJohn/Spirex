@@ -69,7 +69,7 @@
     NSTimer*                mPreviewTimer;
 }
 
-- (id)init;
+- (instancetype)init;
 - (void)dealloc;
 - (void)awakeFromNib;
 

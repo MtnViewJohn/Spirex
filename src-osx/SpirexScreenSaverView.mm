@@ -37,12 +37,12 @@
 	srand(static_cast<unsigned>(time(0)));
 }
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
 	return [self initWithFrame: frame isPreview: YES];
 }
 
-- (id)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
+- (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
 	mGeom = 0;
 	m3DView = NULL;
@@ -60,10 +60,10 @@
 	[self setAutoresizesSubviews: YES];
 
 	m3DView = [[Spirex3DView alloc]
-				initWithFrame: [self bounds] andGeometry: mGeom]; 
+				initWithFrame: self.bounds andGeometry: mGeom]; 
 	[self addSubview: m3DView];
 
-	[self setAnimationTimeInterval: 0.030];
+	self.animationTimeInterval = 0.030;
 	
 	[self readConfiguration];
 
