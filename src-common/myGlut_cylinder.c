@@ -51,11 +51,11 @@
 
 
 struct GLUquadric {
-    GLint   normals;
+    GLint       normals;
     GLboolean   textureCoords;
-    GLint   orientation;
-    GLint   drawStyle;
-    GLvoid    (*errorCallback)( GLint );
+    GLint       orientation;
+    GLint       drawStyle;
+    GLvoid      (*errorCallback)( GLint );
 };
 
 void 
