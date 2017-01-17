@@ -31,7 +31,6 @@
 #include <cmath>
 #include <cstdlib>
 
-static const int TimeDelayPerCurve = 8;
 static const double PI = 3.1415926535897932384626433832795;
 static const double FullCircle = 2 * PI;
 static const double MaxFixedSphereAngleRate = FullCircle / 20;
@@ -402,22 +401,14 @@ void SpirexGeom::init()
     Point3D initWidth(LineWidthBy2, 0.0F, 0.0F);
     ColorRGB initRGB = initColor;
     for (unsigned int curve = 0; curve < SaverSettings::MaxCurveCount; curve++ ) {
-        mPointRingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, initXYZ);
-        mWidthRingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, initWidth);
-        mRadius1RingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, 0.0);
-        mRadius2RingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, 0.0);
-        mRadius3RingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, 0.0);
-        mRadius4RingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, 0.0);
-        mNormalRingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, initNormal);
-        mColorRingBufferArray[curve].resetBuffer(SaverSettings::MaxCurveLength + 1, initRGB);
-        mPointRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mWidthRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mRadius1RingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mRadius2RingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mRadius3RingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mRadius4RingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mNormalRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        mColorRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
+        mPointRingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, initXYZ);
+        mWidthRingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, initWidth);
+        mRadius1RingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, 0.0);
+        mRadius2RingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, 0.0);
+        mRadius3RingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, 0.0);
+        mRadius4RingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, 0.0);
+        mNormalRingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, initNormal);
+        mColorRingBufferArray[curve].resetBuffer(mSettings.mCurveLength + 1, initRGB);
     }
 }
 

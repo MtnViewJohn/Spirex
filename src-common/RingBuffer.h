@@ -25,53 +25,55 @@
 #define INCLUDED_RINGBUFFER
 
 #include <cassert>
-#include <memory>
+#include <array>
 
-template <class T>
+template <class T, unsigned size>
 class RingBuffer
 {
-    std::unique_ptr<T[]> buffer;
-    unsigned bufferSize, ringSize;
+    std::array<T, size> buffer;
+    unsigned ringSize;
     unsigned pointer;
 public:
-    RingBuffer(): bufferSize(0), ringSize(0), pointer(0)    {}
-    RingBuffer(unsigned sz, T init): bufferSize(0), ringSize(0), pointer(0)
-    { resetBuffer(sz, init); }
+    RingBuffer(): ringSize(0), pointer(0)    {}
+    RingBuffer(T init): ringSize(0), pointer(0)
+    { resetBuffer(init); }
     ~RingBuffer() = default;
     void resetBuffer(unsigned sz, T init);
     void setSize(unsigned sz);
     void add(T item);
     T tail(unsigned index) const
-    { return buffer[(pointer + bufferSize - ringSize + index + 1) % bufferSize]; }
+    { return buffer[(pointer + size - ringSize + index + 1) % size]; }
     T get(unsigned index) const
-    { return buffer[(pointer + bufferSize - index) % bufferSize]; }
+    { return buffer[(pointer + size - index) % size]; }
     unsigned length() const      { return ringSize; }
 
     RingBuffer(const RingBuffer&) = delete;
+    RingBuffer(RingBuffer&&) = delete;
     RingBuffer& operator=(const RingBuffer&) = delete;
+    RingBuffer& operator=(RingBuffer&&) = delete;
 };
 
-template <class T>
-void RingBuffer<T>::resetBuffer(unsigned sz, T init)
+template <class T, unsigned size>
+void RingBuffer<T, size>::resetBuffer(unsigned sz, T init)
 {
-    buffer = std::make_unique<T[]>(sz);
-    bufferSize = ringSize = sz;
-    for (unsigned i = 0; i < bufferSize; i++) buffer[i] = init;
+    ringSize = sz;
     pointer = 0;
+    for (T& e: buffer)
+        e = init;
 }
 
-template <class T>
-void RingBuffer<T>::add(T item)
+template <class T, unsigned size>
+void RingBuffer<T, size>::add(T item)
 {
-    pointer = (pointer + 1) % bufferSize;
+    pointer = (pointer + 1) % size;
     buffer[pointer] = item;
 }
 
-template <class T>
-void RingBuffer<T>::setSize(unsigned sz)
+template <class T, unsigned size>
+void RingBuffer<T, size>::setSize(unsigned sz)
 {
 #if DEBUG
-    assert(sz <= bufferSize);
+    assert(sz <= size);
 #endif
     ringSize = sz; 
 }

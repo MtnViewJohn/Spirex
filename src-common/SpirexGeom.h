@@ -29,14 +29,14 @@
 #include "Point3D.h"
 #include "Color.h"
 
-typedef RingBuffer<double>      DoubleRingBuffer;
-typedef RingBuffer<ColorRGB>    RBGColorRingBuffer;
-typedef RingBuffer<ColorHSB>    HSBColorRingBuffer;
-typedef RingBuffer<Point3D>     Point3DRingBuffer;
-
 class SpirexGeom
 {
 private:
+    static const int TimeDelayPerCurve = 8;
+    
+    using DoubleDelayBuffer   = RingBuffer<double, SaverSettings::MaxCurveCount * TimeDelayPerCurve>;
+    using HSBColorDelayBuffer = RingBuffer<ColorHSB, SaverSettings::MaxCurveCount * TimeDelayPerCurve>;
+    
     // These are some geometry constants precomputed for convenience
     double AngleDelay;
     
@@ -70,11 +70,11 @@ private:
     unsigned int    mGeometryCount, mGeometrySteps;
     
     // Geometry buffers
-    DoubleRingBuffer mFixedSphereAngle1Buffer,  mMovingSphereAngle1Buffer;
-    DoubleRingBuffer mFixedSphereAngle2Buffer,  mMovingSphereAngle2Buffer;
-    DoubleRingBuffer mFixedSphereRadiusBuffer,  mMovingSphereRadiusBuffer;
-    DoubleRingBuffer mMovingSphereRadius2Buffer,  mMovingSphereRadius3Buffer;
-    DoubleRingBuffer mMovingSphereRadius4Buffer;
+    DoubleDelayBuffer mFixedSphereAngle1Buffer,  mMovingSphereAngle1Buffer;
+    DoubleDelayBuffer mFixedSphereAngle2Buffer,  mMovingSphereAngle2Buffer;
+    DoubleDelayBuffer mFixedSphereRadiusBuffer,  mMovingSphereRadiusBuffer;
+    DoubleDelayBuffer mMovingSphereRadius2Buffer,  mMovingSphereRadius3Buffer;
+    DoubleDelayBuffer mMovingSphereRadius4Buffer;
     
     // Current color data. The current color slews linearly from a start to a
     // finish position linearly over a random number of steps.
@@ -83,7 +83,7 @@ private:
     
     int mColorCount, mColorSteps;
     
-    HSBColorRingBuffer mColorBuffer;
+    HSBColorDelayBuffer mColorBuffer;
     
     // variables used for slewing curve counts and lengths
     int mCurrentCurveSlew, mTargetCurveSlew;
@@ -112,14 +112,18 @@ private:        // remove when splitting spirex classes
 public:
     SaverSettings mSettings;
     
-    Point3DRingBuffer mPointRingBufferArray[SaverSettings::MaxCurveCount];      // stored drawn vertices
-    Point3DRingBuffer mNormalRingBufferArray[SaverSettings::MaxCurveCount];     // stored drawn vertices
-    Point3DRingBuffer mWidthRingBufferArray[SaverSettings::MaxCurveCount];      // stored drawn vertices
-    DoubleRingBuffer  mRadius1RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
-    DoubleRingBuffer  mRadius2RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
-    DoubleRingBuffer  mRadius3RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
-    DoubleRingBuffer  mRadius4RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
-    RBGColorRingBuffer mColorRingBufferArray[SaverSettings::MaxCurveCount];     // stored vertex colors
+    using DoubleCurveBuffer   = RingBuffer<double, SaverSettings::MaxCurveLength + 1>;
+    using RBGColorCurveBuffer = RingBuffer<ColorRGB, SaverSettings::MaxCurveLength + 1>;
+    using Point3DCurveBuffer  = RingBuffer<Point3D, SaverSettings::MaxCurveLength + 1>;
+    
+    Point3DCurveBuffer mPointRingBufferArray[SaverSettings::MaxCurveCount];      // stored drawn vertices
+    Point3DCurveBuffer mNormalRingBufferArray[SaverSettings::MaxCurveCount];     // stored drawn vertices
+    Point3DCurveBuffer mWidthRingBufferArray[SaverSettings::MaxCurveCount];      // stored drawn vertices
+    DoubleCurveBuffer  mRadius1RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
+    DoubleCurveBuffer  mRadius2RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
+    DoubleCurveBuffer  mRadius3RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
+    DoubleCurveBuffer  mRadius4RingBufferArray[SaverSettings::MaxCurveCount];    // stored radii
+    RBGColorCurveBuffer mColorRingBufferArray[SaverSettings::MaxCurveCount];     // stored vertex colors
     
     Point3D mMovingSphereCenter[SaverSettings::MaxCurveCount];
     
