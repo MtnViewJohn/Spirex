@@ -38,7 +38,7 @@ public:
     };
     int             mVersion;
     int             mSize;
-    unsigned int    mCurveCount;	// Spirex settings
+    unsigned int    mCurveCount;    // Spirex settings
     unsigned int    mCurveLength;
     unsigned int    mAngleChangeRate;
     unsigned int    mEvolutionRate;
@@ -93,8 +93,8 @@ public:
     void            qualify();
 
     const char*     getTexturePtr() const { return mTexturePath.empty() ? nullptr : mTexturePath.c_str(); }
-    size_t          getTextureLen()	const { return mTexturePath.length(); }
-    const char*     getTextureStr() const;	// never returns null
+    size_t          getTextureLen() const { return mTexturePath.length(); }
+    const char*     getTextureStr() const;  // never returns null
     size_t          getTextureStrlen() const;
 };
 

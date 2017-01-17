@@ -28,8 +28,8 @@
 #include <libkern/OSAtomic.h>
 
 // keys in the update dictionary fetch from the server
-static NSString* DefaultModuleName = @"com.ozonehouse.spirex";
-static NSString* keyCheckForUpdates	= @"checkForUpdates";
+static NSString* DefaultModuleName  = @"com.ozonehouse.spirex";
+static NSString* keyCheckForUpdates = @"checkForUpdates";
 static NSString* keyLastUpdateCheck = @"lastUpdateCheck";
 
 static NSString* urlUpdate

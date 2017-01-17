@@ -41,15 +41,15 @@
 #include "resource.h"
 
 
-unsigned long	SaverSettingsWin32::PasswordDelay;   // in seconds
-unsigned long	SaverSettingsWin32::MouseThreshold;  // in pixels
-bool 			SaverSettingsWin32::MuteSound;
-bool			SaverSettingsWin32::Randomize;
-bool			SaverSettingsWin32::Check4Updates;
-int 			SaverSettingsWin32::LevelOfDetail;
-int 			SaverSettingsWin32::DisableHotCorner;
-FILETIME		SaverSettingsWin32::LastUpdateCheck;
-HWND			SaverSettingsWin32::ConfigWindow;
+unsigned long   SaverSettingsWin32::PasswordDelay;   // in seconds
+unsigned long   SaverSettingsWin32::MouseThreshold;  // in pixels
+bool            SaverSettingsWin32::MuteSound;
+bool            SaverSettingsWin32::Randomize;
+bool            SaverSettingsWin32::Check4Updates;
+int             SaverSettingsWin32::LevelOfDetail;
+int             SaverSettingsWin32::DisableHotCorner;
+FILETIME        SaverSettingsWin32::LastUpdateCheck;
+HWND            SaverSettingsWin32::ConfigWindow;
 
 #define REGSTR_PATH_PLUSSCR (REGSTR_PATH_SETUP "\\Screen Savers")
 #define REGSTR_PATH_CONFIG  ("Software\\OzoneSoft\\Spirex Saver")
@@ -208,7 +208,7 @@ void SaverSettingsWin32::WriteGlobalSettings(bool temp)
     res = RegSetValueEx(skey, "CheckForUpdates", 0, REG_DWORD, (BYTE *)(&val), valsize);
     val = (DWORD)LevelOfDetail;
     res = RegSetValueEx(skey, "LevelOfDetail", 0, REG_DWORD, (BYTE *)(&val), valsize);
-    val = (DWORD)(DisableHotCorner + 1);	// add 1 to convert -1 .. 3 to (unsigned) 0 .. 4
+    val = (DWORD)(DisableHotCorner + 1);    // add 1 to convert -1 .. 3 to (unsigned) 0 .. 4
     res = RegSetValueEx(skey, "DisableHotCorner", 0, REG_DWORD, (BYTE *)(&val), valsize);
 
     RegCloseKey(skey);
@@ -267,7 +267,7 @@ void SaverSettingsWin32::InitPresetsRegistry()
 
     SaverSettingsWin32 s;
 
-    //					         crv len spd evol thick color fixed points tri-axial
+    //                  crv len spd evol thick color fixed points tri-axial
     //  Mode
     SaverSettings earth(12, 50, 10, 50, false, false, false, false, false,
                         SaverSettings::WrappedCubes, IDT_EARTH);
@@ -656,8 +656,8 @@ void SaverSettingsWin32::ReadRandomPreset()
 
     for (int i = 0; i <= pick; i++)
         if (!presets.nextPreset()) {
-            ReadCurrentSettings(false);	// this shouldn't happen
-            return;					// but a little paranoia doesn't hurt
+            ReadCurrentSettings(false); // this shouldn't happen
+            return;                     // but a little paranoia doesn't hurt
         }
 
     ReadPreset(presets.currentPresetName());

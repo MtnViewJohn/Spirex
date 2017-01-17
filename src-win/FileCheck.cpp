@@ -56,9 +56,9 @@ static void GiveUp(DWORD exitCode)
 
 static DWORD WINAPI CheckThreadEntry(LPVOID)
 {
-    MIB_IPFORWARDTABLE*	pft;
-    DWORD			dwTableSize = 0;
-    BOOL			bHasDefaultRoute = FALSE;
+    MIB_IPFORWARDTABLE* pft;
+    DWORD               dwTableSize = 0;
+    BOOL                bHasDefaultRoute = FALSE;
 
     GetIpForwardTable(NULL, &dwTableSize, FALSE);
 
@@ -83,7 +83,7 @@ static DWORD WINAPI CheckThreadEntry(LPVOID)
         GiveUp(FileCheck_Abandoned);
 
     hInternetSession = InternetOpen(
-        "Spirex Version Checker",	    // agent
+        "Spirex Version Checker",       // agent
         INTERNET_OPEN_TYPE_PRECONFIG,   // access
         NULL, NULL, 0);                 // defaults
     if (hInternetSession == NULL)
@@ -168,7 +168,7 @@ static DWORD WINAPI CheckThreadEntry(LPVOID)
     PostMessage(MsgHwnd, WM_APP_NEW_VERSION, 0, 0);
     GiveUp(FileCheck_New_Version);
 
-    return 0;	// never reached
+    return 0;   // never reached
 }
 
 void FileCheck(HWND hwnd, const char* site, const char* file2check)
@@ -196,6 +196,6 @@ void FileCheck(HWND hwnd, const char* site, const char* file2check)
 void StopFileCheck()
 {
     if (CheckThread)
-        MsgHwnd = NULL;		// signal to stop checking
+        MsgHwnd = NULL;     // signal to stop checking
 }
 

@@ -26,68 +26,68 @@
 
 
 ColorHSB::ColorHSB(float h, float s, float b)
-:	hue(h),
-	sat(s),
-	bright(b)
+:   hue(h),
+    sat(s),
+    bright(b)
 {
 }
 
 ColorHSB::ColorHSB()
-:	hue(0.0F),
-	sat(0.0F),
-	bright(0.0F)
+:   hue(0.0F),
+    sat(0.0F),
+    bright(0.0F)
 {
 }
 
 ColorRGB::ColorRGB(float r, float g, float b)
-:	red(r),
-	green(g),
-	blue(b),
-        alpha(1.0F)
+:   red(r),
+    green(g),
+    blue(b),
+    alpha(1.0F)
 {
 }
 
 ColorRGB::ColorRGB()
-:	red(0.0F),
-	green(0.0F),
-	blue(0.0F),
-        alpha(1.0F)
+:   red(0.0F),
+    green(0.0F),
+    blue(0.0F),
+    alpha(1.0F)
 {
 }
 
 ColorRGB::ColorRGB(const ColorHSB& HSB)
 {
-	if (HSB.sat < 1.0F) {
-		Set(HSB.bright, HSB.bright, HSB.bright);
-		return;
-	}
+    if (HSB.sat < 1.0F) {
+        Set(HSB.bright, HSB.bright, HSB.bright);
+        return;
+    }
 
-	int i = (int)(HSB.hue / 60.0F);
-	float f = HSB.hue / 60.0F - i;
-	float S = HSB.sat / 100.0F;
-	float p = HSB.bright * (1.0F - S);
-	float q = HSB.bright * (1.0F - S * f);
-	float t = HSB.bright * (1.0F - S * (1.0F - f));
-	switch (i) {
-		case 0:
-			Set(HSB.bright, t, p);
-			break;
-		case 1:
-			Set(q, HSB.bright, p);
-			break;
-		case 2:
-			Set(p, HSB.bright, t);
-			break;
-		case 3:
-			Set(p, q, HSB.bright);
-			break;
-		case 4:
-			Set(t, p, HSB.bright);
-			break;
-		default:	// was 5
-			Set(HSB.bright, p, q);
-			break;
-	}
+    int i = (int)(HSB.hue / 60.0F);
+    float f = HSB.hue / 60.0F - i;
+    float S = HSB.sat / 100.0F;
+    float p = HSB.bright * (1.0F - S);
+    float q = HSB.bright * (1.0F - S * f);
+    float t = HSB.bright * (1.0F - S * (1.0F - f));
+    switch (i) {
+        case 0:
+            Set(HSB.bright, t, p);
+            break;
+        case 1:
+            Set(q, HSB.bright, p);
+            break;
+        case 2:
+            Set(p, HSB.bright, t);
+            break;
+        case 3:
+            Set(p, q, HSB.bright);
+            break;
+        case 4:
+            Set(t, p, HSB.bright);
+            break;
+        default:        // was 5
+            Set(HSB.bright, p, q);
+            break;
+    }
 }
 
 

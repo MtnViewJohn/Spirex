@@ -30,74 +30,74 @@
 class Point3D
 {
 public:
-	GLfloat x, y, z;
+    GLfloat x, y, z;
 
-	Point3D operator+(Point3D b) { 
-		return Point3D(x + b.x, y + b.y, z + b.z); 
-	}
-	
-	Point3D operator-(Point3D b) { 
-		return Point3D(x - b.x, y - b.y, z - b.z); 
-	}
-	
-	Point3D operator*(Point3D b) { 
-		return Point3D(	y * b.z - z * b.y, 
-						z * b.x - x * b.z, 
-						x * b.y - y * b.x); 
-	}
-	
-	Point3D operator*(float b) { 
-		return Point3D(x * b, y * b, z * b); 
-	}
-	
-	Point3D operator*(double b) { 
-		return Point3D((float)(x * b), (float)(y * b), (float)(z * b)); 
-	}
-	
-	Point3D operator/(float b) { 
-		return Point3D(x / b, y / b, z / b); 
-	}
-	
-	bool operator==(Point3D b) { 
-		return (x == b.x) && (y == b.y) && (z == b.z);
-	}
-	
-	
+    Point3D operator+(Point3D b) { 
+        return Point3D(x + b.x, y + b.y, z + b.z); 
+    }
+    
+    Point3D operator-(Point3D b) { 
+        return Point3D(x - b.x, y - b.y, z - b.z); 
+    }
+    
+    Point3D operator*(Point3D b) { 
+        return Point3D( y * b.z - z * b.y,
+                        z * b.x - x * b.z, 
+                        x * b.y - y * b.x); 
+    }
+    
+    Point3D operator*(float b) { 
+        return Point3D(x * b, y * b, z * b); 
+    }
+    
+    Point3D operator*(double b) { 
+        return Point3D((float)(x * b), (float)(y * b), (float)(z * b)); 
+    }
+    
+    Point3D operator/(float b) { 
+        return Point3D(x / b, y / b, z / b); 
+    }
+    
+    bool operator==(Point3D b) { 
+        return (x == b.x) && (y == b.y) && (z == b.z);
+    }
+    
+    
 
-	Point3D(float x1, float y1, float z1):x(x1), y(y1), z(z1)
-	{ 
-	}
+    Point3D(float x1, float y1, float z1):x(x1), y(y1), z(z1)
+    { 
+    }
 
-	Point3D():x(0.0F), y(0.0F), z(0.0F)
-	{
-	}	
-	
-	float length() {
-		return sqrt(x * x + y * y + z * z);
-	}
-	
-	void normalize() {
-		float len = length();
-		if (len < 1e-7) {
-			x = y = 0.0f;	// anything will do
-			z = 1.0f;
-		} else {
-			x = x / len;
-			y = y / len;
-			z = z / len;
-		}
-	}
-	
-	void set(float x1, float y1, float z1) { 
-		x = x1; y = y1; z = z1; 
-	}
-	
-	void setInt() {
-		x = (int)x; y = (int)y; z = (int)z;
-	}
-	
+    Point3D():x(0.0F), y(0.0F), z(0.0F)
+    {
+    }
+    
+    float length() {
+        return sqrt(x * x + y * y + z * z);
+    }
+    
+    void normalize() {
+        float len = length();
+        if (len < 1e-7) {
+            x = y = 0.0f;   // anything will do
+            z = 1.0f;
+        } else {
+            x = x / len;
+            y = y / len;
+            z = z / len;
+        }
+    }
+    
+    void set(float x1, float y1, float z1) { 
+        x = x1; y = y1; z = z1; 
+    }
+    
+    void setInt() {
+        x = (int)x; y = (int)y; z = (int)z;
+    }
+    
 };
 
-	
+    
 
 #endif // INCLUDED_POINT3D

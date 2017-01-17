@@ -27,15 +27,15 @@ class SpirexGeom;
 class SpirexGL;
 
 @interface Spirex3DView : NSOpenGLView {
-	BOOL		mPreparedGL;
-	BOOL		mPreparedGeom;
-	
-	SpirexGeom* mGeom;
+    BOOL    mPreparedGL;
+    BOOL    mPreparedGeom;
+    
+    SpirexGeom* mGeom;
 
-	NSString*   mTexturePath;
-	GLuint		mTextureName;
-	
-	BOOL		mReshaped;
+    NSString*   mTexturePath;
+    GLuint      mTextureName;
+    
+    BOOL        mReshaped;
     
     GLenum mTexFormat[ 1 ];   // Format of texture (GL_RGB, GL_RGBA)
     NSSize mTexSize[ 1 ];     // Width and height

@@ -37,10 +37,10 @@ static const double FullCircle = 2 * PI;
 static const double MaxFixedSphereAngleRate = FullCircle / 20;
 static const double MaxMovingSphereAngleRate = FullCircle / 35;
 static const float  LineWidthBy2 = 0.01F;
-static const double	radiusMax = 1.0;
+static const double radiusMax = 1.0;
 static const double radiusMax23 = 2.0 / 3.0;
-static const int	TicksPerCount = 20;
-static const int	Radius4Max = 3;
+static const int    TicksPerCount = 20;
+static const int    Radius4Max = 3;
 
 
 static inline int RandomBoolean(int p)
@@ -113,12 +113,12 @@ void SpirexGeom::newGeometryDest() {
     MovingSphereBiasStart = fmod(interpolate(MovingSphereBiasStart, MovingSphereBiasFinish, fraction), FullCircle);
     
     // compute new destination randomly
-    double AngleRate = 	(mSettings.mAngleChangeRate * 0.01) * RandomInterval(MaxFixedSphereAngleRate);
+    double AngleRate = (mSettings.mAngleChangeRate * 0.01) * RandomInterval(MaxFixedSphereAngleRate);
     double Angle = RandomInterval(0.0, FullCircle);
     mFixedSphereAngle1RateFinish = AngleRate * cos(Angle);
     mFixedSphereAngle2RateFinish = AngleRate * sin(Angle);
     
-    AngleRate =	(mSettings.mAngleChangeRate * 0.01) * RandomInterval(MaxMovingSphereAngleRate);
+    AngleRate = (mSettings.mAngleChangeRate * 0.01) * RandomInterval(MaxMovingSphereAngleRate);
     Angle = RandomInterval(0.0, FullCircle);
     mMovingSphereAngle1RateFinish = AngleRate * cos(Angle);
     mMovingSphereAngle2RateFinish = AngleRate * sin(Angle);
@@ -160,7 +160,7 @@ void SpirexGeom::newGeometryDest() {
     }
     
     
-    //	Debug("New geometry destination");
+    //    Debug("New geometry destination");
 }
 
 
@@ -293,9 +293,9 @@ void SpirexGeom::plotPoint(double FixedSphereAngle1, double FixedSphereAngle2, d
         }
     } else {
         newHead.x = FixedSphereRadius * cos(FixedSphereAngle1) +
-						  MovingSphereRadius  * cos(MovingSphereAngle1);
+                          MovingSphereRadius  * cos(MovingSphereAngle1);
         newHead.y = FixedSphereRadius * sin(FixedSphereAngle1) +
-						  MovingSphereRadius  * sin(MovingSphereAngle1);
+                          MovingSphereRadius  * sin(MovingSphereAngle1);
     }
     
     // in 2-D/3-D mode do cheesy pseudo-3D using brightness
@@ -346,7 +346,7 @@ SpirexGeom::SpirexGeom(const SaverSettings& settings, float scale, Point3D cente
 }
 
 SpirexGeom::SpirexGeom(const SaverSettings& settings)
-  : mScale(1.0f),	// use default constructor for mScreenCenter
+  : mScale(1.0f),   // use default constructor for mScreenCenter
     mSettings(settings)
 {
     mSettings.qualify();
@@ -426,10 +426,10 @@ void SpirexGeom::NewSaverSettings(const SaverSettings& settings)
     int savedCurveCount = mSettings.mCurveCount;
     int savedCurveLength = mSettings.mCurveLength;
     
-    bool newDest = 		(settings.mAngleChangeRate  != mSettings.mAngleChangeRate) ||
-                        (settings.mEvolutionRate 	!= mSettings.mEvolutionRate);
-    bool is3Dto3D = 	settings.usesPolygons() && mSettings.usesPolygons();
-    bool newMode = 		(settings.mMode 			!= mSettings.mMode) &&
+    bool newDest =      (settings.mAngleChangeRate  != mSettings.mAngleChangeRate) ||
+                        (settings.mEvolutionRate    != mSettings.mEvolutionRate);
+    bool is3Dto3D =     settings.usesPolygons() && mSettings.usesPolygons();
+    bool newMode =      (settings.mMode             != mSettings.mMode) &&
                         (!is3Dto3D ||
                          (settings.mCurveCount != mSettings.mCurveCount) ||
                          (settings.mCurveLength != mSettings.mCurveLength));

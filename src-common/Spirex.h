@@ -33,7 +33,7 @@
 
 class Spirex
 {
-    Point3D	        mScreenCenter;
+    Point3D         mScreenCenter;
     RECT            mRect;
     float           mScale;
     SaverSettings   mSettings;

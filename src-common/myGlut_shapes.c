@@ -184,7 +184,7 @@ doughnut(GLfloat r, GLfloat R, GLint nsides, GLint rings, int texture)
   GLfloat cosTheta, sinTheta;
   GLfloat cosTheta1, sinTheta1;
   GLfloat ringDelta, sideDelta;
-	
+
   ringDelta = 2.0 * M_PI / rings;
   sideDelta = 2.0 * M_PI / nsides;
 
@@ -207,11 +207,11 @@ doughnut(GLfloat r, GLfloat R, GLint nsides, GLint rings, int texture)
 
       glNormal3f(cosTheta1 * cosPhi, -sinTheta1 * cosPhi, sinPhi);
       if (texture)
-      	glTexCoord2f((GLfloat)i / rings, (GLfloat)j / nsides);
+          glTexCoord2f((GLfloat)i / rings, (GLfloat)j / nsides);
       glVertex3f(cosTheta1 * dist, -sinTheta1 * dist, r * sinPhi);
       glNormal3f(cosTheta * cosPhi, -sinTheta * cosPhi, sinPhi);
       if (texture)
-      	glTexCoord2f((GLfloat)(i + 1) / rings, (GLfloat)j / nsides);
+          glTexCoord2f((GLfloat)(i + 1) / rings, (GLfloat)j / nsides);
      glVertex3f(cosTheta * dist, -sinTheta * dist,  r * sinPhi);
     }
     glEnd();

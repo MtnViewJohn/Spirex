@@ -34,69 +34,69 @@
 class SaverSettingsWin32
 { 
 public:
-	SaverSettings   mSettings;
-	static bool     Randomize;
-	static bool     Check4Updates;
-	static FILETIME LastUpdateCheck;
-	static int      LevelOfDetail;
-	static int      DisableHotCorner;
-	
-	
-	
-	static unsigned long    PasswordDelay;   // in seconds
-	static unsigned long    MouseThreshold;  // in pixels
-	static bool             MuteSound;
-	static HWND             ConfigWindow;
-	
-	SaverSettingsWin32();
-	SaverSettingsWin32(const SaverSettingsWin32&);
-	SaverSettingsWin32& operator=(const SaverSettingsWin32&);
+    SaverSettings   mSettings;
+    static bool     Randomize;
+    static bool     Check4Updates;
+    static FILETIME LastUpdateCheck;
+    static int      LevelOfDetail;
+    static int      DisableHotCorner;
+    
+    
+    
+    static unsigned long    PasswordDelay;   // in seconds
+    static unsigned long    MouseThreshold;  // in pixels
+    static bool             MuteSound;
+    static HWND             ConfigWindow;
+    
+    SaverSettingsWin32();
+    SaverSettingsWin32(const SaverSettingsWin32&);
+    SaverSettingsWin32& operator=(const SaverSettingsWin32&);
 
 
-	static void ReadGeneralRegistry(bool temp);
-	static void WriteGlobalSettings(bool temp);
-	static bool DeleteAllSettings();
-	bool ReadCurrentSettings(bool temp);
-	void WriteCurrentSettings(bool temp);
-	void ReadRandomPreset();
-	bool ReadPreset(const char* presetName);
-	void WritePreset(const char* presetName);
-	bool ComparePreset(const char* presetName) const;
-	void PowerAwareness(bool isScreenSaver);
-	static void InitPresetsRegistry();
-	static void DeletePreset(const char* presetName);
-	static bool Time2CheckUpdate();
-	
-	bool operator==(const SaverSettingsWin32& other) const;
+    static void ReadGeneralRegistry(bool temp);
+    static void WriteGlobalSettings(bool temp);
+    static bool DeleteAllSettings();
+    bool ReadCurrentSettings(bool temp);
+    void WriteCurrentSettings(bool temp);
+    void ReadRandomPreset();
+    bool ReadPreset(const char* presetName);
+    void WritePreset(const char* presetName);
+    bool ComparePreset(const char* presetName) const;
+    void PowerAwareness(bool isScreenSaver);
+    static void InitPresetsRegistry();
+    static void DeletePreset(const char* presetName);
+    static bool Time2CheckUpdate();
+    
+    bool operator==(const SaverSettingsWin32& other) const;
 
-	class PresetIter
-	{
-	public:
-		bool nextPreset();
-		inline char* currentPresetName() { return mBuffer.data(); }
-		PresetIter();
-		~PresetIter();
-		DWORD mPresetCount;
-		
-	private:
-		HKEY	mPresetKey;
-		DWORD	mCurrentSetting;
-		DWORD mCurrentIndex;
-		std::vector<char>	mBuffer;
-		void	InitIter();
-		
-		PresetIter(const PresetIter&);
-		PresetIter& operator=(const PresetIter&);
-			// not implemented, can't be assigned or copied
-	};
-	
-		
-	friend class SaverSettingsWin32::PresetIter;
-	
+    class PresetIter
+    {
+    public:
+        bool nextPreset();
+        inline char* currentPresetName() { return mBuffer.data(); }
+        PresetIter();
+        ~PresetIter();
+        DWORD mPresetCount;
+        
+    private:
+        HKEY    mPresetKey;
+        DWORD   mCurrentSetting;
+        DWORD   mCurrentIndex;
+        std::vector<char>   mBuffer;
+        void InitIter();
+        
+        PresetIter(const PresetIter&);
+        PresetIter& operator=(const PresetIter&);
+            // not implemented, can't be assigned or copied
+    };
+    
+        
+    friend class SaverSettingsWin32::PresetIter;
+    
 private:
-	void InitDefaults();
-	bool ReadConfig(const char* path, const char* valueName);
-	void WriteConfig(const char* path, const char* valueName);
+    void InitDefaults();
+    bool ReadConfig(const char* path, const char* valueName);
+    void WriteConfig(const char* path, const char* valueName);
 
 };
 

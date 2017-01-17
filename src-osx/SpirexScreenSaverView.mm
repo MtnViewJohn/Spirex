@@ -34,38 +34,38 @@
 
 + (void)initialize
 {
-	srand(static_cast<unsigned>(time(0)));
+    srand(static_cast<unsigned>(time(0)));
 }
 
 - (instancetype)initWithFrame:(NSRect)frame
 {
-	return [self initWithFrame: frame isPreview: YES];
+    return [self initWithFrame: frame isPreview: YES];
 }
 
 - (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
-	mGeom = 0;
-	m3DView = NULL;
-	mIsPreview = isPreview;
-	mReconfigDate = NULL;
-	mSheet = NULL;
+    mGeom = 0;
+    m3DView = NULL;
+    mIsPreview = isPreview;
+    mReconfigDate = NULL;
+    mSheet = NULL;
     mUpdater = nil;
-	
+
     self = [super initWithFrame:frame isPreview:isPreview];
     if (!self) return self;
 
-	SaverSettings nullSettings;
-	mGeom = new SpirexGeom(nullSettings);
+    SaverSettings nullSettings;
+    mGeom = new SpirexGeom(nullSettings);
 
-	[self setAutoresizesSubviews: YES];
+    [self setAutoresizesSubviews: YES];
 
-	m3DView = [[Spirex3DView alloc]
-				initWithFrame: self.bounds andGeometry: mGeom]; 
-	[self addSubview: m3DView];
+    m3DView = [[Spirex3DView alloc]
+                initWithFrame: self.bounds andGeometry: mGeom]; 
+    [self addSubview: m3DView];
 
-	self.animationTimeInterval = 0.030;
-	
-	[self readConfiguration];
+    self.animationTimeInterval = 0.030;
+    
+    [self readConfiguration];
 
     mUpdater = [[[Updater alloc]
         initWithTarget: self andAction: @selector(showInfo:)] retain];
@@ -76,42 +76,42 @@
 
 - (void)dealloc
 {
-	delete mGeom;
-	if (mReconfigDate)  [mReconfigDate release];
+    delete mGeom;
+    if (mReconfigDate)  [mReconfigDate release];
     if (mUpdater)       [mUpdater release];
     
-	[super dealloc];
+    [super dealloc];
 }
 
 - (void)readConfiguration
 {
-	[self newSettings:
-		[SettingsSheet configurationFromDefaults: [SpirexScreenSaverView defaults]
-				isPreview: mIsPreview]];
+    [self newSettings:
+        [SettingsSheet configurationFromDefaults: [SpirexScreenSaverView defaults]
+                                       isPreview: mIsPreview]];
 }
 
 - (void)newSettings: (const SaverSettings&)newSettings
 {
-	mGeom->NewSaverSettings(newSettings);
+    mGeom->NewSaverSettings(newSettings);
 
-	[m3DView settingsChanged];
-	[m3DView setNeedsDisplay: YES];
+    [m3DView settingsChanged];
+    [m3DView setNeedsDisplay: YES];
 
-	NSTimeInterval reconfigRate = mIsPreview ? 30.0 : (5.0 * 60.0);
-	if (mReconfigDate) [mReconfigDate release];
-	mReconfigDate =
-		[[NSDate dateWithTimeIntervalSinceNow: reconfigRate] retain];
+    NSTimeInterval reconfigRate = mIsPreview ? 30.0 : (5.0 * 60.0);
+    if (mReconfigDate) [mReconfigDate release];
+    mReconfigDate =
+        [[NSDate dateWithTimeIntervalSinceNow: reconfigRate] retain];
 }
 
 - (void)animateOneFrame
 {
-	if ([mReconfigDate compare: [NSDate date]] == NSOrderedAscending)
-		[self readConfiguration];
-	
-	mGeom->NextStep();
-	mGeom->NextStep();
+    if ([mReconfigDate compare: [NSDate date]] == NSOrderedAscending)
+        [self readConfiguration];
+    
+    mGeom->NextStep();
+    mGeom->NextStep();
 
-	[m3DView setNeedsDisplay: YES];
+    [m3DView setNeedsDisplay: YES];
 }
 
 - (BOOL)hasConfigureSheet
@@ -138,7 +138,7 @@
 
 + (NSUserDefaults*) defaults
 {
-	return [Updater defaults];
+    return [Updater defaults];
 }
 
 - (void)showInfo: (id)sender;

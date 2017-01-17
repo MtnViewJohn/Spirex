@@ -27,31 +27,31 @@
 class ColorHSB
 {
 public:
-	float	hue;
-	float	sat;
-	float	bright;
+    float   hue;
+    float   sat;
+    float   bright;
 
-	ColorHSB(float h, float s, float b);
-	ColorHSB();
+    ColorHSB(float h, float s, float b);
+    ColorHSB();
 };
 
 class ColorRGB
 {
 public:
-	float	red;
-	float	green;
-	float	blue;
-        float   alpha;
+    float   red;
+    float   green;
+    float   blue;
+    float   alpha;
 
-	ColorRGB(float r, float g, float b);
-	ColorRGB(const ColorHSB&);
-	ColorRGB();
-	void Set(float r, float g, float b)	// inline
-	{
-		red = r;
-		green = g;
-		blue = b;
-	}
+    ColorRGB(float r, float g, float b);
+    ColorRGB(const ColorHSB&);
+    ColorRGB();
+    void Set(float r, float g, float b) // inline
+    {
+        red = r;
+        green = g;
+        blue = b;
+    }
 
 };
 

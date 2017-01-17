@@ -34,7 +34,7 @@ class RingBuffer
     unsigned bufferSize, ringSize;
     unsigned pointer;
 public:
-    RingBuffer(): bufferSize(0), ringSize(0), pointer(0)	 {}
+    RingBuffer(): bufferSize(0), ringSize(0), pointer(0)    {}
     RingBuffer(unsigned sz, T init): bufferSize(0), ringSize(0), pointer(0)
     { resetBuffer(sz, init); }
     ~RingBuffer() = default;
@@ -72,7 +72,7 @@ void RingBuffer<T>::setSize(unsigned sz)
 {
 #if DEBUG
     assert(sz <= bufferSize);
-#endif	
+#endif
     ringSize = sz; 
 }
 

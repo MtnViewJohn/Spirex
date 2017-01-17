@@ -191,7 +191,7 @@ void LinkWin::InitLinkWin(HINSTANCE instHandle)
     wc.hInstance = instHandle;
     wc.hIcon = NULL;
     wc.hCursor = LinkCursor;
-    wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);	// standard dialog bkgrnd
+    wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1); // standard dialog bkgrnd
     wc.lpszMenuName = NULL;
     wc.lpszClassName = "LinkClass";
     RegisterClass(&wc);

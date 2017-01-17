@@ -38,11 +38,11 @@
 #include "FileCheck.h"
 #include <shellapi.h>
 
-#define WM_USER_SETTINGS	(WM_USER + 100)		// WPARAM = ptr to new settings
-#define WM_USER_START		(WM_USER + 101)
-#define WM_USER_STOP		(WM_USER + 102)
-#define WM_USER_CLEAR		(WM_USER + 103)
-#define WM_USER_TICK		(WM_USER + 104)		// WPARAM = AnimateCount
+#define WM_USER_SETTINGS    (WM_USER + 100)     // WPARAM = ptr to new settings
+#define WM_USER_START       (WM_USER + 101)
+#define WM_USER_STOP        (WM_USER + 102)
+#define WM_USER_CLEAR       (WM_USER + 103)
+#define WM_USER_TICK        (WM_USER + 104)     // WPARAM = AnimateCount
 
 static void Histogram();
 static BOOL CALLBACK  UpdateDialogProc(HWND, UINT, WPARAM, LPARAM);
@@ -228,8 +228,8 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(HWND hwnd, UINT msg,
         MSG msg;
         while (PeekMessage(&msg, NULL, WM_USER_TICK, WM_USER_TICK, PM_REMOVE))
             if (LOWORD(msg.message) == WM_QUIT) {
-                PostQuitMessage(0);   // Put back any WM_QUITs, unlikely (impossible?)
-                break;                //   but just in case...
+                PostQuitMessage(0);     // Put back any WM_QUITs, unlikely (impossible?)
+                break;                  //   but just in case...
             }
 
         if (mAnimate) {
@@ -316,7 +316,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(HWND hwnd, UINT msg,
             return 0;
         } else {
             if ((UINT_PTR)wParam != IDTM_RANDOM_PRESET)
-                return 1;	// just in case there are other timers
+                return 1;   // just in case there are other timers
 
             if (SaverSettingsWin32::Randomize) {
                 SaverSettingsWin32 temp;
@@ -324,8 +324,8 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(HWND hwnd, UINT msg,
                 NewSaverSettings(temp);
             }
 
-            return 0;	// this is our timer but we do nothing
-        }	// for mWTimerID fall through to tick handler
+            return 0;   // this is our timer but we do nothing
+        }               // for mWTimerID fall through to tick handler
     case WM_LBUTTONDOWN:
     case WM_MBUTTONDOWN:
     case WM_RBUTTONDOWN:
@@ -357,7 +357,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(HWND hwnd, UINT msg,
             break;
         case (PBT_APMPOWERSTATUSCHANGE):
             SaverSettingsWin32 temp = mSettings;
-            NewSaverSettings(temp);			// re-evaluate settings for new power state
+            NewSaverSettings(temp);         // re-evaluate settings for new power state
             break;
         }
         return TRUE;
@@ -374,7 +374,7 @@ LRESULT CALLBACK SaverWin::SaverWindowProc(HWND hwnd, UINT msg,
             if ((wParam & 0xFFF0) == SC_MONITORPOWER && lParam == 2) {
                 Debug(hwnd, "Stopping because monitor powered off.");
                 CloseSaverWindow();
-                break;		// let system blank screen
+                break;      // let system blank screen
             }
         }
         break;
@@ -440,7 +440,7 @@ void CALLBACK SaverWin::MMTimeProc(UINT uID, UINT uMsg, DWORD, DWORD dw1, DWORD 
         Flag = 1;
     }
 
-    if (uID != mMMTimerID) return;	// just in case there are other timers
+    if (uID != mMMTimerID) return;  // just in case there are other timers
 
     if (false) {
         Histogram();
@@ -700,20 +700,20 @@ static BOOL CALLBACK UpdateDialogProc(HWND hwnd, UINT msg,
 
 static void Histogram()
 {
-    static int	 count = 0;
+    static int   count = 0;
     static DWORD beginTime;
     static DWORD lastTime = 0;
     static int   buckets[21];
 
-    CHAR		buffer[256];
+    CHAR         buffer[256];
 
-    DWORD		thisTime = GetTickCount();
+    DWORD        thisTime = GetTickCount();
 
     if (lastTime != 0) {
         DWORD interval = (thisTime - lastTime) / 5;
 
-        if (interval < 0)	interval = 0;
-        if (interval >= 20)	interval = 20;
+        if (interval < 0)   interval = 0;
+        if (interval >= 20) interval = 20;
         buckets[interval] += 1;
 
         count += 1;

@@ -37,65 +37,65 @@ class Spirex;
 class SaverWin
 {
 public:
-	enum SaverMode {ScreenSaver = 0, Preview = 1};
-	HWND mHwnd;
+    enum SaverMode {ScreenSaver = 0, Preview = 1};
+    HWND mHwnd;
 private:
-	static ATOM ClassAtom;
-	HWND mParentHwnd;
-	RECT mRect;
-	int height, width;
-	SaverMode mSaverMode;
-	HINSTANCE mInstHandle;
-	DWORD mInitTime;    		// in ms
-	POINT mInitCursorPos;
-	static long  mIsDialogActive;
-	static bool  ReallyClose;	// for NT, so we know if a WM_CLOSE came from us or it.
-	static long SaverCount;
-	static bool	ThereIsAnUpdate;
-	
-	static SaverWin* SaverWinList;
-	SaverWin* mNextSaverWin;
+    static ATOM ClassAtom;
+    HWND mParentHwnd;
+    RECT mRect;
+    int height, width;
+    SaverMode mSaverMode;
+    HINSTANCE mInstHandle;
+    DWORD mInitTime;            // in ms
+    POINT mInitCursorPos;
+    static long  mIsDialogActive;
+    static bool  ReallyClose;   // for NT, so we know if a WM_CLOSE came from us or it.
+    static long SaverCount;
+    static bool ThereIsAnUpdate;
+    
+    static SaverWin* SaverWinList;
+    SaverWin* mNextSaverWin;
 
-	std::unique_ptr<Spirex> mAnimator;
-	bool mAnimate;
+    std::unique_ptr<Spirex> mAnimator;
+    bool mAnimate;
 
-	SaverSettingsWin32 mSettings;		// current settings, owned by animate thread
-	bool	mOriginal3DRender;
-	
-	DWORD	mLastRender;	// ms
-	DWORD	mLastCount;
-	int		mRenderCount;
-	int		mFrameRate;
-	DWORD	mLastTick;
+    SaverSettingsWin32 mSettings;   // current settings, owned by animate thread
+    bool mOriginal3DRender;
+    
+    DWORD   mLastRender;            // ms
+    DWORD   mLastCount;
+    int     mRenderCount;
+    int     mFrameRate;
+    DWORD   mLastTick;
 
-	void CloseSaverWindow();
-	void Animate(int steps);
-	
-	static UINT mMMTimerID;
-	UINT_PTR mWTimerID;
-	UINT_PTR mPresetTimerID;
-	static int AnimateCount;
-	static void CALLBACK MMTimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
-	
-	static DWORD WINAPI StartThread(LPVOID SaverWinPtr);
-	DWORD StartWindow();
-	HANDLE mThread;
-	DWORD mThreadID;
-	DWORD mParentThread;
-	
-	void PrepareToExit(HWND hwnd);
-	static void Initialize();
+    void CloseSaverWindow();
+    void Animate(int steps);
+    
+    static UINT mMMTimerID;
+    UINT_PTR mWTimerID;
+    UINT_PTR mPresetTimerID;
+    static int AnimateCount;
+    static void CALLBACK MMTimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
+    
+    static DWORD WINAPI StartThread(LPVOID SaverWinPtr);
+    DWORD StartWindow();
+    HANDLE mThread;
+    DWORD mThreadID;
+    DWORD mParentThread;
+    
+    void PrepareToExit(HWND hwnd);
+    static void Initialize();
 public:
-	SaverWin(	HWND hparwnd, SaverMode mSaverMode, const SaverSettingsWin32& newSettings, 
-				RECT screenRect, HINSTANCE hInst);
-	static void Terminate();
-	void StopAnimation();
-	void StartAnimation();
-	void NewSaverSettings(const SaverSettingsWin32& newSettings);
-	void Clear();
-	
-	LRESULT CALLBACK SaverWindowProc(HWND hwnd, UINT msg, 
-		WPARAM wParam, LPARAM lParam);
+    SaverWin(HWND hparwnd, SaverMode mSaverMode, const SaverSettingsWin32& newSettings,
+                RECT screenRect, HINSTANCE hInst);
+    static void Terminate();
+    void StopAnimation();
+    void StartAnimation();
+    void NewSaverSettings(const SaverSettingsWin32& newSettings);
+    void Clear();
+    
+    LRESULT CALLBACK SaverWindowProc(HWND hwnd, UINT msg, 
+        WPARAM wParam, LPARAM lParam);
 };
 
 

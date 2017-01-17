@@ -448,10 +448,10 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
                         // Left Face 6
                         //glColor3f(1.0f, 1.0f, 0.0f);
                         GLQuadMesh(settings.mPoints, facets, facets,
-                                   Point3D(1.0f, 0.0f, 0.0f), Point3D(-radius, -radius2,  radius3),	// Bottom Right Of The Texture and Quad
-                                   Point3D(1.0f, 1.0f, 0.0f), Point3D(-radius,  radius2,  radius3),	// Top Right Of The Texture and Quad
-                                   Point3D(0.0f, 0.0f, 0.0f), Point3D(-radius, -radius2, -radius3),	// Bottom Left Of The Texture and Quad
-                                   Point3D(0.0f, 1.0f, 0.0f), Point3D(-radius,  radius2, -radius3));	// Top Left Of The Texture and Quad
+                                   Point3D(1.0f, 0.0f, 0.0f), Point3D(-radius, -radius2,  radius3), // Bottom Right Of The Texture and Quad
+                                   Point3D(1.0f, 1.0f, 0.0f), Point3D(-radius,  radius2,  radius3), // Top Right Of The Texture and Quad
+                                   Point3D(0.0f, 0.0f, 0.0f), Point3D(-radius, -radius2, -radius3), // Bottom Left Of The Texture and Quad
+                                   Point3D(0.0f, 1.0f, 0.0f), Point3D(-radius,  radius2, -radius3));// Top Left Of The Texture and Quad
                     }
                     
                     glPopMatrix();
@@ -519,7 +519,7 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
                     }
                     
                     break;
-                default:	// never reached, only here to suppress warnings
+                default:        // never reached, only here to suppress warnings
                     break;
             }
             glPopMatrix();
@@ -585,7 +585,7 @@ static void spotLight(GLenum light, GLfloat x, GLfloat y, GLfloat z)
     glLightf(light, GL_SPOT_CUTOFF, 55.0F);
     glLightf(light, GL_SPOT_EXPONENT, 90.0F);
     
-    const GLfloat Intensity	= 0.75F;
+    const GLfloat Intensity = 0.75F;
     
     GLfloat lightAmb[4] = { 0.10F, 0.10F, 0.10F, 1.00F };
     GLfloat lightDif[4] = { Intensity, Intensity, Intensity, 1.00F };
@@ -608,7 +608,7 @@ static void setLights()
     GLfloat light0Pos[4] = { 0.0F, 1.7F, 1.0F, 0.00F };
     glLightfv(GL_LIGHT2, GL_POSITION, light0Pos);
     
-    const GLfloat Intensity	= 0.35F;
+    const GLfloat Intensity = 0.35F;
     GLfloat light0Amb[4] = { 0.10F, 0.10F, 0.10F, 1.00F };
     GLfloat light0Dif[4] = { Intensity, Intensity, Intensity, 1.00F };
     GLfloat light0Spc[4] = { Intensity, Intensity, Intensity, 1.00F };

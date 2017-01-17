@@ -36,8 +36,8 @@ private:
     LRESULT CALLBACK LinkWinProc(HWND hwnd, UINT msg,
                                  WPARAM wParam, LPARAM lParam);
 
-    LinkWin(const LinkWin&);			// no automatic copy constructor
-    LinkWin& operator=(const LinkWin&);	// or assignment operator
+    LinkWin(const LinkWin&);            // no automatic copy constructor
+    LinkWin& operator=(const LinkWin&); // or assignment operator
 
 public:
     LinkWin(HWND hparwnd, RECT screenRect, HINSTANCE hInst);

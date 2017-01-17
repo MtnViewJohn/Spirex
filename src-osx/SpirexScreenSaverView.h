@@ -29,13 +29,13 @@ class SpirexGeom;
 class SaverSettings;
 
 @interface SpirexScreenSaverView : ScreenSaverView {
-	SpirexGeom*				mGeom;
-	Spirex3DView*			m3DView;
+    SpirexGeom*             mGeom;
+    Spirex3DView*           m3DView;
 
-	BOOL					mIsPreview;
-	NSDate*					mReconfigDate;
-	
-	IBOutlet SettingsSheet* mSheet;
+    BOOL                    mIsPreview;
+    NSDate*                 mReconfigDate;
+
+    IBOutlet SettingsSheet* mSheet;
     
     Updater*                mUpdater;
 }

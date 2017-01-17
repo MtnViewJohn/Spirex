@@ -28,7 +28,7 @@
 
 void CreateConfigDialog(HINSTANCE hInst, HWND hwnd);
 
-#define WM_APP_BAD_TEXTURE	(WM_APP + 101)
+#define WM_APP_BAD_TEXTURE  (WM_APP + 101)
 
 #endif // INCLUDED_CONFIGURE
 

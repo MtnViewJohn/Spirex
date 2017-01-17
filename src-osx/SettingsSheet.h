@@ -29,44 +29,44 @@
 
 @interface SettingsSheet : NSObject<NSWindowDelegate>
 {
-	IBOutlet NSPanel*		mDrawer;
+    IBOutlet NSPanel*       mDrawer;
     IBOutlet NSView*        mSaverPane;
-	
-	IBOutlet NSPopUpButton*	mSavedSettings;
-	IBOutlet NSTextField*   mSavedName;
-	IBOutlet NSButton*		mSavedSaveButton;
-	IBOutlet NSButton*		mSavedDeleteButton;
-	IBOutlet NSButton*		mSavedRandom;
-	
-	IBOutlet NSPopUpButton* mSettingsMode;
-	IBOutlet NSPopUpButton* mSettingsCurveNumber;
-	IBOutlet NSSlider*		mSettingsCurveLength;
-	IBOutlet NSSlider*		mSettingsSpeed;
-	IBOutlet NSSlider*		mSettingsEvolutionRate;
-	IBOutlet NSButton*		mSettingsThick;
-	IBOutlet NSButton*		mSettingsColor;
-	IBOutlet NSButton*		mSettingsFixed;
-	IBOutlet NSButton*		mSettingsPoints;
-	IBOutlet NSButton*		mSettingsTriAxial;
+
+    IBOutlet NSPopUpButton* mSavedSettings;
+    IBOutlet NSTextField*   mSavedName;
+    IBOutlet NSButton*      mSavedSaveButton;
+    IBOutlet NSButton*      mSavedDeleteButton;
+    IBOutlet NSButton*      mSavedRandom;
+
+    IBOutlet NSPopUpButton* mSettingsMode;
+    IBOutlet NSPopUpButton* mSettingsCurveNumber;
+    IBOutlet NSSlider*      mSettingsCurveLength;
+    IBOutlet NSSlider*      mSettingsSpeed;
+    IBOutlet NSSlider*      mSettingsEvolutionRate;
+    IBOutlet NSButton*      mSettingsThick;
+    IBOutlet NSButton*      mSettingsColor;
+    IBOutlet NSButton*      mSettingsFixed;
+    IBOutlet NSButton*      mSettingsPoints;
+    IBOutlet NSButton*      mSettingsTriAxial;
     
     IBOutlet NSTextField*   mVersionLabel;
     IBOutlet NSTextField*   mCopyrightLabel;    
-	
-	IBOutlet FileImageView* mSettingsTexture;
-	
-	IBOutlet SpirexScreenSaverView*		mSaver;
+
+    IBOutlet FileImageView* mSettingsTexture;
+
+    IBOutlet SpirexScreenSaverView* mSaver;
 
 
-	BOOL					mRandom;
-	SaverSettings 			mSettings;
-	
-    std::vector<SaverSettings> mUserPresets;
-	std::vector<SaverSettings> mStandardPresets;
-	
-	BOOL					mFixed3DView;
+    BOOL                        mRandom;
+    SaverSettings               mSettings;
+
+    std::vector<SaverSettings>  mUserPresets;
+    std::vector<SaverSettings>  mStandardPresets;
+
+    BOOL                        mFixed3DView;
     
-    SpirexScreenSaverView*  mSaverPreview;
-    NSTimer*                mPreviewTimer;
+    SpirexScreenSaverView*      mSaverPreview;
+    NSTimer*                    mPreviewTimer;
 }
 
 - (instancetype)init;
@@ -99,14 +99,14 @@
 + (SaverSettings)readSettingsFromDict: (NSDictionary*)dict;
 
 + (void)writeCurrentSettings: (const SaverSettings&) settings
-			toDefaults: (NSUserDefaults*)defaults;
+                  toDefaults: (NSUserDefaults*)defaults;
 + (BOOL)readCurrentSettings: (SaverSettings&) settings
-			fromDefaults: (NSUserDefaults*)defaults;
+               fromDefaults: (NSUserDefaults*)defaults;
 
 + (NSDictionary*) userPresetsDictionaryFromDefaults: (NSUserDefaults*) defaults;
 + (NSDictionary*) standardPresetsDictionary;
 
 + (SaverSettings) configurationFromDefaults: (NSUserDefaults*) defaults
-						isPreview: (BOOL) isPreview;
+                                  isPreview: (BOOL) isPreview;
 
 @end

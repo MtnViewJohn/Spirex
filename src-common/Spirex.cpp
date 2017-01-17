@@ -142,9 +142,9 @@ void Spirex::SetupGfx()
     GetGfxMutex();
     mHdc = GetDC(mHwnd);
     HGLRC hGLRC = wglGetCurrentContext();
-    setupPixelFormat();		// try to setup pixels early and unconditionally
+    setupPixelFormat();         // try to setup pixels early and unconditionally
     if (hGLRC == NULL) {
-        glFlush();	// dummy call to force loading of opengl32.dll
+        glFlush();              // dummy call to force loading of opengl32.dll
         if (!setupPixelFormat() || ((hGLRC = wglCreateContext(mHdc)) == NULL) ||
             !wglMakeCurrent(mHdc, hGLRC))
         {
@@ -169,8 +169,8 @@ void Spirex::DestroyGfx()
     GetGfxMutex();
     HGLRC hGLRC = wglGetCurrentContext();
     if (hGLRC != NULL) {
-        if (mRenderCount & 1) {	// check if we are the primary or secondary buffer
-            SwapBuffers(mHdc);		// swap in primary buffer so GDI can draw
+        if (mRenderCount & 1) {     // check if we are the primary or secondary buffer
+            SwapBuffers(mHdc);      // swap in primary buffer so GDI can draw
             mRenderCount++;
         }
         glDeleteLists(1000, 256);
@@ -217,7 +217,7 @@ bool Spirex::setupPixelFormat()
     BOOL retVal;
 
     if (pixelsAreSetup)
-        return true;		// only call once per window
+        return true;            // only call once per window
 
       // set the pixel format for the DC
     ZeroMemory(&pfd, sizeof(pfd));

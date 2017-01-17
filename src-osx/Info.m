@@ -26,7 +26,7 @@
 #import <ScreenSaver/ScreenSaver.h>
 
 // keys in the update dictionary fetch from the server
-static NSString* keyCheckForUpdates	= @"checkForUpdates";
+static NSString* keyCheckForUpdates = @"checkForUpdates";
 
 
 @implementation Info
@@ -34,7 +34,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 - (void) awakeFromNib
 {
     NSBundle* bundle = [NSBundle bundleForClass: [self class]];
-	mDefaults = [[Updater defaults] retain];
+    mDefaults = [[Updater defaults] retain];
 
     NSDictionary* info = bundle.infoDictionary;
     mVersion.stringValue = [NSString stringWithFormat: @"%@ (v%@)",
@@ -89,7 +89,7 @@ static NSString* keyCheckForUpdates	= @"checkForUpdates";
 
 - (void) changeCheckForUpdate: (id) sender
 {
-	BOOL checkForUpdates = mCheckForUpdates.state == NSOnState;
+    BOOL checkForUpdates = mCheckForUpdates.state == NSOnState;
     
     BOOL oldCheckForUpdate = 
         [mDefaults objectForKey: keyCheckForUpdates] == nil

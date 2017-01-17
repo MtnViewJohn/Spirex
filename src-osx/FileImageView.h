@@ -27,13 +27,13 @@
 
 @interface FileImageView : NSImageView
 {
-	IBOutlet NSStepper* mStepper;
-	IBOutlet NSButton*  mDefaultButton;
-	IBOutlet NSButton*  mClearButton;
-	
-	NSString* mPath;
-	NSString* mDirPath;
-	NSMutableArray* mOtherImages;
+    IBOutlet NSStepper* mStepper;
+    IBOutlet NSButton*  mDefaultButton;
+    IBOutlet NSButton*  mClearButton;
+    
+    NSString* mPath;
+    NSString* mDirPath;
+    NSMutableArray* mOtherImages;
 }
 
 + (NSString*) resolvePath: (NSString*) path;

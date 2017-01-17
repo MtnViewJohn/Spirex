@@ -37,101 +37,101 @@
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat
 {
-	NSOpenGLPixelFormatAttribute attributes [] = {
+    NSOpenGLPixelFormatAttribute attributes [] = {
         NSOpenGLPFAWindow,
         NSOpenGLPFAAllRenderers,
         NSOpenGLPFADoubleBuffer,
-		NSOpenGLPFAColorSize, (NSOpenGLPixelFormatAttribute)24,
-		NSOpenGLPFADepthSize, (NSOpenGLPixelFormatAttribute)16,
+        NSOpenGLPFAColorSize, (NSOpenGLPixelFormatAttribute)24,
+        NSOpenGLPFADepthSize, (NSOpenGLPixelFormatAttribute)16,
         (NSOpenGLPixelFormatAttribute)0
     };
     return [[[NSOpenGLPixelFormat alloc]
-				initWithAttributes:attributes]
-					autorelease];
+                initWithAttributes:attributes]
+                    autorelease];
 }
 
 - (instancetype) initWithFrame: (NSRect)frame andGeometry: (SpirexGeom*)geometry
 {
-	mPreparedGL = NO;
-	mPreparedGeom = NO;
-	mGeom = geometry;
-	mTexturePath = @"";
-	mTexture[0] = 0;
-	mReshaped = NO;
-	
-	self = [super initWithFrame: frame
-				pixelFormat: [[self class] defaultPixelFormat]];
-	if (!self) return self;
-	
-	return self;
+    mPreparedGL = NO;
+    mPreparedGeom = NO;
+    mGeom = geometry;
+    mTexturePath = @"";
+    mTexture[0] = 0;
+    mReshaped = NO;
+    
+    self = [super initWithFrame: frame
+                pixelFormat: [[self class] defaultPixelFormat]];
+    if (!self) return self;
+    
+    return self;
 }
 
 - (void) dealloc
 {
-	[mTexturePath release];
-	[super dealloc];
+    [mTexturePath release];
+    [super dealloc];
 }
 
 - (void) reshape
 {
-	mPreparedGL = NO;
-	mReshaped = YES;
+    mPreparedGL = NO;
+    mReshaped = YES;
 }
 
 - (void) update
 {
-	[super update];
-	mPreparedGL = NO;
+    [super update];
+    mPreparedGL = NO;
 }
 
 - (void) settingsChanged
 {
-	mPreparedGeom = NO;
+    mPreparedGeom = NO;
 }
 
 - (void) setupTexture
 {
-	if (mGeom->mSettings.getTextureStrlen() == 0) {
-		if (mTexture[0]) {
-			glDeleteTextures(1, &mTexture[0]);
-			mTexture[0] = 0;
-			[mTexturePath release];
-			mTexturePath = @"";
-		}
-		return;
-	}
-	
-	NSString* path
-		= @(mGeom->mSettings.getTextureStr());
-	path = [[FileImageView class] resolvePath: path];
-	if (mTexture[0]  &&  [mTexturePath isEqualToString: path])
-		return;
-	[mTexturePath release];
-	mTexturePath = @"";
+    if (mGeom->mSettings.getTextureStrlen() == 0) {
+        if (mTexture[0]) {
+            glDeleteTextures(1, &mTexture[0]);
+            mTexture[0] = 0;
+            [mTexturePath release];
+            mTexturePath = @"";
+        }
+        return;
+    }
+    
+    NSString* path
+        = @(mGeom->mSettings.getTextureStr());
+    path = [[FileImageView class] resolvePath: path];
+    if (mTexture[0]  &&  [mTexturePath isEqualToString: path])
+        return;
+    [mTexturePath release];
+    mTexturePath = @"";
 
     if (![self loadBitmap: path intoIndex:0]) 
         return;
 
-	if (CGLGetCurrentContext ()) { 
-		if (!mTexture[0])
-			glGenTextures(1, &mTexture[0]);
-		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glBindTexture(GL_TEXTURE_2D, mTexture[0]);
-			// consider GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_EXT
+    if (CGLGetCurrentContext ()) { 
+        if (!mTexture[0])
+            glGenTextures(1, &mTexture[0]);
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glBindTexture(GL_TEXTURE_2D, mTexture[0]);
+            // consider GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_EXT
 
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
         glTexImage2D(GL_TEXTURE_2D, 0, 3, mTexSize[0].width,
                      mTexSize[0].height, 0, mTexFormat[0],
                      GL_UNSIGNED_BYTE, mTexBytes[0]);
         gluBuild2DMipmaps(GL_TEXTURE_2D, 3, mTexSize[0].width,
                      mTexSize[0].height, mTexFormat[0],
                      GL_UNSIGNED_BYTE, mTexBytes[0]);
-	}
+    }
     free((void*)mTexBytes[0]);
 
-	mTexturePath = [path retain];
+    mTexturePath = [path retain];
 }
 
 /*
@@ -179,41 +179,41 @@
 
 - (void) drawRect: (NSRect)rect
 {
-	NSOpenGLContext* ctx = self.openGLContext;	
-	[ctx makeCurrentContext];
+    NSOpenGLContext* ctx = self.openGLContext;
+    [ctx makeCurrentContext];
 
-	if (!mPreparedGL) {
-		GLint swapInt = 1;
-		[ctx setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];
-		
-		NSRect bounds = self.bounds;
-		
+    if (!mPreparedGL) {
+        GLint swapInt = 1;
+        [ctx setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];
+        
+        NSRect bounds = self.bounds;
+        
         SpirexGL::InitGL(*mGeom, bounds.size.width, bounds.size.height);
             
-		[self setupTexture];
-		
-		mPreparedGL = YES;
-		mPreparedGeom = YES; // InitGL constructor calls InitMode
+        [self setupTexture];
+        
+        mPreparedGL = YES;
+        mPreparedGeom = YES; // InitGL constructor calls InitMode
         SpirexGL::LevelOfDetail = 150;
-	}
-	if (!mPreparedGeom) {
-		SpirexGL::InitMode(*mGeom);
-		[self setupTexture];
+    }
+    if (!mPreparedGeom) {
+        SpirexGL::InitMode(*mGeom);
+        [self setupTexture];
 
-		mPreparedGeom = YES;
-	}
-	
-	glBindTexture(GL_TEXTURE_2D, mTexture[0]);
-	SpirexGL::Render(-42, *mGeom);
+        mPreparedGeom = YES;
+    }
+    
+    glBindTexture(GL_TEXTURE_2D, mTexture[0]);
+    SpirexGL::Render(-42, *mGeom);
 
-	if (mReshaped) {
-		// if resizing, let the window system's flush take care of it
-		glFlush();
-		mReshaped = NO;
-		return;
-	}
-	
-	[ctx flushBuffer];
+    if (mReshaped) {
+        // if resizing, let the window system's flush take care of it
+        glFlush();
+        mReshaped = NO;
+        return;
+    }
+    
+    [ctx flushBuffer];
 }
 
 @end

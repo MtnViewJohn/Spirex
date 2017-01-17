@@ -28,7 +28,7 @@
 
 #include "myWindows.h"
 
-#define WM_APP_NEW_VERSION	(WM_APP + 102)
+#define WM_APP_NEW_VERSION  (WM_APP + 102)
 
 #define FileCheck_No_Internet (100)
 #define FileCheck_Cannot_Reach_Site (101)

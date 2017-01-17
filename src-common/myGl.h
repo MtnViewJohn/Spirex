@@ -26,7 +26,7 @@
 
 #ifdef WIN32
 #include "myWindows.h"
-#include <gl/gl.h>		// requires Windows.h under Windows
+#include <gl/gl.h>          // requires Windows.h under Windows
 #include <gl/glu.h>
 #else
 #include <OpenGL/gl.h>

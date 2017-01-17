@@ -69,8 +69,8 @@ static SaverWin* PreviewWin = 0;
 static std::unique_ptr<Texture> Thumbnail;
 static LinkWin* URLcontrol;
 static bool ControlsValid;
-static OPENFILENAME Ofn;				// common dialog box structure
-static char szFile[MAX_PATH + 1];		// buffer for file name
+static OPENFILENAME Ofn;                // common dialog box structure
+static char szFile[MAX_PATH + 1];       // buffer for file name
 static char szFileName[MAX_PATH + 1];
 static char InitDir[MAX_PATH + 1];
 static HINSTANCE hInst;
@@ -305,7 +305,7 @@ static char* GetPresetText(HWND presetWin)
 static void ChopTrailingSpace(char* buf)
 {
     for (int i = strlen(buf); isspace(buf[--i]); )
-        buf[i] = '\0';				// chop off trailing space
+        buf[i] = '\0';              // chop off trailing space
 }
 
 
@@ -377,12 +377,12 @@ static bool CleanPresetName(char *presetName, DWORD& start, DWORD& end)
     bool returnVal = false;
     int i;
 
-    while (isspace(presetName[0])) {			// remove leading spaces
+    while (isspace(presetName[0])) {            // remove leading spaces
         DeleteChar(presetName, 0, start, end);
         returnVal = true;
     }
 
-    for (i = 0; presetName[i];)					// remove illegal chars
+    for (i = 0; presetName[i];)                 // remove illegal chars
         if ((presetName[i] == '\\' || !isgraph(presetName[i])) &&
             presetName[i] != ' ') {
             DeleteChar(presetName, i, start, end);
@@ -604,7 +604,7 @@ static void InitTextureUD(HWND hwnd)
             // get the extension
             char* extPtr = strrchr(w32fd.cFileName, '.');
             if (extPtr == 0)
-                continue;	// skip if no extension
+                continue;   // skip if no extension
             else
                 extPtr++;
 
@@ -925,7 +925,7 @@ static BOOL CALLBACK ConfigDialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
             GetSettingsFromDlg(hwnd, Configuration);
             PreviewWin->NewSaverSettings(Configuration);
         } else {
-            return TRUE;	// controls not valid or SB_THUMBTRACK
+            return TRUE;    // controls not valid or SB_THUMBTRACK
         }
         break;
     default:
@@ -1022,7 +1022,7 @@ static BOOL CALLBACK AdvConfigDialogProc(HWND hwnd, UINT msg,
             GetAdvSettingsFromDlg(hwnd);
             PreviewWin->NewSaverSettings(Configuration);
         } else {
-            return TRUE;	// SB_THUMBTRACK
+            return TRUE;    // SB_THUMBTRACK
         }
         break;
     case WM_NOTIFY: {
