@@ -34,7 +34,6 @@
 
 + (void)initialize
 {
-    srand(static_cast<unsigned>(time(0)));
 }
 
 - (instancetype)initWithFrame:(NSRect)frame

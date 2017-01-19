@@ -29,7 +29,7 @@
 //#include "Debug.h"
 #include "myGl.h"
 #include <cmath>
-#include <cstdlib>
+#include <chrono>
 
 static const double PI = 3.1415926535897932384626433832795;
 static const double FullCircle = 2 * PI;
@@ -42,36 +42,36 @@ static const int    TicksPerCount = 20;
 static const int    Radius4Max = 3;
 
 
-static inline int RandomBoolean(int p)
+bool SpirexGeom::RandomBoolean(int p)
 // returns a random boolean that is true 1/p of the time
 {
-    return !(rand() % p);
+    return std::bernoulli_distribution(1.0/p)(rng);
 }
 
-static inline int RandomInteger(int lower, int upper )
+int SpirexGeom::RandomInteger(int lower, int upper )
 // return a random integer in the interval [lower, upper)
 {
-    return rand() % (upper - lower) + lower;
+    return std::uniform_int_distribution<>(lower, upper)(rng);
 }
 
-static inline double RandomInterval(double magnitude)
+double SpirexGeom::RandomInterval(double magnitude)
 // returns a random number in the interval [-magnitude, magnitude]
 {
-    return ((double)rand() / RAND_MAX) * 2.0 * magnitude - magnitude;
+    return std::uniform_real_distribution<>(-magnitude, magnitude)(rng);
 }
 
-static inline double RandomBiasInterval(double magnitude, double bias)
+double SpirexGeom::RandomBiasInterval(double magnitude, double bias)
 // returns a random number in the interval [-magnitude, magnitude]
 // 0 < bias < 1 biases away from zero, bias > 1 biases toward zero
 {
-    double res = ((double)rand() / RAND_MAX) * 2.0 - 1.0;
+    double res = RandomInterval(1.0);
     return ((res < 0) ? -pow(-res, bias) : pow(res, bias)) * magnitude;
 }
 
-static inline double RandomInterval(double lower, double upper)
+double SpirexGeom::RandomInterval(double lower, double upper)
 // returns a random number in the interval [lower, upper]
 {
-    return ((double)rand() / RAND_MAX) * (upper - lower) + lower;
+    return std::uniform_real_distribution<>(lower, upper)(rng);
 }
 
 
@@ -341,6 +341,9 @@ SpirexGeom::SpirexGeom(const SaverSettings& settings, float scale, Point3D cente
     mScale(scale),
     mSettings(settings)
 {
+    auto tick = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    rng.seed(static_cast<rnginttype>(tick));
+    
     init();
 }
 
@@ -348,6 +351,9 @@ SpirexGeom::SpirexGeom(const SaverSettings& settings)
   : mScale(1.0f),   // use default constructor for mScreenCenter
     mSettings(settings)
 {
+    auto tick = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    rng.seed(static_cast<rnginttype>(tick));
+    
     mSettings.qualify();
     init();
 }

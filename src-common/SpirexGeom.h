@@ -28,6 +28,7 @@
 #include "RingBuffer.h"
 #include "Point3D.h"
 #include "Color.h"
+#include <random>
 
 class SpirexGeom
 {
@@ -93,6 +94,14 @@ private:
     Point3D         mScreenCenter;
     float           mScale;
     
+    std::mt19937 rng;
+    bool RandomBoolean(int p);
+    int  RandomInteger(int lower, int upper );
+    double RandomInterval(double magnitude);
+    double RandomBiasInterval(double magnitude, double bias);
+    double RandomInterval(double lower, double upper);
+    using rnginttype = std::mt19937::result_type;
+
 public:         // remove when splitting spirex classes
     void init();
 private:        // remove when splitting spirex classes
