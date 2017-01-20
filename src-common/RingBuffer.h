@@ -304,26 +304,26 @@ public:
     { return _buffer[_pointer]; }
     
     T& back(unsigned index = 0)
-    { return _buffer[(_pointer - (_ringSize - 1) + index) % _size]; }
+    { return _buffer[(_pointer + _size - (_ringSize - 1) + index) % _size]; }
     const T& back(unsigned index = 0) const
-    { return _buffer[(_pointer - (_ringSize - 1) + index) % _size]; }
+    { return _buffer[(_pointer + _size - (_ringSize - 1) + index) % _size]; }
     
     T& operator[](unsigned index)
-    { return _buffer[(_pointer - index) % _size]; }
+    { return _buffer[(_pointer + _size - index) % _size]; }
     const T& operator[](unsigned index) const
-    { return _buffer[(_pointer - index) % _size]; }
+    { return _buffer[(_pointer + _size - index) % _size]; }
     
     T& at(unsigned index)
     {
         if (index >= _ringSize)
             throw std::out_of_range("RingBuffer::at index exceeds size");
-        return _buffer[(_pointer - index) % _size];
+        return _buffer[(_pointer + _size - index) % _size];
     }
     const T& at(unsigned index) const
     {
         if (index >= _ringSize)
             throw std::out_of_range("RingBuffer::at index exceeds size");
-        return _buffer[(_pointer - index) % _size];
+        return _buffer[(_pointer + _size - index) % _size];
     }
     
     unsigned size() const       { return _ringSize; }
