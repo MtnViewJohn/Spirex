@@ -227,20 +227,20 @@ void SpirexGeom::NextStep()
         
         for (int curve = 0; curve < SaverSettings::MaxCurveCount; curve++) {
             int timeDelay = curve * TimeDelayPerCurve;
-            plotPoint(mFixedSphereAngle1Buffer.get(timeDelay) +
+            plotPoint(mFixedSphereAngle1Buffer[timeDelay] +
                       curve * AngleDelay * cos(FixedSphereBias),
-                      mFixedSphereAngle2Buffer.get(timeDelay) +
+                      mFixedSphereAngle2Buffer[timeDelay] +
                       curve * AngleDelay * sin(FixedSphereBias),
-                      mFixedSphereRadiusBuffer.get(timeDelay),
-                      mMovingSphereAngle1Buffer.get(timeDelay) +
+                      mFixedSphereRadiusBuffer[timeDelay],
+                      mMovingSphereAngle1Buffer[timeDelay] +
                       curve * AngleDelay * cos(MovingSphereBias),
-                      mMovingSphereAngle2Buffer.get(timeDelay) +
+                      mMovingSphereAngle2Buffer[timeDelay] +
                       curve * AngleDelay * sin(MovingSphereBias),
-                      mMovingSphereRadiusBuffer.get(timeDelay),
-                      mMovingSphereRadius2Buffer.get(timeDelay),
-                      mMovingSphereRadius3Buffer.get(timeDelay),
-                      mMovingSphereRadius4Buffer.get(timeDelay),
-                      mColorBuffer.get(timeDelay), curve);
+                      mMovingSphereRadiusBuffer[timeDelay],
+                      mMovingSphereRadius2Buffer[timeDelay],
+                      mMovingSphereRadius3Buffer[timeDelay],
+                      mMovingSphereRadius4Buffer[timeDelay],
+                      mColorBuffer[timeDelay], curve);
         }
     }
     
@@ -249,14 +249,6 @@ void SpirexGeom::NextStep()
             mSettings.mCurveLength--;
         else
             mSettings.mCurveLength++;
-        
-        for (int curve = 0; curve < SaverSettings::MaxCurveCount; curve++) {
-            mPointRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-            mWidthRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-            mNormalRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-            mColorRingBufferArray[curve].setSize(mSettings.mCurveLength + 1);
-        }
-        
     }
     
 }
@@ -309,7 +301,7 @@ void SpirexGeom::plotPoint(double FixedSphereAngle1, double FixedSphereAngle2, d
     
     // store point
     if (mSettings.usesPolygons()) {
-        Point3D previousPoint = mPointRingBufferArray[curve].get(0);
+        Point3D previousPoint = mPointRingBufferArray[curve].front();
         Point3D width = normal * (here - previousPoint);
         float scaler = (LineWidthBy2 * (mSettings.mThickLines ? 2.0F : 1.0F)) /
         width.length();
@@ -317,7 +309,7 @@ void SpirexGeom::plotPoint(double FixedSphereAngle1, double FixedSphereAngle2, d
         if (scaler < 1000000.0F) {
             width = width * scaler;
         } else {
-            width = mWidthRingBufferArray[curve].get(0);
+            width = mWidthRingBufferArray[curve].front();
         }
         
         mPointRingBufferArray[curve].add(here);

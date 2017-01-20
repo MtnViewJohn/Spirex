@@ -107,8 +107,8 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
         for (unsigned int curve = 0; curve < settings.mCurveCount; curve++) {
             glBegin(settings.mPoints ? GL_POINTS : GL_LINE_STRIP);
             for (int n = settings.mCurveLength-1; n >= 0; n -= 1) {
-                Point3D point = geom.mPointRingBufferArray[curve].get(n);
-                ColorRGB colorRGB = geom.mColorRingBufferArray[curve].get(n);
+                Point3D point = geom.mPointRingBufferArray[curve][n];
+                ColorRGB colorRGB = geom.mColorRingBufferArray[curve][n];
                 
                 glColor3fv((GLfloat*)&colorRGB);
                 glVertex2fv((GLfloat*)&point);
@@ -131,17 +131,17 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
         if (settings.mMode == SaverSettings::Curves) {
             glMatrixMode(GL_TEXTURE);
             glPushMatrix();
-            txtMatrix[4] = settings.mTriAxial ? geom.mRadius4RingBufferArray[curve].get(0) : 0;
-            txtMatrix[13] = settings.mTriAxial ? geom.mRadius3RingBufferArray[curve].get(0) : 0;
-            txtMatrix[1] = settings.mTriAxial ? geom.mRadius2RingBufferArray[curve].get(0) : 0;
-            txtMatrix[12] = settings.mTriAxial ? geom.mRadius1RingBufferArray[curve].get(0) : 0;
+            txtMatrix[4] = settings.mTriAxial ? geom.mRadius4RingBufferArray[curve].front() : 0;
+            txtMatrix[13] = settings.mTriAxial ? geom.mRadius3RingBufferArray[curve].front() : 0;
+            txtMatrix[1] = settings.mTriAxial ? geom.mRadius2RingBufferArray[curve].front() : 0;
+            txtMatrix[12] = settings.mTriAxial ? geom.mRadius1RingBufferArray[curve].front() : 0;
             glLoadMatrixf(txtMatrix);
             glBegin(settings.mPoints ? GL_POINTS : GL_QUAD_STRIP);
             for (unsigned int i = 0; i <= settings.mCurveLength; i++) {
-                ColorRGB color = geom.mColorRingBufferArray[curve].get(i);
-                Point3D norm = geom.mNormalRingBufferArray[curve].get(i);
-                Point3D pDelta = geom.mWidthRingBufferArray[curve].get(i);
-                Point3D p = geom.mPointRingBufferArray[curve].get(i);
+                ColorRGB color = geom.mColorRingBufferArray[curve][i];
+                Point3D norm = geom.mNormalRingBufferArray[curve][i];
+                Point3D pDelta = geom.mWidthRingBufferArray[curve][i];
+                Point3D p = geom.mPointRingBufferArray[curve][i];
                 Point3D p2 = p + pDelta;
                 p = p - pDelta;
                 
@@ -160,18 +160,18 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
             
             glPushMatrix();
             
-            Point3D norm = geom.mNormalRingBufferArray[curve].get(0);
+            Point3D norm = geom.mNormalRingBufferArray[curve].front();
             
             Point3D position;
             float radius, radius2, radius3, radius4;
-            radius4 = geom.mRadius4RingBufferArray[curve].get(0);
-            float txtOffset = geom.mRadius3RingBufferArray[curve].get(0);
+            radius4 = geom.mRadius4RingBufferArray[curve].front();
+            float txtOffset = geom.mRadius3RingBufferArray[curve].front();
             if (settings.mFixed) {
-                position = geom.mPointRingBufferArray[curve].get(0);
+                position = geom.mPointRingBufferArray[curve].front();
                 if (settings.mTriAxial) {
-                    radius = fabs(geom.mRadius1RingBufferArray[curve].get(0)) + 0.001f;
-                    radius2 = fabs(geom.mRadius2RingBufferArray[curve].get(0)) + 0.001f;
-                    radius3 = fabs(geom.mRadius3RingBufferArray[curve].get(0)) + 0.001f;
+                    radius =  fabs(geom.mRadius1RingBufferArray[curve].front()) + 0.001f;
+                    radius2 = fabs(geom.mRadius2RingBufferArray[curve].front()) + 0.001f;
+                    radius3 = fabs(geom.mRadius3RingBufferArray[curve].front()) + 0.001f;
                     if (radius3 < radius)
                         radius3 = (radius3 / radius) * (settings.mThickLines ? 0.05 : 0.025);
                     else
@@ -190,10 +190,10 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
             } else {
                 position = geom.mMovingSphereCenter[curve];
                 //radius = (position - geom.mPointRingBufferArray[curve].get(0)).length();
-                radius = geom.mRadius1RingBufferArray[curve].get(0);
+                radius = geom.mRadius1RingBufferArray[curve].front();
                 if (settings.mTriAxial) {
-                    radius2 = geom.mRadius2RingBufferArray[curve].get(0);
-                    radius3 = geom.mRadius3RingBufferArray[curve].get(0);
+                    radius2 = geom.mRadius2RingBufferArray[curve].front();
+                    radius3 = geom.mRadius3RingBufferArray[curve].front();
                 } else {
                     radius2 = radius3 = radius;
                 }
@@ -206,7 +206,7 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
             
             glTranslatef(position.x, position.y, position.z);
             glRotatef(90.0F, norm.x, norm.y, norm.z);
-            ColorRGB color = geom.mColorRingBufferArray[curve].get(0);
+            ColorRGB color = geom.mColorRingBufferArray[curve].front();
             glColor3fv((GLfloat*)&color);
             
             switch (settings.mMode) {
@@ -459,10 +459,10 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
                     
                     break;
                 case SaverSettings::Toroids:
-                    radius = geom.mRadius1RingBufferArray[curve].get(0) * 0.7;
-                    radius2 = geom.mRadius2RingBufferArray[curve].get(0) * radius;
-                    radius3 = geom.mRadius3RingBufferArray[curve].get(0);
-                    radius4 = geom.mRadius4RingBufferArray[curve].get(0);
+                    radius =  geom.mRadius1RingBufferArray[curve].front() * 0.7;
+                    radius2 = geom.mRadius2RingBufferArray[curve].front() * radius;
+                    radius3 = geom.mRadius3RingBufferArray[curve].front();
+                    radius4 = geom.mRadius4RingBufferArray[curve].front();
                     if (radius2 < 0.0)
                         radius3 = -radius3;
                     
@@ -493,8 +493,8 @@ void SpirexGL::Render(int rate, const SpirexGeom& geom)
                 case SaverSettings::Squares:
                     facets /= 4;
                     if (facets < 2) facets = 2;
-                    radius2 = geom.mRadius2RingBufferArray[curve].get(0);
-                    radius3 = geom.mRadius3RingBufferArray[curve].get(0);
+                    radius2 = geom.mRadius2RingBufferArray[curve].front();
+                    radius3 = geom.mRadius3RingBufferArray[curve].front();
                     if (!settings.mTriAxial) {
                         radius2 = radius3 = 0.0f;
                     } else {
