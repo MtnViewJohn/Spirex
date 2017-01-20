@@ -33,6 +33,7 @@ class SaverSettings;
     Spirex3DView*           m3DView;
 
     BOOL                    mIsPreview;
+    BOOL                    mIsConfigView;
     NSDate*                 mReconfigDate;
 
     IBOutlet SettingsSheet* mSheet;
@@ -42,6 +43,7 @@ class SaverSettings;
 
 - (void) readConfiguration;
 - (void) newSettings: (const SaverSettings&)settings;
+- (void) isConfig;
 
 + (NSUserDefaults*) defaults;
 - (void) showInfo: (id)sender;

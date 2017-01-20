@@ -46,6 +46,7 @@
     mGeom = 0;
     m3DView = NULL;
     mIsPreview = isPreview;
+    mIsConfigView = NO;
     mReconfigDate = NULL;
     mSheet = NULL;
     mUpdater = nil;
@@ -71,6 +72,11 @@
     [mUpdater checkForUpdate: FALSE];
 
     return self;
+}
+
+- (void) isConfig
+{
+    mIsConfigView = YES;
 }
 
 - (void)dealloc
@@ -104,7 +110,7 @@
 
 - (void)animateOneFrame
 {
-    if ([mReconfigDate compare: [NSDate date]] == NSOrderedAscending)
+    if (!mIsConfigView && [mReconfigDate compare: [NSDate date]] == NSOrderedAscending)
         [self readConfiguration];
     
     mGeom->NextStep();

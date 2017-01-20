@@ -337,9 +337,12 @@ modeDictionary()
     [self displaySettings];
     [self updateSavedUI];
     
-    if (!mSaverPreview)
+    if (!mSaverPreview) {
         mSaverPreview = [[SpirexScreenSaverView alloc] initWithFrame: mSaverPane.bounds
                                                            isPreview: YES];
+        [mSaverPreview isConfig];
+    }
+    
     [mSaverPane addSubview: mSaverPreview];
 
     [mSaverPreview readConfiguration];
