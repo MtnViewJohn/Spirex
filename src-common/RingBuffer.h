@@ -27,10 +27,27 @@
 #include <cassert>
 #include <array>
 
+namespace {
+    constexpr unsigned log2helper(unsigned val, unsigned power, unsigned exp)
+    {
+        return (power >= val) ? exp : log2helper(val, power << 1, exp + 1);
+    }
+    // Compute log2 but round up if not a power of 2. Undefined behavior if
+    // argument is larger than 2^(n-1) where n is the number of bits.
+    constexpr unsigned mylog2(unsigned val)
+    {
+        return log2helper(val, 1, 0);
+    }
+}
 
-template <class T, unsigned _size>
+template <class T, unsigned _minsize>
 class RingBuffer
 {
+    enum _consts: unsigned {
+        _power2 = mylog2(_minsize),
+        _size = 1 << _power2,
+        _mask = _size - 1
+    };
     std::array<T, _size> _buffer;
     unsigned _ringSize;
     unsigned _pointer;
@@ -58,26 +75,26 @@ public:
     { return _buffer[_pointer]; }
     
     T& back(unsigned index = 0)
-    { return _buffer[(_pointer + _size - (_ringSize - 1) + index) % _size]; }
+    { return _buffer[(_pointer - (_ringSize - 1) + index) & _mask]; }
     const T& back(unsigned index = 0) const
-    { return _buffer[(_pointer + _size - (_ringSize - 1) + index) % _size]; }
+    { return _buffer[(_pointer - (_ringSize - 1) + index) & _mask]; }
     
     T& operator[](unsigned index)
-    { return _buffer[(_pointer + _size - index) % _size]; }
+    { return _buffer[(_pointer - index) & _mask]; }
     const T& operator[](unsigned index) const
-    { return _buffer[(_pointer + _size - index) % _size]; }
+    { return _buffer[(_pointer - index) & _mask]; }
     
     T& at(unsigned index)
     {
         if (index >= _ringSize)
             throw std::out_of_range("RingBuffer::at index exceeds size");
-        return _buffer[(_pointer + _size - index) % _size];
+        return _buffer[(_pointer - index) & _mask];
     }
     const T& at(unsigned index) const
     {
         if (index >= _ringSize)
             throw std::out_of_range("RingBuffer::at index exceeds size");
-        return _buffer[(_pointer + _size - index) % _size];
+        return _buffer[(_pointer - index) & _mask];
     }
     
     unsigned size() const       { return _ringSize; }
@@ -97,8 +114,8 @@ public:
     }
 };
 
-template <class T, unsigned _size>
-void RingBuffer<T, _size>::resetBuffer(unsigned sz, const T& init)
+template <class T, unsigned _minsize>
+void RingBuffer<T, _minsize>::resetBuffer(unsigned sz, const T& init)
 {
     if (sz > _size)
         throw std::out_of_range("RingBuffer::resetBuffer size exceeds capacity");
@@ -108,15 +125,15 @@ void RingBuffer<T, _size>::resetBuffer(unsigned sz, const T& init)
         e = init;
 }
 
-template <class T, unsigned _size>
-void RingBuffer<T, _size>::add(const T& item)
+template <class T, unsigned _minsize>
+void RingBuffer<T, _minsize>::add(const T& item)
 {
-    _pointer = (_pointer + 1) % _size;
+    _pointer = (_pointer + 1) & _mask;
     _buffer[_pointer] = item;
 }
 
-template <class T, unsigned _size>
-void RingBuffer<T, _size>::setSize(unsigned sz)
+template <class T, unsigned _minsize>
+void RingBuffer<T, _minsize>::setSize(unsigned sz)
 {
     if (sz > _size)
         throw std::out_of_range("RingBuffer::setSize size exceeds capacity");
